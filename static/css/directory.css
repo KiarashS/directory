@@ -624,9 +624,10 @@ main { position: relative; z-index: 1; padding-bottom: 64px; }
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
-  /* Each card is as tall as its own content rather than as tall as the
-     tallest card in its row — a row of one-line titles stays compact. */
-  align-items: start;
+  /* Cards stretch to the height of their row, which grid has already sized to
+     the tallest one. Setting align-items: start here saves no height at all —
+     the row is that tall regardless — and only leaves a gap under the shorter
+     cards, so every row ends up ragged. Leave this on the grid default. */
   gap: 12px;
   margin: 0 0 34px;
   padding: 0;
