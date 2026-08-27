@@ -473,7 +473,13 @@ button { font: inherit; color: inherit; }
 .tabs {
   display: flex;
   gap: 6px;
-  margin-block: 4px 22px;
+  /* overflow-x: auto makes the computed overflow-y "auto" too, so this bar
+     clips on both axes. Without the top padding, :hover's translateY(-1px)
+     lifted each pill 1px outside the content box and sheared off the top of
+     its border. The negative margin keeps the bar where it was. */
+  margin-block: 0 22px;
+  padding-top: 4px;
+  margin-top: 0;
   padding-bottom: 6px;
   overflow-x: auto;
   scrollbar-width: none;
@@ -483,6 +489,7 @@ button { font: inherit; color: inherit; }
 
 .tab {
   display: inline-flex;
+  text-decoration: none;
   align-items: center;
   gap: 8px;
   flex: none;
@@ -507,13 +514,13 @@ button { font: inherit; color: inherit; }
 }
 .tab svg { width: 17px; height: 17px; flex: none; }
 
-.tab[aria-selected="true"] {
+.tab[aria-current="page"] {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-contrast);
   box-shadow: var(--shadow-md);
 }
-.tab[aria-selected="true"] .tab-count {
+.tab[aria-current="page"] .tab-count {
   background: color-mix(in srgb, var(--accent-contrast) 22%, transparent);
   color: var(--accent-contrast);
 }
@@ -559,13 +566,13 @@ button { font: inherit; color: inherit; }
 /* While a search is running the tab bar is a filter summary, not a selector:
    the results already span every category, so the selected pill steps back
    and empty categories are greyed out. */
-.tabs[data-searching] .tab[aria-selected="true"] {
+.tabs[data-searching] .tab[aria-current="page"] {
   background: var(--surface);
   border-color: var(--accent);
   color: var(--accent);
   box-shadow: var(--shadow-sm);
 }
-.tabs[data-searching] .tab[aria-selected="true"] .tab-count {
+.tabs[data-searching] .tab[aria-current="page"] .tab-count {
   background: var(--accent-soft);
   color: var(--accent);
 }
@@ -595,31 +602,6 @@ button { font: inherit; color: inherit; }
 /* --- Panels and the card grid -------------------------------------------- */
 
 main { position: relative; z-index: 1; padding-bottom: 64px; }
-
-.panel { display: block; }
-.js .panel[hidden] { display: none; }
-
-.panel-head {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin: 0 0 14px;
-}
-.panel-head h2 {
-  margin: 0;
-  font-size: 1.15rem;
-  font-weight: 650;
-  letter-spacing: -0.015em;
-}
-.panel-head .panel-count {
-  font-size: 0.85rem;
-  color: var(--text-faint);
-  font-variant-numeric: tabular-nums;
-}
-/* With JS on, the tab bar already names the section, so the heading is only
-   needed when several panels show at once (i.e. while searching). */
-.js .panel-head { display: none; }
-.js .panel[data-searching] .panel-head { display: flex; }
 
 .cards {
   display: grid;
@@ -1008,43 +990,291 @@ button.card-title::after {
 .view-list .card:has(.card-info) .card-title { padding-right: 0; }
 .view-list .card-foot { margin-top: 0; padding-top: 0; }
 
-/* Courses: disclosure groups --------------------------------------------- */
 
-.groups { display: grid; gap: 10px; margin-bottom: 34px; }
+/* --- The overview page ---------------------------------------------------- */
 
-.group {
+.section-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin: 0 0 40px;
+  padding: 0;
+  list-style: none;
+}
+.section-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
   box-shadow: var(--shadow-sm);
-  overflow: hidden;
+  transition: transform 0.16s var(--ease), box-shadow 0.16s var(--ease),
+              border-color 0.16s var(--ease);
 }
-.group > summary {
+.section-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  box-shadow: var(--shadow-md);
+}
+.section-card > a {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 16px;
-  font-weight: 600;
-  cursor: pointer;
+  color: var(--text);
+  font-size: 1.02rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.section-card > a::after { content: ""; position: absolute; }
+.section-icon {
+  display: grid;
+  place-items: center;
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  flex: none;
+}
+.section-icon svg { width: 19px; height: 19px; }
+.section-count {
+  margin-inline-start: auto;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  color: var(--text-faint);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+.section-card p { margin: 0; color: var(--text-soft); font-size: 0.88rem; }
+
+.hero-section { padding-block: clamp(22px, 4vw, 38px) 8px; }
+.hero-section h1 { font-size: clamp(1.6rem, 1.2rem + 1.8vw, 2.2rem); }
+.hero-count {
+  margin: 6px 0 0;
+  color: var(--text-faint);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.section-empty {
+  padding: 48px 24px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  text-align: center;
+  color: var(--text-soft);
+}
+.section-empty p { margin: 0; }
+.section-empty-hint { margin-top: 8px !important; font-size: 0.88rem; color: var(--text-faint); }
+.section-empty code {
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: var(--surface-2);
+  font-size: 0.92em;
+}
+
+/* --- Search hits that live on another page -------------------------------- */
+
+.elsewhere { margin-top: 8px; }
+.elsewhere > h2 {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: var(--text-soft);
+  letter-spacing: -0.01em;
+}
+.elsewhere .badge { text-transform: capitalize; }
+
+/* --- Courses -------------------------------------------------------------- */
+
+.course-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+  margin: 0 0 40px;
+  padding: 0;
   list-style: none;
 }
-.group > summary::-webkit-details-marker { display: none; }
-.group > summary::after {
-  content: "";
-  width: 9px; height: 9px;
-  margin-inline-start: auto;
-  border-right: 2px solid var(--text-faint);
-  border-bottom: 2px solid var(--text-faint);
-  rotate: 45deg;
-  translate: 0 -2px;
-  transition: rotate 0.18s var(--ease);
+.course-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.16s var(--ease), box-shadow 0.16s var(--ease),
+              border-color 0.16s var(--ease);
 }
-.group[open] > summary::after { rotate: -135deg; translate: 0 2px; }
-.group > summary:hover { background: var(--surface-2); }
-.group-body {
-  padding: 0 16px 16px;
+.course-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  box-shadow: var(--shadow-md);
+}
+.js .course-card[hidden] { display: none; }
+.course-title {
+  font-size: 1.05rem;
+  font-weight: 650;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  text-wrap: balance;
+}
+.course-title::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.course-card:hover .course-title { color: var(--accent); }
+.course-meta {
+  margin: 0;
+  color: var(--text-faint);
+  font-size: 0.85rem;
+}
+.course-desc {
+  margin: 0;
   color: var(--text-soft);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* One course ---------------------------------------------------------------- */
+
+.course-head { padding-block: clamp(18px, 3vw, 30px) 6px; }
+.crumb { margin: 0 0 10px; font-size: 0.85rem; }
+.course-head h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.1rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.course-head .course-meta { margin-top: 8px; font-size: 0.92rem; }
+.course-head .course-desc { margin-top: 10px; max-width: 62ch; }
+.course-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.course-links .pill { padding: 6px 14px; font-size: 0.85rem; }
+
+.course-empty {
+  margin: 24px 0 40px;
+  padding: 40px 24px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  text-align: center;
+  color: var(--text-soft);
+}
+
+/* A course can run to dozens of items, so the modules are listed up front and
+   anchor down the page rather than making the reader scroll to find them. */
+.module-index {
+  margin: 24px 0 32px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+.module-index-head {
+  margin: 0 0 10px;
+  color: var(--text-faint);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+.module-index ol {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2px 20px;
+  margin: 0;
+  padding: 0 0 0 1.2em;
   font-size: 0.92rem;
+}
+.module-index li { color: var(--text-faint); }
+.module-index a { color: var(--text-soft); }
+.module-index a:hover { color: var(--accent); }
+
+.module { margin-bottom: 34px; scroll-margin-top: calc(var(--header-h) + 20px); }
+.module > h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 6px;
+  font-size: 1.08rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+.module-n {
+  display: grid;
+  place-items: center;
+  width: 28px; height: 28px;
+  flex: none;
+  border-radius: 9px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+.module-summary {
+  margin: 0 0 12px 40px;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+.materials {
+  margin: 0 0 0 40px;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+.material {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.material:last-child { border-bottom: 0; }
+.material:hover { background: var(--surface-2); }
+.material > a {
+  flex: 1 1 260px;
+  color: var(--text);
+  font-weight: 550;
+  font-size: 0.94rem;
+}
+.material:hover > a { color: var(--accent); }
+.material-note {
+  flex: 1 1 100%;
+  order: 3;
+  color: var(--text-soft);
+  font-size: 0.85rem;
+}
+.material-kind {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.73rem;
+  font-weight: 550;
+  white-space: nowrap;
+}
+.material-kind svg { width: 12px; height: 12px; }
+
+@media (max-width: 560px) {
+  .module-summary, .materials { margin-left: 0; }
 }
 
 /* Empty state ------------------------------------------------------------- */

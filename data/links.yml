@@ -1,5 +1,7 @@
 # The directory's content. Everything on the site is built from this file.
 #
+# Each category becomes a real page at /<slug>/ — /pdfs/, /links/ and so on.
+#
 # An entry needs a title and a url. Anything with extra `links` renders as a
 # card that opens a modal listing all of them.
 #
@@ -13,13 +15,36 @@
 #     links:
 #       - text: Errata
 #         url: https://example.com/errata
-#         description: Sub-links can have one too.
+#
+# Courses are different: each one gets its own page at
+# /courses/<slug>/, with its materials grouped into modules. Paste this
+# under `courses:` to start one.
+#
+#   - slug: intro-ml
+#     title: Introduction to Machine Learning
+#     institution: Sharif University of Technology
+#     instructor: Some Lecturer
+#     term: Spring 2026
+#     description: One or two lines about the course.
+#     links:                       # optional, shown at the top of the page
+#       - text: Syllabus
+#         url: ./assets/syllabus.pdf
+#     modules:
+#       - title: Week 1 — Linear regression
+#         summary: Optional line under the module heading.
+#         materials:
+#           - title: Lecture slides
+#             url: ./v/wk1-slides/
+#             type: slides         # slides notes assignment reading video code dataset
+#           - title: Problem set 1
+#             url: ./assets/ps1.pdf
+#             type: assignment
 site:
   title: My Directory
   heading: Everything I keep
   heading_accent: in one place
   tagline: A directory of the PDFs, reading links, web tools and open datasets I have collected over the years. Search it, or pick a shelf below.
-  url: https://directory.kiarashs.ir/
+  url: https://kiarashs.github.io/directory/
   author: Kiarash Soleimanzadeh
   author_url: https://kiarashs.ir
   suggest_form: https://forms.gle/KB6dBAR9aPwbbq2S7
@@ -927,9 +952,5 @@ categories:
     url: https://www.mirnet.ca/miRNet/home.xhtml
 - slug: courses
   name: Courses
-  blurb: Course material, grouped by course.
-  groups:
-  - title: Course 1
-    body: Materials
-  - title: Course 2
-    body: Materials
+  blurb: Course material, grouped by module.
+  courses: []

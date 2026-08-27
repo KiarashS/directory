@@ -20,15 +20,22 @@
 
    Older caches are deleted on activate. */
 
-var CACHE = 'directory-v2';
+var CACHE = 'directory-v3';
 
-// The stylesheet and script are deliberately absent: the page requests them
-// with a ?v=<content hash>, so the bare paths would be entries nothing ever
-// asks for. They are cached on first use instead, which costs a cold first
-// visit its offline copy and keeps the cache honest.
+// The stylesheet and script are deliberately absent: pages request them with
+// a ?v=<content hash>, so the bare paths would be entries nothing ever asks
+// for. They are cached on first use instead, which costs a cold first visit
+// its offline copy and keeps the cache honest.
+//
+// Category pages are real directories now, so each one is its own navigation
+// and needs its own entry.
 var SHELL = [
   './',
-  './index.html',
+  './pdfs/',
+  './links/',
+  './tools/',
+  './datasets/',
+  './courses/',
   './manifest.webmanifest',
   './favicon-32x32.png',
   './apple-touch-icon.png'
@@ -67,12 +74,15 @@ self.addEventListener('fetch', function (event) {
     event.respondWith(
       fetch(request)
         .then(function (response) {
+          // Key the cache on the page actually being visited. This used to
+          // write every navigation over './index.html', so visiting /pdfs/
+          // offline would serve whichever page was loaded last.
           var copy = response.clone();
-          caches.open(CACHE).then(function (c) { c.put('./index.html', copy); });
+          caches.open(CACHE).then(function (c) { c.put(request, copy); });
           return response;
         })
         .catch(function () {
-          return caches.match('./index.html').then(function (hit) {
+          return caches.match(request).then(function (hit) {
             return hit || caches.match('./');
           });
         })

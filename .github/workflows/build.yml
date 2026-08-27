@@ -39,45 +39,64 @@ jobs:
 
       - run: pip install --quiet pyyaml
 
-      - name: Render index.html
+      - name: Render every page
         run: python3 scripts/build.py
 
       - name: Check nothing important went missing
         run: |
           python3 - <<'PY'
-          import pathlib, re, sys, yaml
+          import pathlib, sys, yaml
 
           doc = yaml.safe_load(pathlib.Path("data/links.yml").read_text(encoding="utf-8"))
-          page = pathlib.Path("index.html").read_text(encoding="utf-8")
 
-          urls = []
+          # Each category is its own page now, so a link has to be checked
+          # against the page it was actually written into, at that page's depth.
+          missing, total = [], 0
           for cat in doc["categories"]:
+              page = pathlib.Path(cat["slug"], "index.html")
+              html = page.read_text(encoding="utf-8") if page.exists() else ""
               for entry in cat.get("entries") or []:
-                  if entry.get("url"):
-                      urls.append(entry["url"])
-                  for link in entry.get("links") or []:
-                      urls.append(link["url"])
+                  urls = ([entry["url"]] if entry.get("url") else [])
+                  urls += [l["url"] for l in entry.get("links") or []]
+                  for url in urls:
+                      total += 1
+                      want = url
+                      if not url.startswith(("http://", "https://")):
+                          want = "../" + (url[2:] if url.startswith("./") else url)
+                      if f'href="{want.replace("&", "&amp;")}"' not in html:
+                          missing.append((cat["slug"], url))
 
-          assert len(urls) >= 400, f"only {len(urls)} links in links.yml — refusing to publish"
+              for course in cat.get("courses") or []:
+                  cpage = pathlib.Path(cat["slug"], course["slug"], "index.html")
+                  chtml = cpage.read_text(encoding="utf-8") if cpage.exists() else ""
+                  for module in course.get("modules") or []:
+                      for mat in module.get("materials") or []:
+                          total += 1
+                          want = mat["url"]
+                          if not want.startswith(("http://", "https://")):
+                              want = "../../" + (want[2:] if want.startswith("./") else want)
+                          if f'href="{want.replace("&", "&amp;")}"' not in chtml:
+                              missing.append((course["slug"], mat["url"]))
 
-          missing = [u for u in urls if f'href="{u.replace("&", "&amp;")}"' not in page]
+          assert total >= 400, f"only {total} links in links.yml — refusing to publish"
+
           if missing:
-              print("links absent from the rendered page:", file=sys.stderr)
-              for u in missing[:20]:
-                  print(f"  {u}", file=sys.stderr)
+              print("links absent from the page they belong on:", file=sys.stderr)
+              for slug, url in missing[:20]:
+                  print(f"  {slug}: {url}", file=sys.stderr)
               sys.exit(1)
 
-          cards = len(re.findall(r'<li class="card', page))
-          print(f"ok: {len(urls)} links across {cards} cards, all present in index.html")
+          pages = sorted(str(p) for p in pathlib.Path(".").glob("*/index.html"))
+          print(f"ok: {total} links, all present on their own page")
           PY
 
       - name: Commit whatever the build changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html
+          git add index.html pdfs links tools datasets courses
           if git diff --cached --quiet; then
-            echo "index.html is already current."
+            echo "every page is already current."
           else
             git commit -m "chore: rebuild the site ($(date -u +%Y-%m-%d))"
             git push origin HEAD:${GITHUB_REF_NAME}

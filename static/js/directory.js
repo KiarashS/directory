@@ -70,8 +70,7 @@
 
   /* --- Elements ---------------------------------------------------------- */
 
-  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
-  var panels = Array.prototype.slice.call(document.querySelectorAll('[role="tabpanel"]'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('nav.tabs .tab'));
   // Cards and the course disclosures both carry data-search, so both filter.
   var entries = Array.prototype.slice.call(document.querySelectorAll('[data-search]'));
   var cards = entries.filter(function (el) { return el.classList.contains('card'); });
@@ -82,7 +81,11 @@
   var viewButtons = Array.prototype.slice.call(document.querySelectorAll('[data-view]'));
   var toTop = document.querySelector('.to-top');
 
-  var tablist = document.querySelector('[role="tablist"]');
+  var main = document.getElementById('main');
+  var base = (main && main.dataset.base) || './';
+  var navBar = document.querySelector('nav.tabs');
+  var elsewhere = document.querySelector('.elsewhere');
+  var elsewhereList = document.querySelector('[data-elsewhere]');
   var resultsBar = document.querySelector('.results-bar');
   var resultsText = document.querySelector('[data-results-text]');
 
@@ -93,111 +96,81 @@
     haystack.set(el, (el.getAttribute('data-search') || '').toLowerCase());
   });
 
-  /* --- Tabs -------------------------------------------------------------- */
-
-  var slugs = tabs.map(function (t) { return t.getAttribute('data-slug'); });
-  var active = slugs[0];
-
-  function selectTab(slug, opts) {
-    if (slugs.indexOf(slug) === -1) slug = slugs[0];
-    active = slug;
-
-    tabs.forEach(function (tab) {
-      var on = tab.getAttribute('data-slug') === slug;
-      tab.setAttribute('aria-selected', on ? 'true' : 'false');
-      tab.tabIndex = on ? 0 : -1;
-    });
-
-    render();
-
-    if (opts && opts.focus) {
-      var el = tabs[slugs.indexOf(slug)];
-      el.focus();
-      el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-    }
-    if (!opts || opts.hash !== false) {
-      if (('#' + slug) !== window.location.hash) {
-        history.replaceState(null, '', '#' + slug);
-      }
-    }
-  }
-
-  tabs.forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      selectTab(tab.getAttribute('data-slug'));
-    });
-  });
-
-  tablist.addEventListener('keydown', function (e) {
-    var i = slugs.indexOf(active);
-    var next = null;
-    if (e.key === 'ArrowRight') next = (i + 1) % slugs.length;
-    else if (e.key === 'ArrowLeft') next = (i - 1 + slugs.length) % slugs.length;
-    else if (e.key === 'Home') next = 0;
-    else if (e.key === 'End') next = slugs.length - 1;
-    if (next === null) return;
-    e.preventDefault();
-    selectTab(slugs[next], { focus: true });
-  });
-
-  window.addEventListener('hashchange', function () {
-    var slug = window.location.hash.replace('#', '').toLowerCase();
-    if (slug && slug !== active && slugs.indexOf(slug) !== -1) {
-      selectTab(slug, { hash: false });
-    }
-  });
-
   /* --- Search ------------------------------------------------------------ */
 
   var query = '';
+
+  // Every entry on the site as [title, category-slug]. Inlined on each page so
+  // a search from /pdfs/ can still turn up something filed under /datasets/
+  // without that page carrying another page's markup.
+  var siteIndex = [];
+  try {
+    var raw = document.getElementById('search-index');
+    if (raw) siteIndex = JSON.parse(raw.textContent);
+  } catch (err) { /* a missing index just means search stays local */ }
+
+  // Which category this page is. Empty on the overview, which has no active
+  // link and therefore treats every index row as "elsewhere".
+  var current = document.querySelector('nav.tabs .tab[aria-current="page"]');
+  var here = current ? current.getAttribute('data-slug') : '';
 
   function render() {
     var q = query.trim().toLowerCase();
     var terms = q ? q.split(/\s+/) : [];
     var searching = terms.length > 0;
-    var total = 0;
-    var hitCategories = 0;
+    var shown = 0;
 
-    panels.forEach(function (panel) {
-      var slug = panel.getAttribute('data-slug');
-      var shown = 0;
-
-      Array.prototype.forEach.call(panel.querySelectorAll('[data-search]'), function (el) {
-        var text = haystack.get(el) || '';
-        var hit = !searching || terms.every(function (t) { return text.indexOf(t) !== -1; });
-        el.hidden = !hit;
-        if (hit) shown++;
-      });
-
-      // While searching, every panel holding a hit is on screen at once;
-      // otherwise only the selected tab's panel shows.
-      panel.hidden = searching ? shown === 0 : slug !== active;
-      if (searching) panel.setAttribute('data-searching', '');
-      else panel.removeAttribute('data-searching');
-
-      var count = panel.querySelector('[data-panel-count]');
-      if (count) count.textContent = shown + (shown === 1 ? ' entry' : ' entries');
-
-      var tab = tabs[slugs.indexOf(slug)];
-      if (tab) {
-        var badge = tab.querySelector('.tab-count');
-        if (badge) badge.textContent = searching ? shown : badge.getAttribute('data-total');
-        tab.toggleAttribute('data-empty', searching && shown === 0);
-      }
-
-      total += shown;
-      if (shown > 0) hitCategories++;
+    entries.forEach(function (el) {
+      var text = haystack.get(el) || '';
+      var hit = !searching || terms.every(function (t) { return text.indexOf(t) !== -1; });
+      el.hidden = !hit;
+      if (hit) shown++;
     });
 
-    tablist.toggleAttribute('data-searching', searching);
-    document.body.classList.toggle('is-searching', searching);
+    // Matches that live on another page become links across to it. ?h= is the
+    // deep link this script already understands: it flags the entry and
+    // scrolls to it on arrival.
+    var away = [];
+    if (searching) {
+      siteIndex.forEach(function (row) {
+        if (row[1] === here) return;
+        var text = (row[0] + ' ' + row[1]).toLowerCase();
+        if (terms.every(function (t) { return text.indexOf(t) !== -1; })) away.push(row);
+      });
+    }
 
+    if (elsewhereList) {
+      elsewhereList.replaceChildren();
+      away.slice(0, 40).forEach(function (row) {
+        var li = document.createElement('li');
+        li.className = 'card';
+        var a = document.createElement('a');
+        a.className = 'card-title';
+        a.href = base + row[1] + '/?h=' + encodeURIComponent(row[0]);
+        a.textContent = row[0];                       // textContent, never innerHTML
+        var foot = document.createElement('div');
+        foot.className = 'card-foot';
+        var badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.textContent = row[1];
+        foot.appendChild(badge);
+        li.appendChild(a);
+        li.appendChild(foot);
+        elsewhereList.appendChild(li);
+      });
+      elsewhere.hidden = away.length === 0;
+    }
+
+    document.body.classList.toggle('is-searching', searching);
+    if (navBar) navBar.toggleAttribute('data-searching', searching);
+
+    var total = shown + away.length;
     if (empty) empty.toggleAttribute('data-visible', searching && total === 0);
     if (emptyTerm) emptyTerm.textContent = query.trim();
 
     var summary = total + (total === 1 ? ' result' : ' results') +
       ' for \u201c' + query.trim() + '\u201d' +
-      (hitCategories > 1 ? ' in ' + hitCategories + ' categories' : '');
+      (away.length ? ' (' + away.length + ' in other sections)' : '');
 
     if (resultsBar) resultsBar.toggleAttribute('data-visible', searching && total > 0);
     if (resultsText) resultsText.textContent = summary;
@@ -249,6 +222,10 @@
       input.select();
     }
   });
+
+  // Nothing is filtered at rest, but running once keeps the rendered state and
+  // the script's idea of it in step from the first frame.
+  render();
 
   /* --- View mode --------------------------------------------------------- */
 
@@ -357,8 +334,10 @@
     });
 
     modal.showModal();
-    var first = modalList.querySelector('a');
-    if (first) first.focus();
+    // Focus the dialog itself, not its first link. Focusing an anchor paints
+    // it as selected before the reader has chosen anything; the dialog still
+    // traps focus, and Tab from here reaches the links in order.
+    modal.focus();
     return true;
   }
 
@@ -402,24 +381,19 @@
     }, { passive: true });
   }
 
-  /* --- Deep links -------------------------------------------------------- */
-
-  // #pdfs, #links, … pick the tab. ?h=<link text> still flags one entry and
-  // scrolls to it, the way the old page did.
-  var hash = window.location.hash.replace('#', '').toLowerCase();
-  selectTab(slugs.indexOf(hash) !== -1 ? hash : slugs[0], { hash: !!hash });
+  /* --- Deep links --------------------------------------------------------
+     ?h=<entry title> flags one card and scrolls to it, which is how a search
+     result on another page lands you on the right entry. */
 
   var flag = new URLSearchParams(window.location.search).get('h');
   if (flag) {
     var wanted = flag.trim().toLowerCase();
     var match = cards.filter(function (card) {
       var t = card.querySelector('.card-title');
-      return t && t.textContent.trim().toLowerCase() === wanted;
+      return t && (t.dataset.title || t.textContent).trim().toLowerCase() === wanted;
     })[0];
 
     if (match) {
-      var panel = match.closest('[role="tabpanel"]');
-      if (panel) selectTab(panel.getAttribute('data-slug'), { hash: false });
       match.classList.add('is-flagged');
       requestAnimationFrame(function () {
         match.scrollIntoView({ behavior: 'smooth', block: 'center' });

@@ -3,11 +3,26 @@
 The site behind [directory.kiarashs.ir](https://directory.kiarashs.ir/): a hand-kept
 collection of PDFs, reading links, web tools and open datasets.
 
+## Pages
+
+Each category is a real page, not a fragment:
+
+| URL | |
+| --- | --- |
+| `/` | overview of every category |
+| `/pdfs/`, `/links/`, `/tools/`, `/datasets/` | that category's entries |
+| `/courses/` | the course list |
+| `/courses/<slug>/` | one course, its modules and materials |
+
+Search still spans everything. Each page carries a small index of every entry on
+the site, so a search from `/pdfs/` turns up matches in `/datasets/` and links
+across to them. Old `#pdfs`-style links redirect to `/pdfs/`.
+
 ## Adding or changing a link
 
 Everything on the site comes from [`data/links.yml`](data/links.yml). Edit that file —
 in the GitHub web editor is fine — and the site rebuilds and republishes itself.
-Nothing else needs touching; `index.html` is generated and should never be edited
+Nothing else needs touching; the HTML is generated and should never be edited
 by hand.
 
 An entry is a title and a URL:
@@ -59,14 +74,49 @@ links:
 Entries without a `description` get no (i) button. Descriptions are searchable
 either way.
 
+## Courses
+
+A course gets its own page. Materials go in modules, and each one can name a
+`type` so it renders with the right icon and label:
+
+```yaml
+- slug: courses
+  name: Courses
+  courses:
+    - slug: intro-ml
+      title: Introduction to Machine Learning
+      institution: Sharif University of Technology
+      instructor: Some Lecturer
+      term: Spring 2026
+      description: One or two lines about the course.
+      links:                       # optional, shown at the top of the page
+        - text: Syllabus
+          url: ./assets/syllabus.pdf
+      modules:
+        - title: Week 1 — Linear regression
+          summary: Optional line under the module heading.
+          materials:
+            - title: Lecture slides
+              url: ./v/wk1-slides/
+              type: slides
+            - title: Problem set 1
+              url: ./assets/ps1.pdf
+              type: assignment
+              description: Due at the end of week two.
+```
+
+`type` is one of `slides`, `notes`, `assignment`, `reading`, `video`, `code`,
+`dataset`. Anything else still renders, just without an icon. A course with no
+`modules` yet shows an empty state rather than a blank page.
+
 ## How the build works
 
 `.github/workflows/build.yml` runs on any push that touches `data/links.yml`,
 `scripts/`, or `static/`:
 
-1. `scripts/build.py` renders `index.html` from the YAML.
-2. A check asserts every URL in the YAML appears in the rendered page.
-3. The regenerated `index.html` is committed, and the site deploys to Pages.
+1. `scripts/build.py` renders every page from the YAML.
+2. A check asserts every URL in the YAML appears on the page it belongs on.
+3. The regenerated pages are committed, and the site deploys to Pages.
 
 Because the workflow only triggers on its *inputs*, its own commit does not set
 off another run. The build needs no network access.
@@ -75,8 +125,8 @@ To run it locally:
 
 ```bash
 pip install pyyaml
-python3 scripts/build.py                # writes index.html
-python3 scripts/build.py --check        # exits 1 if index.html is stale
+python3 scripts/build.py                # writes every page
+python3 scripts/build.py --check        # exits 1 if any page is stale
 python3 -m http.server                  # then open http://localhost:8000
 ```
 
@@ -85,7 +135,7 @@ python3 -m http.server                  # then open http://localhost:8000
 | Path | What it is |
 | --- | --- |
 | `data/links.yml` | Every entry on the site. The only file you edit. |
-| `scripts/build.py` | Renders `index.html`. |
+| `scripts/build.py` | Renders every page. |
 | `static/css/directory.css`, `static/js/directory.js` | The front end. |
-| `index.html` | Generated output. Do not edit. |
+| `index.html`, `<category>/index.html` | Generated output. Do not edit. |
 | `assets/`, `v/`, `viewer/` | The PDFs and the pdf.js viewer that displays them. |
