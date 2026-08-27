@@ -11,6 +11,7 @@ top-right of its card, and the text shows in a popover on hover or focus.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html
 import itertools
 import pathlib
@@ -25,6 +26,18 @@ OUT = ROOT / "index.html"
 
 # Every popover needs an id so its button can point at it with aria-describedby.
 _ids = itertools.count(1)
+
+
+def asset(path: str) -> str:
+    """A site-relative asset URL stamped with a hash of its contents.
+
+    A changed file becomes a different URL, so no cache — service worker,
+    browser or CDN — can answer with an old copy. Without this, the service
+    worker happily served the stylesheet and script from a first visit
+    indefinitely while the HTML kept updating around them.
+    """
+    digest = hashlib.sha256((ROOT / path).read_bytes()).hexdigest()[:8]
+    return f"./{path}?v={digest}"
 
 e = lambda s: html.escape(s or "", quote=True)
 
@@ -243,15 +256,21 @@ def build(doc: dict) -> str:
   <meta name="msapplication-TileColor" content="#4f5bd5">
   <link rel="manifest" href="./manifest.webmanifest">
 
-  <link rel="stylesheet" href="./static/css/directory.css">
+  <link rel="stylesheet" href="{asset("static/css/directory.css")}">
 
   <script>
-    // Set the stored theme before first paint so a dark-mode reader never
-    // gets a white flash. Everything else waits for directory.js.
+    // Runs before first paint, so neither of these can flash.
     (function () {{
+      var root = document.documentElement;
+
+      // Marking the document as scripted here, rather than in the deferred
+      // directory.js, means the inline link lists on multi-link cards are
+      // never painted at all — they exist only as the no-JavaScript fallback.
+      root.className = root.className.replace('no-js', 'js');
+
       try {{
         var t = localStorage.getItem('directory:theme');
-        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+        if (t === 'light' || t === 'dark') root.setAttribute('data-theme', t);
       }} catch (e) {{}}
     }})();
   </script>
@@ -369,7 +388,7 @@ def build(doc: dict) -> str:
     </div>
   </footer>
 
-  <script src="./static/js/directory.js" defer></script>
+  <script src="{asset("static/js/directory.js")}" defer></script>
   <script>
     if ('serviceWorker' in navigator) {{
       window.addEventListener('load', function () {{

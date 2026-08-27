@@ -8,18 +8,27 @@
      - the shell (page, stylesheet, script, icons) is precached on install;
      - navigations go to the network first, falling back to the cached page
        when offline, so a new deploy is never masked by a stale copy;
-     - other same-origin GETs are served from the cache when present, and
-       cached as they are fetched.
+     - other same-origin GETs are stale-while-revalidate: the cached copy is
+       served at once and refreshed from the network in the background.
 
-   Bump CACHE when the shell changes; older caches are deleted on activate. */
+   That last part used to be cache-first against a cache name that never
+   changed, which pinned directory.css and directory.js to whatever a browser
+   saw on its first visit — for good. Fresh HTML then loaded stale CSS and JS,
+   so new markup arrived with no styles or behaviour to match it. Assets are
+   also requested with a ?v=<content hash>, so a changed file is a different
+   URL and cannot be answered from an old entry at any layer.
 
-var CACHE = 'directory-v1';
+   Older caches are deleted on activate. */
 
+var CACHE = 'directory-v2';
+
+// The stylesheet and script are deliberately absent: the page requests them
+// with a ?v=<content hash>, so the bare paths would be entries nothing ever
+// asks for. They are cached on first use instead, which costs a cold first
+// visit its offline copy and keeps the cache honest.
 var SHELL = [
   './',
   './index.html',
-  './static/css/directory.css',
-  './static/js/directory.js',
   './manifest.webmanifest',
   './favicon-32x32.png',
   './apple-touch-icon.png'
@@ -73,13 +82,23 @@ self.addEventListener('fetch', function (event) {
 
   event.respondWith(
     caches.match(request).then(function (hit) {
-      return hit || fetch(request).then(function (response) {
+      var fresh = fetch(request).then(function (response) {
         if (response && response.ok && response.type === 'basic') {
           var copy = response.clone();
           caches.open(CACHE).then(function (c) { c.put(request, copy); });
         }
         return response;
+      }).catch(function () {
+        return hit;      // offline: the cached copy is the best there is
       });
+
+      // Serve what we have immediately, but always go and refresh it, so a
+      // stale entry can never survive more than one load.
+      if (hit) {
+        event.waitUntil(fresh);
+        return hit;
+      }
+      return fresh;
     })
   );
 });

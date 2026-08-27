@@ -833,7 +833,10 @@ button.card-title::after {
 .card-multi:hover button.card-title { color: var(--accent); }
 
 .card-links {
-  display: flex;
+  /* Hidden by default: these links belong in the modal. The list stays in the
+     markup as the no-JavaScript fallback, and .no-js is cleared by an inline
+     script in <head> before first paint, so it never flashes. */
+  display: none;
   flex-direction: column;
   gap: 6px;
   margin: 0;
@@ -849,7 +852,7 @@ button.card-title::after {
 }
 .card-links .link-note { color: var(--text-soft); }
 /* Once the modal exists the inline copy is redundant. */
-.js .card-multi .card-links { display: none; }
+.no-js .card-multi .card-links { display: flex; }
 
 .badge-count {
   background: var(--accent-soft);

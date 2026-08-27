@@ -8,8 +8,9 @@
 (function () {
   'use strict';
 
+  // The inline script in <head> already swapped no-js for js, before first
+  // paint, so the inline link lists never flash into view.
   var root = document.documentElement;
-  root.classList.replace('no-js', 'js');
 
   /* --- Theme ------------------------------------------------------------
      Three states, cycled by the header button: system → light → dark.

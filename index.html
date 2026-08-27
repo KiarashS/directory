@@ -24,15 +24,21 @@
   <meta name="msapplication-TileColor" content="#4f5bd5">
   <link rel="manifest" href="./manifest.webmanifest">
 
-  <link rel="stylesheet" href="./static/css/directory.css">
+  <link rel="stylesheet" href="./static/css/directory.css?v=8fe1a76f">
 
   <script>
-    // Set the stored theme before first paint so a dark-mode reader never
-    // gets a white flash. Everything else waits for directory.js.
+    // Runs before first paint, so neither of these can flash.
     (function () {
+      var root = document.documentElement;
+
+      // Marking the document as scripted here, rather than in the deferred
+      // directory.js, means the inline link lists on multi-link cards are
+      // never painted at all — they exist only as the no-JavaScript fallback.
+      root.className = root.className.replace('no-js', 'js');
+
       try {
         var t = localStorage.getItem('directory:theme');
-        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+        if (t === 'light' || t === 'dark') root.setAttribute('data-theme', t);
       } catch (e) {}
     })();
   </script>
@@ -1887,7 +1893,7 @@
     </div>
   </footer>
 
-  <script src="./static/js/directory.js" defer></script>
+  <script src="./static/js/directory.js?v=4d87c4ee" defer></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
