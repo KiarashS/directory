@@ -855,10 +855,27 @@ button.card-title::after {
 /* Once the modal exists the inline copy is redundant. */
 .no-js .card-multi .card-links { display: flex; }
 
+/* Solid rather than tinted: at a glance this has to read as a different kind
+   of thing from the muted "PDF" / hostname badges, not as another one of them. */
 .badge-count {
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-weight: 550;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 600;
+}
+.badge-count svg { opacity: 0.85; }
+
+/* And the card itself looks like a small stack of sheets. Drawn with offset
+   box-shadows rather than a pseudo-element so it costs no layout: the cards
+   stay flush with their row, which is the whole point of the grid alignment. */
+.card-multi {
+  box-shadow: var(--shadow-sm),
+              6px -6px 0 -1px var(--surface),
+              6px -6px 0 0 var(--line-strong);
+}
+.card-multi:hover {
+  box-shadow: var(--shadow-md),
+              6px -6px 0 -1px var(--surface),
+              6px -6px 0 0 color-mix(in srgb, var(--accent) 55%, var(--line-strong));
 }
 
 /* --- The link modal ------------------------------------------------------ */

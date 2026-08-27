@@ -52,11 +52,15 @@ ICONS = {
 
 EXT = '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg>'
 PDF = '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg>'
+LAYERS = '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg>'
 
 SPRITE = '''  <svg class="visually-hidden" aria-hidden="true" focusable="false">
     <defs>
       <g id="i-ext" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M11 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-5"/><path d="M10 14 20 4"/><path d="M15 4h5v5"/>
+      </g>
+      <g id="i-layers" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3 3 8l9 5 9-5-9-5z"/><path d="m3 13 9 5 9-5"/>
       </g>
       <g id="i-info" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v4h1"/>
@@ -150,8 +154,13 @@ def render_entry(entry: dict) -> str:
         # Multi-link entries do not navigate. The button opens a modal listing
         # every link; the <ul> below is what the modal is built from, and is
         # also the whole no-JS fallback.
+        # The count is visible in the footer chip, but a screen reader
+        # announcing the button would otherwise hear only the title and have
+        # no idea this opens a set rather than following a link.
         out.append(f'          <button class="card-title" type="button" '
-                   f'data-open-modal aria-haspopup="dialog">{e(entry["title"])}</button>')
+                   f'data-open-modal aria-haspopup="dialog" '
+                   f'data-title="{e(entry["title"])}">{e(entry["title"])}'
+                   f'<span class="visually-hidden">, {len(links)} links</span></button>')
         out.append(f'          <ul class="card-links">')
         for link in links:
             out.append(f'            <li><a href="{e(link["url"])}"{link_attrs(link["url"])}>'
@@ -159,8 +168,11 @@ def render_entry(entry: dict) -> str:
                        + (f'<span class="link-note">{e(desc(link))}</span>' if desc(link) else "")
                        + f'{badge(link["url"])}</li>')
         out.append('          </ul>')
+        # A destination badge says where one link goes; this says how many
+        # this card holds. Different job, so it is styled as a different kind
+        # of object rather than another muted chip in the same corner.
         out.append(f'          <div class="card-foot">'
-                   f'<span class="badge badge-count">{len(links)} links</span></div>')
+                   f'<span class="badge badge-count">{LAYERS} {len(links)} links</span></div>')
     else:
         link = links[0]
         out.append(f'          <a class="card-title" href="{e(link["url"])}"'

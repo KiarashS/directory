@@ -313,7 +313,9 @@
     var source = card.querySelector('.card-links');
     if (!source) return false;
 
-    modalTitle.textContent = title ? title.textContent : '';
+    // data-title, not textContent: the button also carries a visually-hidden
+    // ", N links" for screen readers, which does not belong in the heading.
+    modalTitle.textContent = title ? (title.dataset.title || title.textContent) : '';
 
     if (note && note.textContent.trim()) {
       modalNote.textContent = note.textContent;
