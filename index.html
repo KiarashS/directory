@@ -1,0 +1,1066 @@
+<!DOCTYPE HTML>
+<html lang="en-us">
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='color-scheme' content='light dark'>
+    <title>My Directory</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="manifest" href="./site.webmanifest">
+    <link rel="mask-icon" href="./safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://directory.kiarashs.ir/" />
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/madmurphy/takefive.css/master/dist/takefive.min.css">
+    <link rel="stylesheet" href="./static/css/simptip.min.css">
+    <!-- https://view.officeapps.live.com/op/view.aspx?src=http%3A%2F%2Fceit.aut.ac.ir%2F~keyvanrad%2Fdownload%2FCL931%2FCL_1(Introduction).pptx&wdOrigin=BROWSELINK -->
+    
+    <style>
+        @import 'https://fonts.googleapis.com/css?family=Montserrat:400,700|Raleway:300,400|Hind:300,400&display=swap';
+
+        /* colors */
+        /* tab setting */
+        /* breakpoints */
+        /* selectors relative to radio inputs */
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background: #efefef;
+            color: #333;
+            font-family: Verdana, "Raleway";
+            height: 100%;
+            background-image: url(./static/images/wave.svg);
+            background-repeat: no-repeat;
+            background-position: center bottom;
+            background-attachment: fixed;
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+
+        body h1 {
+            text-align: center;
+            color: #428BFF;
+            font-weight: 300;
+            padding: 20px 0 20px 0;
+            margin: 0;
+        }
+
+        a {
+            color: rgb(0, 0, 238);
+            text-decoration: none;
+        }
+
+        /* Unvisited link  */
+        a:visited {
+            color: rgb(0, 0, 238);
+        }
+
+        /* Visited link    */
+        a:hover {
+            color: rgb(0, 0, 238);
+        }
+
+        /* Mouse over link */
+        a:active {
+            color: rgb(0, 0, 238);
+        }
+
+        .simptip-position-top:hover:before, .simptip-position-top:hover:after {
+            font-style: normal;
+        }
+
+        /* Selected link   */
+
+        .tabs {
+            left: 50%;
+            transform: translateX(-50%);
+            position: relative;
+            /* background-color: #ffffff; */
+            /* background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%); */
+            padding: 50px;
+            padding-bottom: 80px;
+            width: 85%;
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+            border-radius: 5px;
+            min-width: 240px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .tabs input[name=tab-control] {
+            display: none;
+        }
+
+        .tabs .content section h2,
+        .tabs ul.tabs-head li label {
+            font-family: "Montserrat";
+            font-weight: bold;
+            font-size: 18px;
+            color: #428BFF;
+        }
+
+        .tabs ul.tabs-head {
+            list-style-type: none;
+            padding-left: 0;
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 10px;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .tabs ul.tabs-head li {
+            box-sizing: border-box;
+            flex: 1;
+            width: 20%;
+            padding: 0 10px;
+            text-align: center;
+        }
+
+        .tabs ul.tabs-head li label {
+            transition: all 0.3s ease-in-out;
+            color: #929daf;
+            padding: 5px auto;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            white-space: nowrap;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .tabs ul.tabs-head li label br {
+            display: none;
+        }
+
+        .tabs ul.tabs-head li label svg {
+            /*fill: #929daf;*/
+            height: 1.2em;
+            vertical-align: bottom;
+            margin-right: 0.2em;
+            /*transition: all 0.2s ease-in-out;*/
+        }
+
+        .tabs ul.tabs-head li label:hover,
+        .tabs ul.tabs-head li label:focus,
+        .tabs ul.tabs-head li label:active {
+            outline: 0;
+            color: #bec5cf;
+        }
+
+        .tabs ul.tabs-head li label:hover svg,
+        .tabs ul.tabs-head li label:focus svg,
+        .tabs ul.tabs-head li label:active svg {
+            /*fill: #bec5cf;*/
+        }
+
+        .tabs .slider {
+            position: relative;
+            width: 20%;
+            transition: all 0.33s cubic-bezier(0.38, 0.8, 0.32, 1.07);
+        }
+
+        .tabs .slider .indicator {
+            position: relative;
+            width: 100%; /*25px*/
+            max-width: 100%;
+            margin: 0 auto;
+            height: 4px;
+            background: #ff701d;
+            border-radius: 1px;
+        }
+
+        .tabs .content {
+            margin-top: 30px;
+        }
+
+        .tabs .content section {
+            display: none;
+            -webkit-animation-name: content;
+            animation-name: content;
+            -webkit-animation-direction: normal;
+            animation-direction: normal;
+            -webkit-animation-duration: 0.3s;
+            animation-duration: 0.3s;
+            -webkit-animation-timing-function: ease-in-out;
+            animation-timing-function: ease-in-out;
+            -webkit-animation-iteration-count: 1;
+            animation-iteration-count: 1;
+            line-height: 1.7;           
+        }
+
+        .tabs .content section h2 {
+            color: #428BFF;
+            display: none;
+        }
+
+        .tabs .content section h2::after {
+            content: "";
+            position: relative;
+            display: block;
+            width: 30px;
+            height: 3px;
+            background: #428BFF;
+            margin-top: 5px;
+            left: 1px;
+        }
+
+        .tabs .content section ul {
+            list-style-type: circle;
+            list-style-position: outside;
+            padding-left: 18px;
+        }
+
+        .tabs .content section ul li {
+            display:list-item;
+        }
+
+        .tabs .content section ul li.highlight {
+            background-color: #ffff00;
+            border: 1px dashed #000000;
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(1):checked~ul>li:nth-child(1)>label {
+            cursor: default;
+            color: #ff701d;
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(1):checked~ul>li:nth-child(1)>label svg {
+            /*fill: #428BFF;*/
+        }
+
+        @media (max-width: 600px) {
+            .tabs input[name=tab-control]:nth-of-type(1):checked~ul>li:nth-child(1)>label {
+                background: rgba(0, 0, 0, 0.08);
+            }
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(1):checked~.slider {
+            transform: translateX(0%);
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(1):checked~.content>section:nth-child(1) {
+            display: block;
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(2):checked~ul>li:nth-child(2)>label {
+            cursor: default;
+            color: #ff701d;
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(2):checked~ul>li:nth-child(2)>label svg {
+            /*fill: #428BFF;*/
+        }
+
+        @media (max-width: 600px) {
+            .tabs input[name=tab-control]:nth-of-type(2):checked~ul>li:nth-child(2)>label {
+                background: rgba(0, 0, 0, 0.08);
+            }
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(2):checked~.slider {
+            transform: translateX(100%);
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(2):checked~.content>section:nth-child(2) {
+            display: block;
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(3):checked~ul>li:nth-child(3)>label {
+            cursor: default;
+            color: #ff701d;
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(3):checked~ul>li:nth-child(3)>label svg {
+            /*fill: #428BFF;*/
+        }
+
+        @media (max-width: 600px) {
+            .tabs input[name=tab-control]:nth-of-type(3):checked~ul>li:nth-child(3)>label {
+                background: rgba(0, 0, 0, 0.08);
+            }
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(3):checked~.slider {
+            transform: translateX(200%);
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(3):checked~.content>section:nth-child(3) {
+            display: block;
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(4):checked~ul>li:nth-child(4)>label {
+            cursor: default;
+            color: #ff701d;
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(4):checked~ul>li:nth-child(4)>label svg {
+            /*fill: #428BFF;*/
+        }
+
+        @media (max-width: 600px) {
+            .tabs input[name=tab-control]:nth-of-type(4):checked~ul>li:nth-child(4)>label {
+                background: rgba(0, 0, 0, 0.08);
+            }
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(4):checked~.slider {
+            transform: translateX(300%);
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(4):checked~.content>section:nth-child(4) {
+            display: block;
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(5):checked~ul>li:nth-child(5)>label {
+            cursor: default;
+            color: #ff701d;
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(5):checked~ul>li:nth-child(5)>label svg {
+            /*fill: #428BFF;*/
+        }
+
+        @media (max-width: 600px) {
+            .tabs input[name=tab-control]:nth-of-type(5):checked~ul>li:nth-child(5)>label {
+                background: rgba(0, 0, 0, 0.08);
+            }
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(5):checked~.slider {
+            transform: translateX(400%);
+        }
+
+        .tabs input[name=tab-control]:nth-of-type(5):checked~.content>section:nth-child(5) {
+            display: block;
+        }
+
+        @-webkit-keyframes content {
+            from {
+                opacity: 0;
+                transform: translateY(5%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0%);
+            }
+        }
+
+        @keyframes content {
+            from {
+                opacity: 0;
+                transform: translateY(5%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0%);
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .tabs ul.tabs-head li label {
+                white-space: initial;
+            }
+
+            .tabs ul.tabs-head li label br {
+                display: initial;
+            }
+
+            .tabs ul.tabs-head li label svg {
+                height: 1.5em;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .tabs ul.tabs-head li label {
+                padding: 5px;
+                border-radius: 5px;
+            }
+
+            .tabs ul.tabs-head li label span {
+                display: none;
+            }
+
+            .tabs .slider {
+                display: none;
+            }
+
+            .tabs .content {
+                margin-top: 20px;
+            }
+
+            .tabs .content section h2 {
+                display: block;
+            }
+        }
+
+        .accordion .accordion-item {
+            border-bottom: 1px solid #dedede;
+        }
+        .accordion .accordion-item button[aria-expanded=true] {
+            border-bottom: 1px solid #03b5d2;
+        }
+        .accordion button {
+            position: relative;
+            display: block;
+            text-align: left;
+            width: 100%;
+            padding: 1em 0;
+            color: #7288a2;
+            font-size: 1.15rem;
+            font-weight: 400;
+            border: none;
+            background: none;
+            outline: none;
+        }
+        .accordion button:hover, .accordion button:focus {
+            cursor: pointer;
+            color: #03b5d2;
+        }
+        .accordion button:hover::after, .accordion button:focus::after {
+            cursor: pointer;
+            color: #03b5d2;
+            border: 1px solid #03b5d2;
+        }
+        .accordion button .accordion-title {
+            padding: 1em 1.5em 1em 0;
+            font-family: "Hind", sans-serif;
+        }
+        .accordion button .icon {
+            display: inline-block;
+            position: absolute;
+            top: 18px;
+            right: 0;
+            width: 22px;
+            height: 22px;
+            border: 1px solid;
+            border-radius: 22px;
+            font-family: "Hind", sans-serif;
+        }
+        .accordion button .icon::before {
+            display: block;
+            position: absolute;
+            content: "";
+            top: 10px;
+            left: 3px;
+            width: 16px;
+            height: 2px;
+            background: currentColor;
+        }
+        .accordion button .icon::after {
+            display: block;
+            position: absolute;
+            content: "";
+            top: 3px;
+            left: 10px;
+            width: 2px;
+            height: 15px;
+            background: currentColor;
+        }
+        .accordion button[aria-expanded=true] {
+            color: #03b5d2;
+        }
+        .accordion button[aria-expanded=true] .accordion-title {
+            font-weight: 600;
+        }
+        .accordion button[aria-expanded=true] .icon::after {
+            width: 0;
+        }
+        .accordion button[aria-expanded=true] + .accordion-content {
+            opacity: 1;
+            max-height: 9em;
+            transition: all 200ms linear;
+            will-change: opacity, max-height;
+            font-family: "Hind", sans-serif;
+        }
+        .accordion .accordion-content {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 200ms linear, max-height 200ms linear;
+            will-change: opacity, max-height;
+            padding-left: 2rem;
+        }
+        .accordion .accordion-content p {
+            font-size: 1rem;
+            font-weight: 300;
+            margin: 2em 0;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>My Directory</h1>
+    <div class="tabs">
+        <div style="padding: 15px; border: 1px solid #000; background-color: #ffff0069;">If you have any suggestions for new resources, please do not hesitate to contact me or send them through the <a href="https://forms.gle/KB6dBAR9aPwbbq2S7" target="_blank">Google Form</a> created for this purpose. Let's explore the realm of science together!</div>
+        <input type="radio" id="tab1" name="tab-control" checked>
+        <input type="radio" id="tab2" name="tab-control">
+        <input type="radio" id="tab3" name="tab-control">
+        <input type="radio" id="tab4" name="tab-control">
+        <input type="radio" id="tab5" name="tab-control">
+        <ul class="tabs-head">
+            <li title="PDFs"><label for="tab1" role="button"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-3d" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M14 3v4a1 1 0 0 0 1 1h4" /> <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /> <path d="M12 13.5l4 -1.5" /> <path d="M8 11.846l4 1.654v4.5l4 -1.846v-4.308l-4 -1.846z" /> <path d="M8 12v4.2l4 1.8" /> </svg><br><span>PDFs</span></label></li>
+            <li title="Links"><label for="tab2" role="button"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" /> <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" /> </svg><br><span>Links</span></label></li>
+            <li title="Tools"><label for="tab3" role="button"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tools" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M3 21h4l13 -13a1.5 1.5 0 0 0 -4 -4l-13 13v4" /> <path d="M14.5 5.5l4 4" /> <path d="M12 8l-5 -5l-4 4l5 5" /> <path d="M7 8l-1.5 1.5" /> <path d="M16 12l5 5l-4 4l-5 -5" /> <path d="M16 17l-1.5 1.5" /> </svg><br><span>Tools</span></label></li>
+            <li title="Datasets"><label for="tab4" role="button"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler" viewBox="0 0 24 24" stroke-width="2" width="24" height="24" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><defs><style>.cls-637b8d40f95e86b59c57a301-1{fill:none;stroke:currentColor;stroke-miterlimit:10;}</style></defs><g id="roll_brush" data-name="roll brush"><path class="cls-637b8d40f95e86b59c57a301-1" d="M22.51,4.36c0,.87-1.38,1.63-3.58,2.16a30.79,30.79,0,0,1-7,.72,30.89,30.89,0,0,1-7-.72C2.79,6,1.41,5.23,1.41,4.36,1.41,2.77,6.14,1.49,12,1.49S22.51,2.77,22.51,4.36Z"></path><path class="cls-637b8d40f95e86b59c57a301-1" d="M22.51,4.36V12c0,.86-1.38,1.63-3.58,2.15a30.23,30.23,0,0,1-7,.72,30.32,30.32,0,0,1-7-.72C2.79,13.67,1.41,12.9,1.41,12V4.36C1.41,5.23,2.79,6,5,6.52a30.89,30.89,0,0,0,7,.72,30.79,30.79,0,0,0,7-.72C21.13,6,22.51,5.23,22.51,4.36Z"></path><path class="cls-637b8d40f95e86b59c57a301-1" d="M22.51,12v7.67c0,.86-1.38,1.63-3.58,2.16a30.79,30.79,0,0,1-7,.72,30.89,30.89,0,0,1-7-.72c-2.19-.53-3.57-1.3-3.57-2.16V12c0,.86,1.38,1.63,3.57,2.15a30.32,30.32,0,0,0,7,.72,30.23,30.23,0,0,0,7-.72C21.13,13.67,22.51,12.9,22.51,12Z"></path><line class="cls-637b8d40f95e86b59c57a301-1" x1="11" y1="11.08" x2="12.92" y2="11.08"></line><line class="cls-637b8d40f95e86b59c57a301-1" x1="14.83" y1="11.08" x2="16.75" y2="11.08"></line><line class="cls-637b8d40f95e86b59c57a301-1" x1="7.16" y1="11.08" x2="9.08" y2="11.08"></line><line class="cls-637b8d40f95e86b59c57a301-1" x1="11" y1="18.75" x2="12.92" y2="18.75"></line><line class="cls-637b8d40f95e86b59c57a301-1" x1="14.83" y1="18.75" x2="16.75" y2="18.75"></line><line class="cls-637b8d40f95e86b59c57a301-1" x1="7.16" y1="18.75" x2="9.08" y2="18.75"></line></g></svg><br><span>Datasets</span></label></li>
+            <li title="Courses"><label for="tab5" role="button"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-books" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M5 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" /> <path d="M9 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" /> <path d="M5 8h4" /> <path d="M9 16h4" /> <path d="M13.803 4.56l2.184 -.53c.562 -.135 1.133 .19 1.282 .732l3.695 13.418a1.02 1.02 0 0 1 -.634 1.219l-.133 .041l-2.184 .53c-.562 .135 -1.133 -.19 -1.282 -.732l-3.695 -13.418a1.02 1.02 0 0 1 .634 -1.219l.133 -.041z" /> <path d="M14 9l4 -1" /> <path d="M16 16l3.923 -.98" /> </svg><br><span>Courses</span></label></li>
+        </ul>
+
+        <div class="slider">
+            <div class="indicator"></div>
+        </div>
+        <div class="content">
+            <section>
+                <h2>PDFs</h2> 
+                <ul>
+                    <li><a href='./v/action-verbs/'>Action Verbs</a></li>
+                    <li><a href='./v/toefl-grammar/'>Building Grammar Skills For the TOEFL</a></li>
+                    <li><a href='./v/GRE-cheatsheet-ttp/'>GRE_Equation_Guide_TTP</a>, <a href='./v/gre-glossary/'>GRE Glossary 1</a>, <a href='https://focustutoring.com/a-glossary-of-math-terms-the-gre-expects-you-to-know/' target="_blank" rel="nofollow">GRE Glossary 2</a></li>
+                    <li><a href='./v/transitions/'>Transitions</a></li>
+                    <li><a href='./v/transitions2/'>Transitions Words and Phrases</a></li>
+                    <li><a href='./v/cheatsheet_analysis_I/'>Analysis I Cheat Sheet</a></li>
+                    <li><a href='./v/Probability_Statistics/'>Probability & Statistics Cheat Sheet</a></li>
+                    <li><a href='./v/python-dict-methods/'>Cheat sheet Python Dict Methods</a></li>
+                    <li><a href='./v/python-list-methods/'>Cheat sheet Python List Methods</a></li>
+                    <li><a href='./v/python-set-methods/'>Cheat sheet Python Set Methods</a></li>
+                    <li><a href='./v/python-string-methods/'>Cheat Sheet Python String Methods</a></li>
+                    <li><a href='./v/transitions3/'>Transitions 3</a></li>
+                    <li><a href='./v/writing-brainstorm/'>Writing brainstorm</a>, <a href='./v/speaking-golden-reasons/'>Golden reasons for speaking</a>, <a href='./v/golden-reasons2/'>Golden reasons 2</a>, <a href='./v/golden-reasons3/'>Golden reasons 3</a></li>
+                    <li><a href='./v/toefl-expressions-brainstorm/'>Toefl Expressions & Brainstorm (Speak & Write)</a></li>
+                    <li><a href='./v/prepositions/'>Prepositions</a></li>
+                    <li><a href='./v/prepositionary/'>Prepositionary</a></li>
+                    <li><a href='./v/longman-essay-activator/'>Longman Essay Activator</a> (<a href='./v/essay-activator/'>Summary</a>)</li>
+                    <li><a href='./v/longman-topic-activator/'>Longman Topic Activator</a></li>
+                    <li><a href='./v/longman-shit-activator/'>Longman Shit Activator</a></li>
+                    <li><a href='./v/perfect-phrases-for-the-TOEFL/'>Perfect Phrases For The TOEFL - Speaking and Writing</a></li>
+                    <li><a href='./v/longman-dictionary-of-common-errors/'>Longman Dictionary Of Common Errors</a></li>
+                    <li><a href='./v/longman-common-mistakes/'>Longman Common Mistakes In English</a></li>
+                    <!-- <li><a href='./v/collocations-1/'>Collocations 1</a></li> -->
+                    <li><a href='./v/collocations-2/'>Collocations 2</a>, <a href='./v/collocations-3/'>Collocations 3</a>, <a href='./v/collocations-4/'>Collocations 4</a>, <a href='./v/collocations-5/'>Collocations 5</a></li>
+                    <!-- <li><a href='./v/perfect-phrases/'>Perfect Phrases for the TOEFL Speaking and Writing Sections</a></li> -->
+                    <li><a href='./v/python-cheatsheet/'>Python cheat sheet</a></li>
+                    <li><a href='./v/learn-python3/'>Learn Python 3 the Hard Way</a></li>
+                    <li><a href='./v/learn-more-python3/'>Learn More Python 3 the Hard Way</a></li>
+                    <li><a href='./v/python-crash-course2/'>Python Crash Course, 2nd Edition</a></li>
+                    <li><a href='./v/idea-bank-technology/'>Idea Bank - Technology</a> (<a href='./v/Idea_Bank_Technology/'>Summary</a>)</li>
+                    <li><a href='./v/idea-bank-education/'>Idea Bank - Education</a> (<a href='./v/Idea_Bank_Education/'>Summary</a>)</li>
+                    <li><a href='./v/idea-bank-government/'>Idea Bank - Government</a> (<a href='./v/Idea_Bank_Government/'>Summary</a>)</li>
+                    <li><a href='./v/idea-bank-business/'>Idea Bank - Business</a> (<a href='./v/Idea_Bank_Business/'>Summary</a>)</li>
+                    <li><a href='./v/idea-bank-health/'>Idea Bank - Health</a> (<a href='./v/Idea_Bank_Health/'>Summary</a>)</li>
+                    <li><a href='./v/Idea_Bank_Examples/'>Idea Bank - Examples</a></li>
+                    <li><a href='./v/git-cheatsheet1/'>Git cheat sheet 1</a></li>
+                    <li><a href='./v/git-cheatsheet2/'>Git cheat sheet 2</a></li>
+                    <li><a href='./v/git-cheatsheet3/'>Git cheat sheet 3</a></li>
+                    <li><a href='./v/git-cheatsheet4/'>Git cheat sheet 4</a></li>
+                    <li><a href='./v/matplotlib-cheatsheet1/'>Matplotlib cheat sheet 1</a></li>
+                    <li><a href='./v/matplotlib-cheatsheet2/'>Matplotlib for beginners - cheat sheet 2</a></li>
+                    <li><a href='./v/matplotlib-cheatsheet3/'>Matplotlib for intermediate users - cheat sheet 3</a></li>
+                    <li><a href='./v/matplotlib-cheatsheet4/'>Matplotlib tips & tricks - cheat sheet 4</a></li>
+                    <li><a href='./v/matplotlib-cheatsheet5/'>Matplotlib cheat sheet 5</a></li>
+                    <li><a href='./v/dl-tips-cheatsheet/'>Cheat sheet deep learning tips tricks</a></li>
+                    <li><a href='./v/ets-gre-math-review/'>GRE math review - ETS</a></li>
+                    <li><a href='./v/gre-math-flashcards/'>GRE math flashcards</a></li>
+                    <li><a href='./v/gre-quant-review/'>GRE quant review</a></li>
+                    <li><a href='./v/gre-sentence-equivalence/'>GRE Sentence Equivalence</a></li>
+                    <li><a href='./v/nlp-with-python-nltk/'>NLP with python and NLTK - cheat sheet</a></li>
+                    <li><a href='./v/python-nutshell3/'>Python in a Nutshell: A Desktop Quick Reference 3rd Edition</a></li>
+                    <li><a href='./v/fluent-python2/'>Fluent Python 2nd Edition</a></li>
+                    <li><a href='./v/sql-v1/'>SQL cheat sheet V1</a></li>
+                    <li><a href='./v/sql-v2-dark/'>SQL cheat sheet V2</a></li>
+                    <li><a href='./v/paraphrase1/'>Paraphrasing Strategies</a></li>
+                    <li><a href='./v/javascript-cheatsheet/'>Javascript cheat sheet</a></li>
+                    <li><a href='./v/typescript-control-flow-analysis/'>TypeScript Control Flow Analysis</a></li>
+                    <li><a href='./v/typescript-types/'>TypeScript Types</a></li>
+                    <li><a href='./v/typescript-interfaces/'>TypeScript Interfaces</a></li>
+                    <li><a href='./v/typescript-classes/'>TypeScript Classes</a></li>
+                    <li><a href='./v/css3-cheatsheet/'>CSS3 cheat sheet</a></li>
+                    <li><a href='./v/python-cheatsheets/'>Python cheat sheets</a></li>
+                    <li><a href='./v/matplotlib-colors/'>Matplotlib - List of named colors</a></li>
+                    <li><a href='./v/color-chart/'>RGB hex colors chart</a></li>
+                    <li><a href='./v/simplicity-cheatsheet/'>Simplicity-The Finer Art Of Creating Software Cheat Sheet</a></li>
+                    <li><a href='./v/agile-poster/'>Agile Poster</a></li>
+                    <li><a href='./v/agile-scrum-cheatsheet/'>Agile and Scrum Cheat Sheet</a></li>
+                    <li><a href='./v/ultimate-python-cheatsheet/'>The Ultimate Python Cheat Sheet</a></li>
+                    <li><a href='./v/python-cheatsheet-classes/'>Python Cheat Sheet: Classes</a></li>
+                    <li><a href='./v/python-cheatsheet-functricks/'>Python Cheat Sheet: Functions and Tricks</a></li>
+                    <li><a href='./v/python-cheatsheet-interviewqs/'>Python Cheat Sheet: 14 Interview Questions</a></li>
+                    <li><a href='./v/python-cheatsheet-keywords/'>Python Cheat Sheet: Keywords</a></li>
+                    <li><a href='./v/python-cheatsheet-numpy/'>Python Cheat Sheet: NumPy</a></li>
+                    <li><a href='./v/latexsheet/'>Latex Cheat Sheet</a></li>
+                    <li><a href='./v/probability-cheatheet/'>Probability Cheat Sheet</a></li>
+                    <li><a href='./v/aspnetcore-cheatsheet/'>ASP Net Core Cheat Sheet</a></li>
+                    <li><a href='./v/python-regular-exp/'>Python Regular Expressions Cheat Sheet</a></li>
+                    <li><a href='./v/python-regex/'>Python (RegEx(pressions|p)?)</a></li>
+                    <li><a href='./v/net-regular-exp/'>.Net Regular Expressions Cheat Sheet</a></li>
+                    <li><a href='./v/sql-commands/'>SQL Commands Cheat Sheet</a></li>
+                    <li><a href='./v/http-headers/'>HTTP Headers Cheat Sheet</a></li>
+                    <li><a href='./v/http-status-codes/'>HTTP Status Codes Cheat Sheet</a></li>
+                    <li><a href='./v/seo-cheatsheet/'>The Web Developer's SEO Cheat Sheet</a></li>
+                    <li><a href='./v/redux-cheatsheet/'>Redux Cheat Sheet</a></li>
+                    <li><a href='./v/1300-math-formulas/'>1300 Math Formulas</a></li>
+                    <li><a href='./v/vajename-riazi/'>Vajename Riazi</a></li>
+                    <li><a href='./v/common-english-mistakes/'>Common English Mistakes</a></li>
+                    <li><a href='./v/html5-cheatsheet/'>HTML 5 Cheat Sheet</a></li>
+                    <li><a href='./v/data-visualization-cheatsheet/'>Data Visualization Cheat Sheet</a></li>
+                    <li><a href='./v/phrases_ing/'>Phrases + ING</a></li>
+                    <li><a href='./v/redundancies/'>Redundancies</a></li>
+                    <li><a href='./v/betty-red/'>Betty Azar Grammar - Red Summary (Basic)</a></li>
+                    <li><a href='./v/betty-black/'>Betty Azar Grammar - Black Summary (Intermediate)</a></li>
+                    <li><a href='./v/betty-blue/'>Betty Azar Grammar - Blue Summary (Advanced)</a></li>
+                    <li><a href='./v/linq-sketches/'>LINQ explained with sketches</a></li>
+                    <li><a href='./v/design-patterns1/'>Design patterns cheat sheet 1</a></li>
+                    <li><a href='./v/design-patterns2/'>Design patterns cheat sheet 2</a></li>
+                    <li><a href='./v/python-notes/'>Python Notes</a></li>
+                    <li><a href='./v/pandas-notes/'>Pandas Notes</a></li>
+                    <li><a href='./v/matplotllib-notes/'>Matplotlib Notes</a></li>
+                    <li><a href='./v/numpy-cheatsheet/'>NumPy cheat sheet</a></li>
+                    <li><a href='./v/scipy-cheatsheet/'>SciPy cheat sheet</a></li>
+                    <li><a href='./v/pandas-cheatsheet/'>Pandas cheat sheet</a></li>
+                    <li><a href='./v/probability-theory/'>Review Probability Theory</a></li>
+                    <li><a href='./v/python-string-format/'>Python String Format</a></li>
+                    <li><a href='./v/grammar-success-in-20-minutes-a-day/'>Grammar Success in 20 Minutes a Day</a></li>
+                    <li><a href='./v/english-verb-tenses/'>English Verb Tenses</a></li>
+                    <li><a href='./v/english-grammar-in-use-5th/'>English Grammar in Use 5th</a></li>
+                    <li><a href='./v/guide-to-numpy/'>Guide to NumPy</a></li>
+                    <li><a href='./v/clean-code-in-python/'>Clean Code in Python (2nd)</a></li>
+                    <li><a href='./v/numerical-recipes/'>Numerical Recipes</a></li>
+                    <li><a href='./v/ms-ml-cheatsheet/'>Microsoft-Machine Learning Cheat Sheet</a></li>
+                    <li><a href='./v/ml-cheatsheet/'>Machine Learning Cheat Sheet</a></li>
+                    <li><a href='./v/recurrent-neural-network-cheatsheet/'>Recurrent Neural Network Cheat Sheet</a></li>
+                    <li><a href='./v/linear-algebra-done-right/'>Linear Algebra Done Right</a></li>
+                    <li><a href='./v/calculus_derivatives/'>Calculus & Derivatives Cheat Sheet</a></li>
+                    <li><a href='./v/Statistic_Formula/'>Statistic Formula</a></li>
+                    <li><a href='./v/convergence-tests/'>Convergence Tests</a></li>
+                    <li><a href='./v/latex-guide/'>A Quick Guide to LaTex</a></li>
+                    <li><a href='./v/machine-learning-cheatsheet/'>Machine Learning Cheatsheet</a></li>
+                    <li><a href='./v/docker1/'>Docker Cheat sheet 1</a>, <a href='./v/docker2/'>2</a>, <a href='./v/docker3/'>3</a>, <a href='https://dockerlabs.collabnix.com/docker/cheatsheet/' target="_blank" rel="nofollow">4</a>, <a href='https://dockerlabs.collabnix.com/intermediate/docker-compose/compose-cheatsheet.html' target="_blank" rel="nofollow">5</a></li>
+                    <li><a href='./v/awk1/'>AWK Cheat sheet 1</a>, <a href='./v/awk2/'>2</a></li>
+                    <li><a href='./v/grammar-punctuation/'>Grammar and Punctuation Cheat sheet</a></li>
+                    <li><a href='./v/homophones/'>Homophones</a></li>
+                    <li><a href='./v/linking-words/'>Linking Words</a></li>
+                    <li><a href='./v/english-prepositions/'>Prepositions Handbook</a></li>
+                    <li><a href='./v/easy-phrasal-verbs/'>Phrasal Verbs</a></li>
+                    <li><a href='./v/shortcut-to-collocations/'>Shortcut to Collocations</a></li>
+                    <li><a href='./v/python-collections/'>List vs Set vs Dictionary vs Tuple (Python)</a></li>
+                    <li><a href='./v/rust-programming-fundamentals/'>Rust Programming Fundamentals</a></li>
+                    <li><a href='./v/causative-verbs/'>Causative verbs</a>, <a href='./v/betty-blue/?page=37'>2</a></li>
+                    <li><a href='./v/readings1/'>Reading Examples</a>, <a href='./v/readings2/'>2</a>, <a href='./v/readings3/'>3</a>, <a href='./v/reading4/'>4</a>, <a href='./v/reading5/'>5</a></li>
+                    <li><a href='./v/speaking-ideas/'>Speaking Ideas</a>, <a href='./v/fantastic-reasons/'>Fantastic Reasons</a>, <a href='./v/Brainstorming-cheatsheet/'>Brainstorming cheatsheet</a></li>
+                    <li><a href='./v/speaking-topics/'>Speaking topics (blue)</a>, <a href='./v/categorized-writing-topics/'>Categorized writing topics</a></li>
+                    <li><a href='./v/categorized-phrases/'>Categorized Phrases</a></li>
+                    <li><a href='./v/summary-of-collocations/'>Summary of collocations</a>, <a href='./v/noteworthy-clauses/'>Noteworthy clauses</a></li>
+                    <li><a href='./v/collocations-in-use-int/'>English collocations in use - Intermediate</a></li>
+                    <li><a href='./v/collocations-in-use-adv/'>English collocations in use - Advanced</a></li>
+                    <li><a href='./v/phrasal-verbs-in-use-adv/'>English phrasal verbs in use - Advanced</a></li>
+                    <li><a href='./v/FantasticReasons/'>Fantastic Reasons for Speaking and Writing</a></li>
+                    <li><a href='./v/ai-in-medicine-by-kiarash-soleimanzadeh/'>AI in Medicine - Presented by Kiarash Soleimanzadeh</a></li>
+                </ul>
+            </section>
+            <section>
+                <h2>Links</h2>
+                <ul>
+                    <li><a href="https://stanford.edu/~shervine/teaching/" target="_blank" rel="nofollow">Computer
+                            science teaching at Stanford</a></li>
+                    <li><a href="https://github.com/FavioVazquez/ds-cheatsheets" target="_blank" rel="nofollow">List of
+                            Data Science Cheat sheets to rule the world</a></li>
+                    <li><a href="https://github.com/rougier/scientific-visualization-book" target="_blank"
+                            rel="nofollow">Scientific Visualization: Python + Matplotlib</a></li>
+                    <li><a href="https://www.labri.fr/perso/nrougier/python-opengl/" target="_blank"
+                            rel="nofollow">Python & OpenGL for Scientific Visualization</a></li>
+                    <li><a href="https://www.labri.fr/perso/nrougier/from-python-to-numpy/" target="_blank"
+                            rel="nofollow">From Python to Numpy</a></li>
+                    <li><a href="./v/cambridge-dictionary/" target="_blank" rel="nofollow">Cambridge Dictionary</a></li>
+                    <li><a href="./v/mw-dictionary/" target="_blank" rel="nofollow">Merriam-Webster Dictionary</a></li>
+                    <li><a href="https://cheatography.com/sree017/cheat-sheets/nlp/" target="_blank" rel="nofollow">NLP
+                            Cheat Sheet</a></li>
+                    <li><a href="https://mehdev.me/ml-andrew-ng/" target="_blank" rel="nofollow">Machine Learning -
+                            Persian</a></li>
+                    <li><a href="https://www.python-graph-gallery.com/" target="_blank" rel="nofollow">The Python Graph
+                            Gallery</a></li>
+                    <li><a href="https://httpstatuses.com/" target="_blank" rel="nofollow">HTTP Status Codes</a></li>
+                    <li><a href="https://github.com/for-GET/know-your-http-well/blob/master/headers.md" target="_blank"
+                            rel="nofollow">HTTP Headers</a></li>
+                    <li><a href="https://github.com/for-GET/know-your-http-well/blob/master/relations.md"
+                            target="_blank" rel="nofollow">HTTP Relations</a></li>
+                    <li><a href="https://overapi.com/" target="_blank" rel="nofollow">Collecting All Cheat Sheets</a>
+                    </li>
+                    <li><a href="http://probabilitybook.net/" target="_blank" rel="nofollow">Introduction to Probability
+                            textbook</a></li>
+                    <li><a href="https://medium.com/@anushkhabajpai/top-data-science-cheat-sheets-ml-dl-python-r-sql-maths-statistics-5239d4568225"
+                            target="_blank" rel="nofollow">Top DATA SCIENCE Cheat Sheets (ML, DL, Python, R, SQL, Maths
+                            & Statistics)</a></li>
+                    <li><a href="https://devhints.io/" target="_blank" rel="nofollow">Rico's cheat Sheets</a></li>
+                    <li><a href="https://lawsofux.com/" target="_blank" rel="nofollow">Laws of UX</a></li>
+                    <li><a href="https://htmldom.dev/" target="_blank" rel="nofollow">Manage HTML DOM with vanilla
+                            JavaScript</a></li>
+                    <li><a href="https://htmlcheatsheet.com/" target="_blank" rel="nofollow">HTML, CSS, and JS Cheat
+                            Sheets</a></li>
+                    <li><a href="https://reactcheatsheet.com/" target="_blank" rel="nofollow">React Cheat Sheet</a></li>
+                    <li><a href="https://github.com/MichaelCade/90DaysOfDevOps/" target="_blank" rel="nofollow">90 Days
+                            Of DevOps</a></li>
+                    <li><a href="https://microsoft.github.io/win-student-devs/#/30DaysOfPWA/kickoff" target="_blank"
+                            rel="nofollow">30 Days of PWA</a></li>
+                    <li><a href="https://github.com/Asabeneh/30-Days-Of-JavaScript/" target="_blank" rel="nofollow">30
+                            Days of JavaScript</a></li>
+                    <li><a href="https://github.com/ktaranov/sqlserver-kit/" target="_blank" rel="nofollow">Useful
+                            links, scripts, tools and best practice for Microsoft SQL Server Database</a></li>
+                    <li><a href="https://github.com/BrentOzarULTD/SQL-Server-First-Responder-Kit/" target="_blank"
+                            rel="nofollow">SQL Server scripts for health checks and performance tuning</a></li>
+                    <li><a href="https://github.com/dataplat/dbatools/" target="_blank" rel="nofollow">Automate SQL
+                            Server tasks and encourage best practices</a></li>
+                    <li><a href="https://github.com/microsoft/tigertoolbox/" target="_blank" rel="nofollow">SQL Server
+                            Toolbox repository for Tiger team</a></li>
+                    <li><a href="https://github.com/bulentgucuk/DBA-Scripts/" target="_blank" rel="nofollow">SQL Server
+                            Scripts for DBAs</a></li>
+                    <li><a href="https://mml-book.com/" target="_blank" rel="nofollow">Mathematics for Machine Learning</a></li>
+                    <li><a href="https://ai.google/education/" target="_blank" rel="nofollow">Learn from ML experts at Google</a></li>
+                    <li><a href="https://developers.google.com/machine-learning/crash-course/" target="_blank" rel="nofollow">Google's Machine Learning Crash Course</a></li>
+                    <li><a href="https://github.com/dair-ai/Mathematics-for-ML/" target="_blank" rel="nofollow">Learn mathematics for machine learning</a></li>
+                    <li><a href="https://github.com/JuzerShakir/Linear_Regression/" target="_blank" rel="nofollow">Linear Regression</a></li>
+                    <li><a href="https://github.com/karthickai/Linear-Regression/" target="_blank" rel="nofollow">Linear Regression 2</a></li>
+                    <li><a href="https://the-algorithms.com/language/python" target="_blank" rel="nofollow">All Algorithms/Data-Structures implemented in Python</a></li>
+                    <li><a href="https://github.com/deskool/nlp-class" target="_blank" rel="nofollow">A Hands-on Introduction to Natural Language Processing (NLP)</a></li>
+                    <li><a href="https://github.com/dair-ai/ML-YouTube-Courses" target="_blank" rel="nofollow">ML YouTube Courses</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/4000-essential-english-words-1/" target="_blank" rel="nofollow">4000 Essential English Words 1</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/4000-essential-english-words-2/" target="_blank" rel="nofollow">4000 Essential English Words 2</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/4000-essential-english-words-3/" target="_blank" rel="nofollow">4000 Essential English Words 3</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/4000-essential-english-words-4/" target="_blank" rel="nofollow">4000 Essential English Words 4</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/4000-essential-english-words-5/" target="_blank" rel="nofollow">4000 Essential English Words 5</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/4000-essential-english-words-6/" target="_blank" rel="nofollow">4000 Essential English Words 6</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/" target="_blank" rel="nofollow">English Grammar in Use with Answers</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/english-vocabulary-in-use-elementary/" target="_blank" rel="nofollow">English Vocabulary in Use Elementary</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/english-vocabulary-in-use-pre-intermediate-and-intermediate/" target="_blank" rel="nofollow">English Vocabulary in Use Pre-intermediate and Intermediate</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/english-vocabulary-in-use-upper-intermediate/" target="_blank" rel="nofollow">English Vocabulary in Use Upper-intermediate</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/english-vocabulary-in-use-advanced/" target="_blank" rel="nofollow">English Vocabulary in Use Advanced</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/illustrated-everyday-expressions-with-stories-1/" target="_blank" rel="nofollow">illustrated Everyday Expressions with Stories 1</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/illustrated-everyday-expressions-with-stories-2/" target="_blank" rel="nofollow">illustrated Everyday Expressions with Stories 2</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/250-ways-to-say-it-in-business-english/" target="_blank" rel="nofollow">250 Ways to Say It in Business English</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/more-speak-english-like-an-american/" target="_blank" rel="nofollow">More Speak English Like an American</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/mastering-the-american-accent/" target="_blank" rel="nofollow">Mastering the American Accent</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/everyday-conversations-learning-american-english/" target="_blank" rel="nofollow">Everyday Conversations: Learning American English</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/easy-american-idioms/" target="_blank" rel="nofollow">Easy American Idioms</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/english-the-american-way/" target="_blank" rel="nofollow">English the American Way: A Fun ESL Guide to Language and Culture in the U.S.</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/speak-english-around-town/" target="_blank" rel="nofollow">Speak English Around Town</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/speak-business-english-like-an-american/" target="_blank" rel="nofollow">Speak Business English Like an American</a></li>
+                    <li><a href="https://www.essentialenglish.review/apps/speak-english-like-an-american/" target="_blank" rel="nofollow">Speak English Like an American</a></li>
+                    <li><a href="https://ml-cheatsheet.readthedocs.io/en/latest/" target="_blank" rel="nofollow">Machine Learning Glossary/Cheat Sheet</a></li>
+                    <li><a href="https://course.fast.ai/" target="_blank" rel="nofollow">Practical Deep Learning</a></li>
+                    <li><a href="https://www.gregmat.com/learn-quant/" target="_blank" rel="nofollow">GRE - Quantitative Walkthroughs</a></li>
+                    <li><a href="https://web.stanford.edu/~jurafsky/slp3/" target="_blank" rel="nofollow">Speech and Language Processing - Stanford (textbook)</a></li>
+                    <li><a href="https://free-for.dev/" target="_blank" rel="nofollow">free-for.dev</a></li>
+                    <li><a href="https://www.trackawesomelist.com/" target="_blank" rel="nofollow">Track Awesome List</a></li>
+                    <li><a href="https://linkdotnet.github.io/tips-and-tricks/" target="_blank" rel="nofollow">Tips and Tricks C#/.NET</a></li>
+                    <li><a href="https://www.w3schools.com/python/pandas/pandas_ref_dataframe.asp" target="_blank" rel="nofollow">Pandas - DataFrame Reference</a></li>
+                    <li><a href="https://www.w3schools.com/python/python_reference.asp" target="_blank" rel="nofollow">Python Reference</a></li>
+                    <li><a href="http://www.stanford.edu/~schmit/cme193" target="_blank" rel="nofollow">Introduction to Scientific Python</a></li>
+                    <li><a href="https://quickref.me/" target="_blank" rel="nofollow">Quick Cheat Sheet/Reference (Python, RegEx, and etc)</a></li>
+                    <li><a href="https://wesmckinney.com/book/" target="_blank" rel="nofollow">Python for Data Analysis (Book)</a></li>
+                    <li><a href="https://dataorigami.net/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/" target="_blank" rel="nofollow">Probabilistic Programming & Bayesian Methods for Hackers</a></li>                 
+                    <li><a href="https://roadmap.sh/" target="_blank" rel="nofollow">Developer Roadmaps</a></li>
+                    <li><a href="https://elite.polito.it/teaching/02jsk-hci/" target="_blank" rel="nofollow">Human Computer Interaction Course</a></li>
+                    <li><a href="https://lena-voita.github.io/nlp_course" target="_blank" rel="nofollow">NLP Course | For You</a></li>
+                    <li><a href="https://ai.stanford.edu/courses/" target="_blank" rel="nofollow">Stanford AI Courses</a></li>
+                    <li><a href="https://sqlserver-kit.org/en" target="_blank" rel="nofollow">SQL Server KIT</a></li>
+                    <li><a href="https://d2l.ai/" target="_blank" rel="nofollow">Dive into Deep Learning</a></li>
+                    <li><a href="https://udlbook.github.io/udlbook/" target="_blank" rel="nofollow">Understanding Deep Learning</a> (<a href="https://github.com/udlbook/udlbook/tree/main/Slides" target="_blank" rel="nofollow">slides</a>)</li>
+                    <li><a href="https://www.deeplearningbook.org/" target="_blank" rel="nofollow">Deep Learning</a></li>
+                    <li><a href="http://cv.znu.ac.ir/afsharchim/Deep%20Learning.htm" target="_blank" rel="nofollow">Deep Learning Course</a></li>
+                    <li>Design Patterns in Python (<a href="https://python-patterns.guide/" target="_blank" rel="nofollow">1</a>, <a href="https://refactoring.guru/design-patterns/python" target="_blank" rel="nofollow">2</a>, <a href="https://github.com/faif/python-patterns" target="_blank" rel="nofollow">3</a>)</li>
+                    <li><a href="https://www.deeplearning.ai/ai-notes/index.html" target="_blank" rel="nofollow">AI Notes (Andrew Ng)</a>, <a href="https://www.deeplearning.ai/resources/natural-language-processing/" target="_blank" rel="nofollow">A Complete Guide to Natural Language Processing</a></li>
+                    <li><a href="https://oeis.org/wiki/List_of_LaTeX_mathematical_symbols" target="_blank" rel="nofollow">List of LaTeX mathematical symbols</a></li>
+                    <li><a href="https://stanford.edu/~shervine/teaching/cs-229/cheatsheet-machine-learning-tips-and-tricks" target="_blank" rel="nofollow">Machine Learning tips and tricks cheat sheet</a></li>
+                    <li><a href="https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-recurrent-neural-networks" target="_blank" rel="nofollow">Recurrent Neural Networks cheatsheet</a></li>
+                    <li><a href="https://medium.com/machine-learning-in-practice/cheat-sheet-of-machine-learning-and-python-and-math-cheat-sheets-a4afe4e791b6" target="_blank" rel="nofollow">Cheat Sheet of Machine Learning and Python (and Math) Cheat Sheets</a></li>
+                    <li><a href="https://en.wikibooks.org/wiki/LaTeX" target="_blank" rel="nofollow">LaTeX</a>, <a href="https://latexref.xyz/" target="_blank" rel="nofollow">2</a>, <a href="https://www.andy-roberts.net/latex/" target="_blank" rel="nofollow">3</a>, <a href="https://luong-komorebi.github.io/Begin-Latex-in-minutes/" target="_blank" rel="nofollow">4</a></li>
+                    <li><a href="https://www.patterns.dev/" target="_blank" rel="nofollow">Improve how you architect webapps</a></li>
+                    <li><a href="https://csharpcodingguidelines.com/" target="_blank" rel="nofollow">C# Coding Guidelines</a></li>
+                    <li><a href="https://www.ctan.org/" target="_blank" rel="nofollow">The Comprehensive TEX Archive Network</a></li>
+                    <li><a href="https://aman.ai/" target="_blank" rel="nofollow">Exploring the art of artificial intelligence</a></li>
+                    <li><a href="https://cedar.buffalo.edu/~srihari/CSE574/index.html" target="_blank" rel="nofollow">Introduction to Machine Learning Course</a></li>
+                    <li><a href="https://cedar.buffalo.edu/~srihari/CSE676/index.html" target="_blank" rel="nofollow">Deep Learning Course</a></li>
+                    <li><a href="https://cedar.buffalo.edu/~srihari/CSE701/index.html" target="_blank" rel="nofollow">NeuroSymbolic Artificial Intelligence Course</a></li>
+                    <li><a href="https://cedar.buffalo.edu/~srihari/CSE555/index.html" target="_blank" rel="nofollow">Introduction to Pattern Recognition Course</a></li>
+                    <li><a href="https://cedar.buffalo.edu/~srihari/CSE626/index.html" target="_blank" rel="nofollow">Data Mining Course</a></li>
+                    <li><a href="https://cedar.buffalo.edu/~srihari/CSE674/index.html" target="_blank" rel="nofollow">Probabilistic Graphical Models Course</a></li>
+                    <li><a href="http://ceit.aut.ac.ir/~keyvanrad/DL961.html" target="_blank" rel="nofollow">Deep Learning Course</a></li>
+                    <li><a href="http://ceit.aut.ac.ir/~keyvanrad/ML932.html" target="_blank" rel="nofollow">Machine Learning Course</a></li>
+                    <li><a href="https://web.stanford.edu/~jurafsky/slp3/" target="_blank" rel="nofollow">Speech and Language Processing (NLP) Course</a></li>
+                    <li><a href="http://www.sauleh.ir/nlp97/course-materials/" target="_blank" rel="nofollow">Natural Language Processing (NLP) Courses</a></li>
+                    <li><a href="https://wp.kntu.ac.ir/nasihatkon/teaching/cvug/s2021/##teaching" target="_blank" rel="nofollow">Fundamentals of Computer Vision Course</a></li>
+                    <li><a href="https://github.com/amanchadha/coursera-machine-learning-engineering-for-prod-mlops-specialization" target="_blank" rel="nofollow">Machine Learning Engineering for Production (MLOps) Specialization on Coursera</a></li>
+                    <li><a href="https://github.com/Akramz/Hands-on-Machine-Learning-with-Scikit-Learn-Keras-and-TensorFlow" target="_blank" rel="nofollow">Hands-on ML with Scikit-Learn, Keras & TF by Aurelien Geron</a></li>
+                    <li><a href="https://github.com/amanchadha/coursera-natural-language-processing-specialization" target="_blank" rel="nofollow">Natural Language Processing Specialization on Coursera</a></li>
+                    <li><a href="https://khuyentran1401.github.io/Efficient_Python_tricks_and_tools_for_data_scientists/README.html" target="_blank" rel="nofollow">Efficient Python Tricks and Tools for Data Scientists</a></li>
+                    <li><a href="https://github.com/amanchadha/coursera-ai-for-medicine-specialization" target="_blank" rel="nofollow">Coursera AI for Medicine Specialization</a></li>
+                    <li><a href="https://github.com/amanchadha/coursera-gan-specialization" target="_blank" rel="nofollow">Generative Adversarial Networks Specialization on Coursera</a></li>
+                    <li><a href="https://github.com/amanchadha/Preprocessing-for-deep-learning" target="_blank" rel="nofollow">Preprocessing For Deep Learning</a></li>
+                    <li><a href="https://github.com/amanchadha/Top-Deep-Learning" target="_blank" rel="nofollow">Top deep learning Github repositories</a></li>
+                    <li><a href="https://github.com/amanchadha/Trending-Deep-Learning" target="_blank" rel="nofollow">Trending deep learning Github repositories</a></li>
+                    <li><a href="https://github.com/amanchadha/coursera-deep-learning-specialization" target="_blank" rel="nofollow">Deep Learning Specialization on Coursera</a> (<a href="https://github.com/ahsan-83/Deep-Learning-Specialization-Coursera" target="_blank" rel="nofollow">2</a>)</li>
+                    <li><a href="https://github.com/mrdbourke/tensorflow-deep-learning" target="_blank" rel="nofollow">Zero to Mastery Deep Learning with TensorFlow</a></li>
+                    <li><a href="https://uvadlc.github.io/" target="_blank" rel="nofollow">The University of Amsterdam Deep Learning Course</a> (<a href="https://uvadlc-notebooks.readthedocs.io/en/latest/" target="_blank" rel="nofollow">notebooks</a>)</li>
+                    <li><a href="https://kiarashs.github.io/Math/" target="_blank" rel="nofollow">Math in ML</a> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1"/></svg></li>
+                    <li><a href="https://notebook.community/" target="_blank" rel="nofollow">Jupyter Notebook Gallery 1</a>, <a href="https://noteable.io/gallery/" target="_blank" rel="nofollow">Jupyter Notebook Gallery 2</a></li>
+                    <li><a href="https://github.com/jeffprosise/Deep-Learning" target="_blank" rel="nofollow">Deep Learning Notebooks</a>, <a href="https://github.com/KiarashS/Data-analysis-preparation-visualization" target="_blank" rel="nofollow">Data-analysis, preparation, and visualization notebooks</a>, <a href="https://github.com/KiarashS/Machine-Learning" target="_blank" rel="nofollow">Machine learning notebooks</a></li>
+                    <li><a href="https://github.com/quanghuy0497/Cheatsheet-collection" target="_blank" rel="nofollow">Cheatsheet collection for Math, ML, DL, AI. Update frequently</a></li>
+                    <li><a href="http://socialmediamining.info/" target="_blank" rel="nofollow">Social Media Mining: An Introduction (Ebook)</a></li>
+                    <li><a href="https://jundongl.github.io/scikit-feature/" target="_blank" rel="nofollow">Feature Selection</a></li>
+                    <li><a href="https://dlvu.github.io/" target="_blank" rel="nofollow">Deep Learning at VU University Amsterdam</a></li>
+                    <li><a href="https://dl4cv-nptel.github.io/DL4CVBK/intro.html" target="_blank" rel="nofollow">Deep Learning For Computer Vision</a></li>
+                    <li><a href="https://chokkan.github.io/deeplearning/" target="_blank" rel="nofollow">Introduction to Deep Learning (with flavor of NLP)</a></li>
+                    <li><a href="https://illustrated-machine-learning.github.io/" target="_blank" rel="nofollow">The Illustrated Machine Learning website</a></li>
+                    <li><a href="https://www.mlebook.com/wiki/doku.php?id=start" target="_blank" rel="nofollow">Machine Learning Engineering</a></li>
+                    <li><a href="https://www-users.cse.umn.edu/~kumar001/dmbook/index.php" target="_blank" rel="nofollow">Introduction to Data Mining</a></li>
+                    <li><a href="https://atcold.github.io/NYU-DLSP21/" target="_blank" rel="nofollow">Deep Learning</a></li>
+                    <li><a href="https://dlsyscourse.org/" target="_blank" rel="nofollow">Deep Learning Systems</a></li>
+                    <li><a href="https://mirerfangheibi.github.io/ml_resources/" target="_blank" rel="nofollow">Machine/Deep Learning Resources *</a></li>
+                    <li><a href="https://dl.ee.cuhk.edu.hk/" target="_blank" rel="nofollow">Introduction to Deep Learning</a></li>
+                    <li><a href="https://www.cs.princeton.edu/courses/archive/spring16/cos495/" target="_blank" rel="nofollow">Introduction to Deep Learning</a></li>
+                    <li><a href="https://probml.github.io/pml-book/book1.html" target="_blank" rel="nofollow">Probabilistic Machine Learning: An Introduction</a></li>
+                    <li><a href="https://aws.amazon.com/machine-learning/mlu/" target="_blank" rel="nofollow">Machine Learning University (MLU) from Amazon</a></li>
+                    <li><a href="https://mlu-explain.github.io/" target="_blank" rel="nofollow">Machine Learning University-Explain</a></li>
+                    <li><a href="https://christophm.github.io/interpretable-ml-book/" target="_blank" rel="nofollow">Interpretable Machine Learning</a></li>
+                    <li><a href="https://slds-lmu.github.io/i2ml/" target="_blank" rel="nofollow">Introduction to Machine Learning (I2ML)</a></li>
+                    <li><a href="https://rses-dl-course.github.io/" target="_blank" rel="nofollow">Introduction to Deep Learning Course</a></li>
+                    <li><a href="https://jacobgil.github.io/pytorch-gradcam-book/introduction.html" target="_blank" rel="nofollow">Introduction: Advanced Explainable AI for computer vision</a></li>
+                    <li><a href="https://deep-learning-drizzle.github.io/" target="_blank" rel="nofollow">Deep Learning Drizzle *</a></li>
+                    <li><a href="https://niessner.github.io/I2DL/" target="_blank" rel="nofollow">Introduction to Deep Learning (I2DL) (IN2346)</a></li>
+                    <li><a href="https://kenndanielso.github.io/mlrefined/index.html" target="_blank" rel="nofollow">Machine learning and Deep learning Fundamentals</a></li>
+                    <li><a href="https://github.com/labmlai/annotated_deep_learning_paper_implementations" target="_blank" rel="nofollow">60 Implementations/tutorials of deep learning papers with side-by-side notes</a></li>
+                    <li><a href="https://nlp.stanford.edu/IR-book/information-retrieval-book.html" target="_blank" rel="nofollow">Introduction to Information Retrieval (textbook)</a></li>
+                    <li><a href="https://personal.utdallas.edu/~nicholas.ruozzi/cs4375/2023fa/index.html" target="_blank" rel="nofollow">Introduction to Machine Learning</a>, <a href="https://personal.utdallas.edu/~nicholas.ruozzi/cs6375/2022sp/index.html" target="_blank" rel="nofollow">Machine Learning</a>, <a href="https://personal.utdallas.edu/~nicholas.ruozzi/cs4301/2020fa/index.html" target="_blank" rel="nofollow">Numerical Methods for Machine Learning and Data Science</a>, <a href="https://personal.utdallas.edu/~nicholas.ruozzi/cs6347/2023sp/index.html" target="_blank" rel="nofollow">Statistical Methods in AI and ML</a></li>
+                    <li><a href="https://google.github.io/styleguide/pyguide.html" target="_blank" rel="nofollow">Google Python Style Guide</a></li>
+                    <li><a href="https://makefiletutorial.com/" target="_blank" rel="nofollow">Learn Makefiles</a></li>
+                    <li><a href="https://github.com/ethen8181/machine-learning" target="_blank" rel="nofollow">Machine learning tutorials</a></li>
+                    <li><a href="https://github.com/ossu/computer-science" target="_blank" rel="nofollow">Path to a free self-taught education in Computer Science!</a></li>
+                    <li><a href="https://github.com/ossu/data-science" target="_blank" rel="nofollow">Path to a free self-taught education in Data Science!</a></li>
+                    <li><a href="https://github.com/ossu/bioinformatics" target="_blank" rel="nofollow">Path to a free self-taught education in Bioinformatics!</a></li>
+                    <li><a href="https://github.com/ossu/math" target="_blank" rel="nofollow">Path to a free self-taught education in Mathematics!</a></li>
+                    <li><a href="https://github.com/Yimeng-Zhang/feature-engineering-and-feature-selection" target="_blank" rel="nofollow">Feature Engineering and Feature Selection</a></li>
+                    <li><a href="https://nn.labml.ai/" target="_blank" rel="nofollow">Annotated Research Paper Implementations</a></li>
+                    <li><a href="https://latexcolor.com/" target="_blank" rel="nofollow">LaTeX Color Definitions</a></li>
+                    <li><a href="https://react-typescript-cheatsheet.netlify.app/" target="_blank" rel="nofollow">React+TypeScript Cheatsheets</a></li>
+                    <li><a href="https://umeshmk.github.io/Tailwindcss-cheatsheet/" target="_blank" rel="nofollow">Tailwind cheat sheet 1</a>, <a href="https://nerdcave.com/tailwind-cheat-sheet" target="_blank" rel="nofollow">2</a>, <a href="https://tailwindcomponents.com/cheatsheet/" target="_blank" rel="nofollow">3</a></li>
+                    <li><a href="https://jojozhuang.github.io/tutorial/mermaid-cheat-sheet/" target="_blank" rel="nofollow">Mermaid Cheat Sheet</a></li>
+                    <li><a href="https://eecs189.org/" target="_blank" rel="nofollow">Introduction to Machine Learning</a> (University of California, Berkeley)</li>
+                    <li><a href="https://course.fast.ai/Resources/book.html" target="_blank" rel="nofollow">Deep Learning for Coders with Fastai and PyTorch: AI Applications Without a PhD</a></li>
+                    <li><a href="https://atcold.github.io/NYU-DLSP21/" target="_blank" rel="nofollow">Deep Learning - NYU</a></li>
+                    <li><a href="https://cs.nyu.edu/~davise/AINotes.html" target="_blank" rel="nofollow">Notes on AI Topics</a></li>
+                    <li><a href="https://eduitfree.com/" target="_blank" rel="nofollow">Free Online IT Courses For Beginners</a></li>
+                    <li><a href="https://ocw.sharif.ir/" target="_blank" rel="nofollow">Sharif University - Open Courses</a></li>
+                    <li><a href="https://sharifml.ir/" target="_blank" rel="nofollow">Sharif University - Machine Learning</a></li>
+                    <li><a href="https://testsmells.ir/" target="_blank" rel="nofollow">Test Smells [Persian]</a></li>
+                    <li><a href="https://it-tools.tech/" target="_blank" rel="nofollow">Handy online tools for developers</a></li>
+                    <li><a href="https://www.newsweek.com/" target="_blank" rel="nofollow">Readings that are close to Neo's readings to improve TOEFL reading skill</a></li>
+                    <li><a href="https://sites.google.com/view/fayyaz/courses/data-mining?authuser=0" target="_blank" rel="nofollow">Data Mining</a> (or <a href="https://drive.google.com/open?authuser=0&id=1-fw_z7WbtYxy3mQzBAGyQrvGMsZ91ESbfWwlncvmrew" target="_blank" rel="nofollow">this link</a>)</li>
+                    <li><a href="https://deeplearningwithpython.io" target="_blank" rel="nofollow">Deep Learning with Python - Book</a></li>
+                    <li><a href="https://www.youtube.com/playlist?list=PLUl4u3cNGP63oMNUHXqIUcrkS2PivhN3k" target="_blank" rel="nofollow">Linear Algebra - Gilbert Strang</a></li>
+                </ul>
+            </section>
+            <section>
+                <h2>Tools</h2>
+                <ul>
+                    <li><a href="https://keycode.info/" target="_blank" rel="nofollow">JavaScript Event KeyCodes</a></li>
+                    <li><a href="https://www.toptal.com/developers/webdevchecklist" target="_blank" rel="nofollow">Web Developer Checklist</a></li>
+                    <li><a href="https://grid.malven.co/" target="_blank" rel="nofollow">Grid 1</a>, <a href="https://yoksel.github.io/grid-cheatsheet/" target="_blank" rel="nofollow">Grid 2</a>, <a href="https://flexbox.malven.co/" target="_blank" rel="nofollow">Flex</a></li>
+                    <li><a href="https://divtable.com/generator/" target="_blank" rel="nofollow">Div Table</a></li>
+                    <li><a href="https://getwaves.io/" target="_blank" rel="nofollow">SVG Waves</a>, <a href="https://bgjar.com/" target="_blank" rel="nofollow">BG Jar</a></li>
+                    <li><a href="https://tinywow.com/" target="_blank" rel="nofollow">Tiny Wow</a></li>
+                    <li><a href="https://icones.js.org/" target="_blank" rel="nofollow">Icones</a></li>
+                    <li><a href="https://readme.so/" target="_blank" rel="nofollow">Readme creator</a></li>
+                    <li><a href="https://iconoir.com/" target="_blank" rel="nofollow">SVG icons/collections</a></li>
+                    <li><a href="https://fffuel.co/css-selectors/" target="_blank" rel="nofollow">CSS Selectors: A Visual Guide</a></li>
+                    <li><a href="https://css-loaders.com/" target="_blank" rel="nofollow">CSS Loaders</a></li>
+                    <li><a href="https://feature-sliced.design/" target="_blank" rel="nofollow">Feature Sliced Design</a></li>
+                    <li><a href="https://dev.to/vincenius/websites-for-free-icon-sets-2paf" target="_blank" rel="nofollow">29 Websites For Free Icon Sets</a></li>
+                    <li><a href="https://carbon.now.sh/" target="_blank" rel="nofollow">Create and share beautiful images of your source code</a>, <a href="https://ray.so/" target="_blank" rel="nofollow">2</a></li>
+                    <li><a href="https://grid.malven.co/" target="_blank" rel="nofollow">CSS grid cheat sheet</a></li>
+                    <li><a href="https://flexbox.malven.co/" target="_blank" rel="nofollow">CSS flexbox cheat sheet</a></li>
+                    <li><a href="https://mathsolver.microsoft.com/en" target="_blank" rel="nofollow">Math Solver</a></li>
+                    <li><a href="https://www.conventionalcommits.org/" target="_blank" rel="nofollow">Conventional Commits</a></li>
+                    <li><a href="https://css.glass/" target="_blank" rel="nofollow">Glassmorphism CSS Generator 1</a>, <a href="https://ui.glass/generator/" target="_blank" rel="nofollow">2</a></li>
+                    <li><a href="https://10015.io/" target="_blank" rel="nofollow">All Online Tools in “One Box”</a></li>
+                    <li><a href="https://www.flaticon.com/" target="_blank" rel="nofollow">Access 13.3M+ vector icons & stickers</a></li>
+                    <li><a href="https://tools.kausalflow.com/tools/" target="_blank" rel="nofollow">Tools for Academic Research</a></li>
+                    <li><a href="https://iconify.design/" target="_blank" rel="nofollow">Freedom to choose icons</a></li>
+                    <li><a href="http://svgporn.com/" target="_blank" rel="nofollow">A huge collection of SVG logos</a></li>
+                    <li><a href="https://icomoon.io/" target="_blank" rel="nofollow">IcoMoon (Pixel Perfect Icon Solutions)</a></li>
+                    <li><a href="https://simpleicons.org/" target="_blank" rel="nofollow">Simple Icons</a> <i class="simptip-position-top simptip-multiline" data-tooltip="3052 Free SVG icons for popular brands"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="#888888" d="M8.499 7.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm.25-2a.749.749 0 1 1-1.499 0a.749.749 0 0 1 1.498 0M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1M2 8a6 6 0 1 1 12 0A6 6 0 0 1 2 8"/></svg></i></li>
+                    <li><a href="https://web-check.xyz/" target="_blank" rel="nofollow">All-in-one OSINT tool for analysing any website</a></li>
+                    <li><a href="https://fontello.com/" target="_blank" rel="nofollow">Fontello - icon fonts generator</a></li>
+                    <li><a href="https://tiny-helpers.dev/" target="_blank" rel="nofollow">Tiny Helpers</a></li>
+                    <li><a href="https://www.drawdb.app/" target="_blank" rel="nofollow">Online database diagram editor and SQL generator</a></li>
+                    <li><a href="https://chalk.ist/" target="_blank" rel="nofollow">Create beautiful images of your source code</a></li>
+                    <li><a href="https://bioicons.com" target="_blank" rel="nofollow">High Quality Science Illustrations</a></li>
+                    <li><a href="https://bioart.niaid.nih.gov" target="_blank" rel="nofollow">2,000+ science and medical art visuals</a></li>
+                    <li><a href="https://open-vsx.org/" target="_blank" rel="nofollow">Extensions for modern developer tools</a></li>
+                </ul>
+            </section>
+            <section>
+                <h2>Datasets</h2>
+
+                <ul>
+                    <li><a href="https://arxiv.org/abs/1705.02315" target="_blank" rel="nofollow">ChestX-ray8</a> (<a href="https://nihcc.app.box.com/v/ChestXray-NIHCC" target="_blank" rel="nofollow">Download</a>)</li>
+                    <li><a href="https://openml.org/" target="_blank" rel="nofollow">OpenML</a> <i class="simptip-position-top simptip-multiline" data-tooltip="OpenML is an open platform for sharing datasets, algorithms, and experiments - to learn how to learn better, together."><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="#888888" d="M8.499 7.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm.25-2a.749.749 0 1 1-1.499 0a.749.749 0 0 1 1.498 0M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1M2 8a6 6 0 1 1 12 0A6 6 0 0 1 2 8"/></svg></i></li>
+                    <li><a href="https://www.kaggle.com/datasets" target="_blank" rel="nofollow">kaggle</a></li>
+                    <li><a href="https://paperswithcode.com/datasets" target="_blank" rel="nofollow">Paper With Code</a></li>
+                    <li><a href="https://registry.opendata.aws/" target="_blank" rel="nofollow">Registry of Open Data on AWS</a></li>
+                    <li><a href="https://archive.ics.uci.edu/" target="_blank" rel="nofollow">UC Irvine Machine Learning Repository</a></li>
+                    <li><a href="https://www.tensorflow.org/datasets" target="_blank" rel="nofollow">Tensorflow Datasets</a></li>
+                    <li><a href="http://microsoftopendata.com/" target="_blank" rel="nofollow">Microsoft Open Data</a></li>
+                    <li><a href="https://learn.microsoft.com/en-us/azure/open-datasets/dataset-catalog" target="_blank" rel="nofollow">Azure Open Datasets</a></li>
+                    <li><a href="https://datasetsearch.research.google.com/" target="_blank" rel="nofollow">Google Datasets Search</a></li>
+                    <li><a href="https://cocodataset.org/" target="_blank" rel="nofollow">COCO Dataset</a></li>
+                    <li><a href="https://huggingface.co/datasets" target="_blank" rel="nofollow">Hugging Face Datasets</a></li>
+                    <li><a href="https://www.oasis-brains.org/" target="_blank" rel="nofollow">OASIS Dataset - The Open Access Series of Imaging Studies (brain)</a></li>
+                    <li><a href="https://openneuro.org/" target="_blank" rel="nofollow">OpenNeuro: MRI, PET, MEG, EEG, and iEEG data</a> <i class="simptip-position-top simptip-multiline" data-tooltip="A free and open platform for validating and sharing BIDS-compliant MRI, PET, MEG, EEG, and iEEG data."><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="#888888" d="M8.499 7.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm.25-2a.749.749 0 1 1-1.499 0a.749.749 0 0 1 1.498 0M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1M2 8a6 6 0 1 1 12 0A6 6 0 0 1 2 8"/></svg></i></li>
+                    <li><a href="https://adni.loni.usc.edu/" target="_blank" rel="nofollow">Alzheimer’s Disease Neuroimaging Initiative</a></li>
+                    <li><a href="https://mimic.mit.edu/" target="_blank" rel="nofollow">Medical Information Mart for Intensive Care (MIMIC Dataset)</a></li>
+                    <li><a href="https://physionet.org/" target="_blank" rel="nofollow">The Research Resource for Complex Physiologic Signals (PhysioNet)</a></li>
+                    <li><a href="https://www.nih.gov/news-events/news-releases/nih-clinical-center-releases-dataset-32000-ct-images" target="_blank" rel="nofollow">32,000 CT images</a> (<a href="https://nihcc.app.box.com/v/DeepLesion" target="_blank" rel="nofollow">Download</a>)</li>
+                    <li><a href="https://image-net.org/index.php" target="_blank" rel="nofollow">ImageNet</a></li>
+                    <li><a href="https://nbml.ir/fa/pages/NBML-Free-Databases" target="_blank" rel="nofollow">NBML</a> (<a href="https://nbml.ir/fa/pages/Free-Databases" target="_blank" rel="nofollow">2</a>)</li>
+                    <li><a href="https://apolloscape.auto/" target="_blank" rel="nofollow">Advanced Open Tools and Datasets for Autonomous Driving</a></li>
+                    <li><a href="https://hbiostat.org/data/" target="_blank" rel="nofollow">Biostatistics Datasets</a></li>
+                    <li><a href="https://iprobe.cse.msu.edu/datasets.php" target="_blank" rel="nofollow">Integrated Pattern Recognition and Biometrics Lab Datasets</a></li>
+                    <li><a href="https://fastmri.med.nyu.edu/" target="_blank" rel="nofollow">fastMRI</a></li>
+                    <li><a href="https://liuquande.github.io/SAML/" target="_blank" rel="nofollow">A Multi-site Dataset for Prostate MRI Segmentation</a></li>
+                    <li><a href="https://www.mirnet.ca/miRNet/home.xhtml" target="_blank" rel="nofollow">miRNet</a></li>
+                </ul>
+            </section>
+            <section>
+                <h2>Courses</h2>
+
+                <div class="accordion">
+                    <div class="accordion-item">
+                      <button id="accordion-button-1" aria-expanded="false"><span class="accordion-title">Course 1</span><span class="icon" aria-hidden="true"></span></button>
+                      <div class="accordion-content">
+                        <p>Materials</p>
+                      </div>
+                    </div>
+                    <div class="accordion-item">
+                      <button id="accordion-button-2" aria-expanded="false"><span class="accordion-title">Course 2</span><span class="icon" aria-hidden="true"></span></button>
+                      <div class="accordion-content">
+                        <p>Materials</p>
+                      </div>
+                    </div>
+                  </div>
+            </section>
+        </div>
+    </div>
+
+    <section itemscope itemtype="https://schema.org/ImageGallery">
+
+    </section>
+
+    <div style="text-align: center; margin-top: 30px; padding-bottom: 20px;"><span>Compiled by <a href="https://kiarashs.ir">Kiarash</a></span></div>
+
+    <script>
+        if (navigator.serviceWorker) {
+            navigator.serviceWorker.register(
+                '/sw.js', {
+                    scope: '/'
+                }
+            )
+        }
+
+
+        // Accordion
+        const items = document.querySelectorAll(".accordion button");
+
+        function toggleAccordion() {
+            const itemToggle = this.getAttribute('aria-expanded');
+            
+            for (i = 0; i < items.length; i++) {
+                items[i].setAttribute('aria-expanded', 'false');
+            }
+            
+            if (itemToggle == 'false') {
+                this.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        items.forEach(item => item.addEventListener('click', toggleAccordion));
+
+
+        // Hash URL
+        var currentUrl= window.location.href;
+        if (currentUrl.indexOf('#') > -1) {
+            var hashTag = currentUrl.substring(currentUrl.indexOf('#') + 1).toLowerCase();
+            if (currentUrl.indexOf('?h=') > -1) {
+                searchTextIndex = currentUrl.indexOf('?h=');
+                hashTag = currentUrl.substring(currentUrl.indexOf('#') + 1, searchTextIndex).toLowerCase();
+            }
+
+            // added: highlight the proper buttons and remove the default "active" element
+            if (hashTag == 'pdfs') document.getElementById('tab1').click();
+            else if (hashTag == 'links') document.getElementById('tab2').click();
+            else if (hashTag == 'tools') document.getElementById('tab3').click();
+            else if (hashTag == 'datasets') document.getElementById('tab4').click();
+            else if (hashTag == 'courses') document.getElementById('tab5').click();
+        }
+        else {
+            window.location.hash= '#pdfs';
+        }
+
+        const tabs = document.querySelectorAll("[name=tab-control]");
+        function toggleTab() {
+            const tabToggle = this.getAttribute('id');
+
+            if (tabToggle == 'tab1') window.location.hash= '#pdfs';
+            else if (tabToggle == 'tab2') window.location.hash= '#links';
+            else if (tabToggle == 'tab3') window.location.hash= '#tools';
+            else if (tabToggle == 'tab4') window.location.hash= '#datasets';
+            else if (tabToggle == 'tab5') window.location.hash= '#courses';
+        }
+
+        tabs.forEach(item => item.addEventListener('click', toggleTab));
+
+
+        // Highlight search text
+        if (currentUrl.indexOf('?h=') > -1) {
+            var searchText = decodeURIComponent(currentUrl.substring(currentUrl.indexOf('?h=') + 3));
+
+            var aTags = document.getElementsByTagName("a");
+            var found;
+
+            for (var i = 0; i < aTags.length; i++) {
+                if (aTags[i].textContent == searchText) {
+                    found = aTags[i].parentElement;
+                    break;
+                }
+            }
+            if (found) {
+                found.classList.add("highlight");
+                document.getElementsByClassName('highlight')[0].scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'start'
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>
