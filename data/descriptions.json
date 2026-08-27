@@ -1,4 +1,16 @@
 {
+ "http://ceit.aut.ac.ir/~keyvanrad/DL961.html": {
+  "error": "ConnectTimeout: HTTPConnectionPool(host='ceit.aut.ac.ir', port=80): Max retries exceeded with url: /~keyvanrad/DL961.html (Caused by ConnectTimeoutError(<HTTPConnection(host='ceit.aut.ac.ir', port=80)",
+  "failed_at": "2026-08-27T15:37:41+00:00"
+ },
+ "http://ceit.aut.ac.ir/~keyvanrad/ML932.html": {
+  "error": "ConnectTimeout: HTTPSConnectionPool(host='ceit.aut.ac.ir', port=443): Max retries exceeded with url: /~keyvanrad/ML932.html (Caused by ConnectTimeoutError(<HTTPSConnection(host='ceit.aut.ac.ir', port=",
+  "failed_at": "2026-08-27T15:37:42+00:00"
+ },
+ "http://cv.znu.ac.ir/afsharchim/Deep%20Learning.htm": {
+  "error": "ConnectTimeout: HTTPConnectionPool(host='cv.znu.ac.ir', port=80): Max retries exceeded with url: /afsharchim/Deep%20Learning.htm (Caused by ConnectTimeoutError(<HTTPConnection(host='cv.znu.ac.ir', por",
+  "failed_at": "2026-08-27T15:37:39+00:00"
+ },
  "http://microsoftopendata.com/": {
   "description": "Discover an index of datasets, SDKs, APIs and open-source tools developed by Microsoft researchers and shared with the global academic community below. These experimental technologies—available through Azure AI Foundry…",
   "fetched_at": "2026-08-27T15:29:08+00:00",
@@ -8,6 +20,10 @@
   "description": "Introduction to Probability (second edition) by Joseph K. Blitzstein and Jessica Hwang. Chapman & Hall/CRC Press, 2019.",
   "fetched_at": "2026-08-27T15:28:36+00:00",
   "source": "meta"
+ },
+ "http://socialmediamining.info/": {
+  "error": "SSLError: HTTPSConnectionPool(host='socialmediamining.info', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate v",
+  "failed_at": "2026-08-27T15:37:26+00:00"
  },
  "http://svgporn.com/": {
   "description": "Browse thousands of free brand logos in SVG for developers and designers. Full logotypes and icon-only marks, hand-optimized, open source under CC0. No signup.",
@@ -224,6 +240,10 @@
   "fetched_at": "2026-08-27T15:28:59+00:00",
   "source": "none"
  },
+ "https://dl.ee.cuhk.edu.hk/": {
+  "error": "ConnectTimeout: HTTPSConnectionPool(host='dl.ee.cuhk.edu.hk', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='dl.ee.cuhk.edu.hk', port=443) at 0x7f97e",
+  "failed_at": "2026-08-27T15:37:41+00:00"
+ },
  "https://dl4cv-nptel.github.io/DL4CVBK/intro.html": {
   "description": "Welcome to the Course — Deep Learning For Computer Vision",
   "fetched_at": "2026-08-27T15:28:49+00:00",
@@ -239,6 +259,10 @@
   "fetched_at": "2026-08-27T15:28:48+00:00",
   "source": "meta"
  },
+ "https://dockerlabs.collabnix.com/docker/cheatsheet/": {
+  "error": "HTTPError: 404 Client Error: Not Found for url: https://dockerlabs.collabnix.com/docker/cheatsheet/",
+  "failed_at": "2026-08-27T15:37:22+00:00"
+ },
  "https://dockerlabs.collabnix.com/intermediate/docker-compose/compose-cheatsheet.html": {
   "description": "Here's a quick compose cheatsheet you can refer to:",
   "fetched_at": "2026-08-27T15:28:22+00:00",
@@ -249,10 +273,18 @@
   "fetched_at": "2026-08-27T15:28:58+00:00",
   "source": "meta"
  },
+ "https://eduitfree.com/": {
+  "error": "ConnectionError: HTTPSConnectionPool(host='eduitfree.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='eduitfree.com', port=443): Failed to resolv",
+  "failed_at": "2026-08-27T15:37:32+00:00"
+ },
  "https://eecs189.org/": {
   "description": "Redirecting...",
   "fetched_at": "2026-08-27T15:28:55+00:00",
   "source": "title"
+ },
+ "https://elite.polito.it/teaching/02jsk-hci/": {
+  "error": "HTTPError: 404 Client Error: Not Found for url: https://elite.polito.it/teaching/02jsk-hci/",
+  "failed_at": "2026-08-27T15:37:23+00:00"
  },
  "https://en.wikibooks.org/wiki/LaTeX": {
   "description": "LaTeX - Wikibooks, open books for an open world",
@@ -299,6 +331,204 @@
   "fetched_at": "2026-08-27T15:28:59+00:00",
   "source": "meta"
  },
+ "https://github.com/Akramz/Hands-on-Machine-Learning-with-Scikit-Learn-Keras-and-TensorFlow": {
+  "description": "Notes & exercise solutions of Part I from the book: \"Hands-On ML with Scikit-Learn, Keras & TensorFlow: Concepts, Tools, and Techniques to Build Intelligent Systems\" by Aurelien Geron",
+  "fetched_at": "2026-08-27T15:37:24+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/Asabeneh/30-Days-Of-JavaScript/": {
+  "description": "30 days of JavaScript programming challenge is a step-by-step guide to learn JavaScript programming language in 30 days. This challenge may take more than 100 days, please just follow your own pace. These videos may…",
+  "fetched_at": "2026-08-27T15:37:22+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/BrentOzarULTD/SQL-Server-First-Responder-Kit/": {
+  "description": "sp_Blitz, sp_BlitzCache, sp_BlitzFirst, sp_BlitzIndex, and other SQL Server scripts for health checks and performance tuning.",
+  "fetched_at": "2026-08-27T15:37:22+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/FavioVazquez/ds-cheatsheets": {
+  "description": "List of Data Science Cheatsheets to rule the world",
+  "fetched_at": "2026-08-27T15:37:22+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/JuzerShakir/Linear_Regression/": {
+  "description": "A Mathematical Intuition behind Linear Regression Algorithm",
+  "fetched_at": "2026-08-27T15:37:23+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/KiarashS/Data-analysis-preparation-visualization": {
+  "error": "HTTPError: 404 Client Error: Not Found for url: https://github.com/KiarashS/Data-analysis-preparation-visualization",
+  "failed_at": "2026-08-27T15:37:26+00:00"
+ },
+ "https://github.com/KiarashS/Machine-Learning": {
+  "error": "HTTPError: 404 Client Error: Not Found for url: https://github.com/KiarashS/Machine-Learning",
+  "failed_at": "2026-08-27T15:37:26+00:00"
+ },
+ "https://github.com/MichaelCade/90DaysOfDevOps/": {
+  "description": "This repository started out as a learning in public project for myself and has now become a structured learning map for many in the community. We have 3 years under our belt covering all things DevOps, including…",
+  "fetched_at": "2026-08-27T15:37:22+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/Yimeng-Zhang/feature-engineering-and-feature-selection": {
+  "description": "A Guide for Feature Engineering and Feature Selection, with implementations and examples in Python.",
+  "fetched_at": "2026-08-27T15:37:27+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/ahsan-83/Deep-Learning-Specialization-Coursera": {
+  "description": "Deep Learning Specialization course offered by DeepLearning.AI on Coursera",
+  "fetched_at": "2026-08-27T15:37:25+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/amanchadha/Preprocessing-for-deep-learning": {
+  "description": "This is the notebook associated with the blog post:",
+  "fetched_at": "2026-08-27T15:37:25+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/amanchadha/Top-Deep-Learning": {
+  "description": "Top 200 deep learning Github repositories sorted by the number of stars.",
+  "fetched_at": "2026-08-27T15:37:25+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/amanchadha/Trending-Deep-Learning": {
+  "description": "Top 100 trending deep learning repositories sorted by the number of stars gained on a specific day.",
+  "fetched_at": "2026-08-27T15:37:25+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/amanchadha/coursera-ai-for-medicine-specialization": {
+  "description": "Programming assignments, labs and quizzes from all courses in the Coursera AI for Medicine Specialization offered by deeplearning.ai",
+  "fetched_at": "2026-08-27T15:37:24+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/amanchadha/coursera-deep-learning-specialization": {
+  "description": "Notes, programming assignments and quizzes from all courses within the Coursera Deep Learning specialization offered by deeplearning.ai: (i) Neural Networks and Deep Learning; (ii) Improving Deep Neural Networks…",
+  "fetched_at": "2026-08-27T15:37:25+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/amanchadha/coursera-gan-specialization": {
+  "description": "Programming assignments and quizzes from all courses within the GANs specialization offered by deeplearning.ai",
+  "fetched_at": "2026-08-27T15:37:24+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/amanchadha/coursera-machine-learning-engineering-for-prod-mlops-specialization": {
+  "description": "Programming assignments and quizzes from all courses within the Machine Learning Engineering for Production (MLOps) specialization offered by deeplearning.ai",
+  "fetched_at": "2026-08-27T15:37:24+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/amanchadha/coursera-natural-language-processing-specialization": {
+  "description": "Programming assignments from all courses in the Coursera Natural Language Processing Specialization offered by deeplearning.ai.",
+  "fetched_at": "2026-08-27T15:37:24+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/bulentgucuk/DBA-Scripts/": {
+  "description": "SQL Server Scripts for DBAs",
+  "fetched_at": "2026-08-27T15:37:23+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/dair-ai/ML-YouTube-Courses": {
+  "description": "📺 Discover the latest machine learning / AI courses on YouTube.",
+  "fetched_at": "2026-08-27T15:37:23+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/dair-ai/Mathematics-for-ML/": {
+  "description": "🧮 A collection of resources to learn mathematics for machine learning",
+  "fetched_at": "2026-08-27T15:37:22+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/dataplat/dbatools/": {
+  "description": "🚀 SQL Server automation and instance migrations have never been safer, faster or freer",
+  "fetched_at": "2026-08-27T15:37:22+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/deskool/nlp-class": {
+  "description": "A Natural Language Processing course taught by Professor Ghassemi",
+  "fetched_at": "2026-08-27T15:37:23+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/ethen8181/machine-learning": {
+  "description": ":earth_americas: machine learning tutorials (mainly in Python3)",
+  "fetched_at": "2026-08-27T15:37:26+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/faif/python-patterns": {
+  "description": "A collection of design patterns/idioms in Python",
+  "fetched_at": "2026-08-27T15:37:23+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/for-GET/know-your-http-well/blob/master/headers.md": {
+  "description": "HTTP headers, media-types, methods, relations and status codes, all summarized and linking to their specification. - for-GET/know-your-http-well",
+  "fetched_at": "2026-08-27T15:37:22+00:00",
+  "source": "meta"
+ },
+ "https://github.com/for-GET/know-your-http-well/blob/master/relations.md": {
+  "description": "HTTP headers, media-types, methods, relations and status codes, all summarized and linking to their specification. - for-GET/know-your-http-well",
+  "fetched_at": "2026-08-27T15:37:22+00:00",
+  "source": "meta"
+ },
+ "https://github.com/jeffprosise/Deep-Learning": {
+  "description": "Contribute to jeffprosise/Deep-Learning development by creating an account on GitHub.",
+  "fetched_at": "2026-08-27T15:37:26+00:00",
+  "source": "meta"
+ },
+ "https://github.com/karthickai/Linear-Regression/": {
+  "description": "Machine Learning - Linear Regression_Ecommerce_Prediction",
+  "fetched_at": "2026-08-27T15:37:23+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/ktaranov/sqlserver-kit/": {
+  "description": "Useful links, scripts, tools and best practice for Microsoft SQL Server Database",
+  "fetched_at": "2026-08-27T15:37:22+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/labmlai/annotated_deep_learning_paper_implementations": {
+  "description": "🧑‍🏫 60+ Implementations/tutorials of deep learning papers with side-by-side notes 📝; including transformers (original, xl, switch, feedback, vit, ...), optimizers (adam, adabelief, sophia, ...), gans(cyclegan…",
+  "fetched_at": "2026-08-27T15:37:26+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/microsoft/tigertoolbox/": {
+  "description": "Toolbox repository for Tiger team",
+  "fetched_at": "2026-08-27T15:37:23+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/mrdbourke/tensorflow-deep-learning": {
+  "description": "All course materials for the Zero to Mastery Deep Learning with TensorFlow course.",
+  "fetched_at": "2026-08-27T15:37:25+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/ossu/bioinformatics": {
+  "description": ":microscope: Path to a free self-taught education in Bioinformatics!",
+  "fetched_at": "2026-08-27T15:37:27+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/ossu/computer-science": {
+  "description": "🎓 Path to a free self-taught education in Computer Science!",
+  "fetched_at": "2026-08-27T15:37:26+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/ossu/data-science": {
+  "description": "📊 Path to a free self-taught education in Data Science!",
+  "fetched_at": "2026-08-27T15:37:26+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/ossu/math": {
+  "description": "🧮 Path to a free self-taught education in Mathematics!",
+  "fetched_at": "2026-08-27T15:37:27+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/quanghuy0497/Cheatsheet-collection": {
+  "description": "Cheatsheet collection for Math, ML, DL, AI. Update frequently",
+  "fetched_at": "2026-08-27T15:37:25+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/rougier/scientific-visualization-book": {
+  "description": "An open access book on scientific visualization using python and matplotlib",
+  "fetched_at": "2026-08-27T15:37:22+00:00",
+  "source": "github-api"
+ },
+ "https://github.com/udlbook/udlbook/tree/main/Slides": {
+  "description": "Understanding Deep Learning - Simon J.D. Prince. Contribute to udlbook/udlbook development by creating an account on GitHub.",
+  "fetched_at": "2026-08-27T15:37:24+00:00",
+  "source": "meta"
+ },
  "https://google.github.io/styleguide/pyguide.html": {
   "description": "Style guides for Google-originated open-source projects",
   "fetched_at": "2026-08-27T15:28:52+00:00",
@@ -318,6 +548,10 @@
   "description": "Online interactive HTML Cheat Sheet contains useful code examples and web developer tools, markup generators and more.",
   "fetched_at": "2026-08-27T15:28:35+00:00",
   "source": "meta"
+ },
+ "https://htmldom.dev/": {
+  "error": "ConnectionError: HTTPSConnectionPool(host='htmldom.dev', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='htmldom.dev', port=443): Failed to resolve 'h",
+  "failed_at": "2026-08-27T15:37:32+00:00"
  },
  "https://httpstatuses.com/": {
   "description": "Want to familiarize yourself with some common website development terms? Use our web development glossary to find what you’re looking for!",
@@ -389,6 +623,19 @@
   "fetched_at": "2026-08-27T15:28:50+00:00",
   "source": "none"
  },
+ "https://keycode.info/": {
+  "description": "KeyCode.Info allows users to press any key and instantly get the JavaScript Key or Key Code KeyboardEvent. Check out the Tool and Event List.",
+  "fetched_at": "2026-08-27T15:37:33+00:00",
+  "source": "meta"
+ },
+ "https://khuyentran1401.github.io/Efficient_Python_tricks_and_tools_for_data_scientists/README.html": {
+  "error": "HTTPError: 404 Client Error: Not Found for url: https://khuyentran1401.github.io/Efficient_Python_tricks_and_tools_for_data_scientists/README.html",
+  "failed_at": "2026-08-27T15:37:24+00:00"
+ },
+ "https://kiarashs.github.io/Math/": {
+  "error": "HTTPError: 404 Client Error: Not Found for url: https://kiarashs.github.io/Math/",
+  "failed_at": "2026-08-27T15:37:25+00:00"
+ },
  "https://latexcolor.com/": {
   "description": "LaTeX Color Definitions",
   "fetched_at": "2026-08-27T15:28:54+00:00",
@@ -434,6 +681,23 @@
   "fetched_at": "2026-08-27T15:28:52+00:00",
   "source": "meta"
  },
+ "https://mathsolver.microsoft.com/en": {
+  "error": "HTTPError: 404 Client Error: The specified blob does not exist. for url: https://mathsolver.microsoft.com/en",
+  "failed_at": "2026-08-27T15:37:32+00:00"
+ },
+ "https://medium.com/@anushkhabajpai/top-data-science-cheat-sheets-ml-dl-python-r-sql-maths-statistics-5239d4568225": {
+  "error": "HTTPError: 410 Client Error: Gone for url: https://medium.com/@anushkhabajpai/top-data-science-cheat-sheets-ml-dl-python-r-sql-maths-statistics-5239d4568225",
+  "failed_at": "2026-08-27T15:37:22+00:00"
+ },
+ "https://medium.com/machine-learning-in-practice/cheat-sheet-of-machine-learning-and-python-and-math-cheat-sheets-a4afe4e791b6": {
+  "description": "If you like this article, check out another by Robbie: My Curated List of AI and Machine Learning Resources",
+  "fetched_at": "2026-08-27T15:37:24+00:00",
+  "source": "meta"
+ },
+ "https://mehdev.me/ml-andrew-ng/": {
+  "error": "ConnectionError: HTTPSConnectionPool(host='mehdev.me', port=443): Max retries exceeded with url: /ml-andrew-ng/ (Caused by NameResolutionError(\"HTTPSConnection(host='mehdev.me', port=443): Failed to r",
+  "failed_at": "2026-08-27T15:37:22+00:00"
+ },
  "https://microsoft.github.io/win-student-devs/#/30DaysOfPWA/kickoff": {
   "description": "For 30 days, we publish articles that aim to introduce developers to Progressive Web App. We have content that covers 0-level to 200-level topics. Each post takes 5-10 minutes to read and is followed by a sample snippet…",
   "fetched_at": "2026-08-27T15:28:35+00:00",
@@ -463,6 +727,14 @@
   "description": "Companion webpage to the book “Mathematics for Machine Learning”. Copyright 2020 by Marc Peter Deisenroth, A. Aldo Faisal, and Cheng Soon Ong. Published by Cambridge University Press.",
   "fetched_at": "2026-08-27T15:28:37+00:00",
   "source": "meta"
+ },
+ "https://nbml.ir/fa/pages/Free-Databases": {
+  "error": "HTTPError: 404 Client Error: Not Found for url: https://www.nbml.ir/fa/pages/Free-Databases",
+  "failed_at": "2026-08-27T15:37:44+00:00"
+ },
+ "https://nbml.ir/fa/pages/NBML-Free-Databases": {
+  "error": "HTTPError: 404 Client Error: Not Found for url: https://www.nbml.ir/fa/pages/NBML-Free-Databases",
+  "failed_at": "2026-08-27T15:37:40+00:00"
  },
  "https://nerdcave.com/tailwind-cheat-sheet": {
   "description": "Cheat sheet to learn Tailwind CSS quickly. Browse and search all Tailwind utility classes or CSS properties on one page.",
@@ -503,6 +775,10 @@
   "description": "A gallery of the most interesting jupyter notebooks online.",
   "fetched_at": "2026-08-27T15:28:47+00:00",
   "source": "meta"
+ },
+ "https://ocw.sharif.ir/": {
+  "error": "ConnectTimeout: HTTPSConnectionPool(host='ocw.sharif.ir', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='ocw.sharif.ir', port=443) at 0x7f97ec18d940>",
+  "failed_at": "2026-08-27T15:37:42+00:00"
  },
  "https://oeis.org/wiki/List_of_LaTeX_mathematical_symbols": {
   "description": "List of LaTeX mathematical symbols - OeisWiki",
@@ -569,6 +845,11 @@
   "fetched_at": "2026-08-27T15:29:01+00:00",
   "source": "meta"
  },
+ "https://react-typescript-cheatsheet.netlify.app/": {
+  "description": "A cheatsheet for developers using React with TypeScript",
+  "fetched_at": "2026-08-27T15:37:27+00:00",
+  "source": "meta"
+ },
  "https://reactcheatsheet.com/": {
   "description": "React Cheat Sheet",
   "fetched_at": "2026-08-27T15:28:36+00:00",
@@ -599,6 +880,10 @@
   "fetched_at": "2026-08-27T15:28:50+00:00",
   "source": "title"
  },
+ "https://sharifml.ir/": {
+  "error": "HTTPError: 403 Client Error: Forbidden for url: https://sharifml.ir/",
+  "failed_at": "2026-08-27T15:37:27+00:00"
+ },
  "https://sites.google.com/view/fayyaz/courses/data-mining?authuser=0": {
   "description": "Fayyaz Minhas - Data Mining",
   "fetched_at": "2026-08-27T15:28:57+00:00",
@@ -608,6 +893,10 @@
   "description": "Introduction to Machine Learning (I2ML)",
   "fetched_at": "2026-08-27T15:28:50+00:00",
   "source": "title"
+ },
+ "https://sqlserver-kit.org/en": {
+  "error": "SSLError: HTTPSConnectionPool(host='sqlserver-kit.org', port=443): Max retries exceeded with url: /en (Caused by SSLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate veri",
+  "failed_at": "2026-08-27T15:37:23+00:00"
  },
  "https://stanford.edu/~shervine/teaching/": {
   "description": "Teaching page of Shervine Amidi, Adjunct Professor at Stanford University.",
@@ -629,6 +918,14 @@
   "fetched_at": "2026-08-27T15:28:55+00:00",
   "source": "meta"
  },
+ "https://testsmells.ir/": {
+  "error": "ReadTimeout: HTTPSConnectionPool(host='testsmells.ir', port=443): Read timed out. (read timeout=15)",
+  "failed_at": "2026-08-27T15:37:43+00:00"
+ },
+ "https://the-algorithms.com/language/python": {
+  "error": "HTTPError: 404 Client Error: Not Found for url: https://the-algorithms.com/language/python",
+  "failed_at": "2026-08-27T15:37:23+00:00"
+ },
  "https://tiny-helpers.dev/": {
   "description": "A collection of free single-purpose online tools for web developers...",
   "fetched_at": "2026-08-27T15:29:03+00:00",
@@ -649,6 +946,10 @@
   "fetched_at": "2026-08-27T15:28:42+00:00",
   "source": "title"
  },
+ "https://ui.glass/generator/": {
+  "error": "ConnectTimeout: HTTPSConnectionPool(host='ui.glass', port=443): Max retries exceeded with url: /generator/ (Caused by ConnectTimeoutError(<HTTPSConnection(host='ui.glass', port=443) at 0x7f97e4fb7560>",
+  "failed_at": "2026-08-27T15:37:48+00:00"
+ },
  "https://umeshmk.github.io/Tailwindcss-cheatsheet/": {
   "description": "Tailwind CSS - Cheatsheet",
   "fetched_at": "2026-08-27T15:28:53+00:00",
@@ -664,6 +965,10 @@
   "fetched_at": "2026-08-27T15:28:47+00:00",
   "source": "title"
  },
+ "https://web-check.xyz/": {
+  "error": "HTTPError: 403 Client Error: Forbidden for url: https://web-check.xyz/",
+  "failed_at": "2026-08-27T15:37:34+00:00"
+ },
  "https://web.stanford.edu/~jurafsky/slp3/": {
   "description": "Speech and Language Processing",
   "fetched_at": "2026-08-27T15:28:40+00:00",
@@ -673,6 +978,11 @@
   "description": "Python for Data Analysis, 3E",
   "fetched_at": "2026-08-27T15:28:40+00:00",
   "source": "title"
+ },
+ "https://wp.kntu.ac.ir/nasihatkon/teaching/cvug/s2021/##teaching": {
+  "description": "Computer Vision class - spring 2021",
+  "fetched_at": "2026-08-27T15:37:25+00:00",
+  "source": "meta"
  },
  "https://www-users.cse.umn.edu/~kumar001/dmbook/index.php": {
   "description": "Introduction to Data Mining",
@@ -698,6 +1008,10 @@
   "description": "CTAN: Comprehensive TeX Archive Network",
   "fetched_at": "2026-08-27T15:28:45+00:00",
   "source": "title"
+ },
+ "https://www.deeplearning.ai/ai-notes/index.html": {
+  "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.deeplearning.ai/ai-notes/index.html",
+  "failed_at": "2026-08-27T15:37:23+00:00"
  },
  "https://www.deeplearning.ai/resources/natural-language-processing/": {
   "description": "Natural Language Processing is the discipline of building machines that can manipulate language in the way that it is written, spoken, and organized",
@@ -824,6 +1138,14 @@
   "fetched_at": "2026-08-27T15:28:39+00:00",
   "source": "title"
  },
+ "https://www.flaticon.com/": {
+  "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.flaticon.com/",
+  "failed_at": "2026-08-27T15:37:34+00:00"
+ },
+ "https://www.gregmat.com/learn-quant/": {
+  "error": "HTTPError: 404 Client Error: Not Found for url: https://www.gregmat.com/learn-quant/",
+  "failed_at": "2026-08-27T15:37:23+00:00"
+ },
  "https://www.kaggle.com/datasets": {
   "description": "Browse and download hundreds of thousands of open datasets for AI research, model training, and analysis. Join a community of millions of researchers, developers, and builders to share and collaborate on Kaggle.",
   "fetched_at": "2026-08-27T15:29:04+00:00",
@@ -854,6 +1176,11 @@
   "fetched_at": "2026-08-27T15:28:57+00:00",
   "source": "meta"
  },
+ "https://www.nih.gov/news-events/news-releases/nih-clinical-center-releases-dataset-32000-ct-images": {
+  "description": "Lesion data may make it easier for scientific community to identify tumor growth or new disease",
+  "fetched_at": "2026-08-27T15:37:34+00:00",
+  "source": "meta"
+ },
  "https://www.oasis-brains.org/": {
   "description": "OASIS Brains",
   "fetched_at": "2026-08-27T15:29:08+00:00",
@@ -874,10 +1201,23 @@
   "fetched_at": "2026-08-27T15:29:06+00:00",
   "source": "meta"
  },
+ "https://www.toptal.com/developers/webdevchecklist": {
+  "description": "The ultimate checklist for all serious web developers building modern websites. Make sure your site follows web development best practices.",
+  "fetched_at": "2026-08-27T15:37:32+00:00",
+  "source": "meta"
+ },
  "https://www.trackawesomelist.com/": {
   "description": "We track over 500 awesome list updates, and you can also subscribe to daily or weekly updates via RSS or News Letter.",
   "fetched_at": "2026-08-27T15:28:40+00:00",
   "source": "meta"
+ },
+ "https://www.w3schools.com/python/pandas/pandas_ref_dataframe.asp": {
+  "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.w3schools.com/python/pandas/pandas_ref_dataframe.asp",
+  "failed_at": "2026-08-27T15:37:23+00:00"
+ },
+ "https://www.w3schools.com/python/python_reference.asp": {
+  "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.w3schools.com/python/python_reference.asp",
+  "failed_at": "2026-08-27T15:37:23+00:00"
  },
  "https://www.youtube.com/playlist?list=PLUl4u3cNGP63oMNUHXqIUcrkS2PivhN3k": {
   "description": "",
