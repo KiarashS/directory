@@ -4,16 +4,15 @@
     python3 scripts/build.py            # write index.html
     python3 scripts/build.py --check    # exit 1 if index.html is out of date
 
-Content comes from data/links.yml. Descriptions come from that file when one is
-written in by hand, and otherwise from data/descriptions.json, which
-scripts/fetch_descriptions.py fills in. The build itself never touches the
-network, so it is reproducible and safe to run in CI.
+Everything comes from data/links.yml, including descriptions — nothing is
+fetched or generated. An entry with a `description` gets an (i) button in the
+top-right of its card, and the text shows in a popover on hover or focus.
 """
 from __future__ import annotations
 
 import argparse
 import html
-import json
+import itertools
 import pathlib
 import sys
 import urllib.parse
@@ -22,8 +21,10 @@ import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 LINKS = ROOT / "data" / "links.yml"
-CACHE = ROOT / "data" / "descriptions.json"
 OUT = ROOT / "index.html"
+
+# Every popover needs an id so its button can point at it with aria-describedby.
+_ids = itertools.count(1)
 
 e = lambda s: html.escape(s or "", quote=True)
 
@@ -43,6 +44,9 @@ SPRITE = '''  <svg class="visually-hidden" aria-hidden="true" focusable="false">
     <defs>
       <g id="i-ext" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M11 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-5"/><path d="M10 14 20 4"/><path d="M15 4h5v5"/>
+      </g>
+      <g id="i-info" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v4h1"/>
       </g>
       <g id="i-pdf" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/>
@@ -65,12 +69,23 @@ def host_label(url: str) -> str:
     return netloc[4:] if netloc.startswith("www.") else netloc
 
 
-def described(url: str, pinned: str | None, cache: dict) -> str:
-    """A hand-written description always wins over a fetched one."""
-    if pinned:
-        return pinned.strip()
-    record = cache.get(url) or {}
-    return (record.get("description") or "").strip()
+def info(text: str, subject: str) -> str:
+    """An (i) button plus the popover it describes.
+
+    The popover is a sibling, shown by CSS on hover or focus, so it works with
+    no JavaScript at all; directory.js only adds tap-to-toggle and Escape.
+    """
+    if not text:
+        return ""
+    pid = f"info-{next(_ids)}"
+    return (
+        '<span class="card-info">'
+        f'<button class="info-btn" type="button" aria-describedby="{pid}" '
+        f'aria-label="About {e(subject)}">'
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-info"/></svg>'
+        '</button>'
+        f'<span class="popover" role="tooltip" id="{pid}">{e(text)}</span>'
+        '</span>')
 
 
 def all_links(entry: dict) -> list[dict]:
@@ -83,6 +98,10 @@ def all_links(entry: dict) -> list[dict]:
         out.append({"text": link["text"], "url": link["url"],
                     "description": link.get("description")})
     return out
+
+
+def desc(item: dict) -> str:
+    return (item.get("description") or "").strip()
 
 
 def badge(url: str) -> str:
@@ -98,38 +117,33 @@ def link_attrs(url: str) -> str:
 
 # --- rendering -------------------------------------------------------------
 
-def render_entry(entry: dict, cache: dict) -> str:
+def render_entry(entry: dict) -> str:
     links = all_links(entry)
     if not links:
         raise SystemExit(f"entry {entry.get('title')!r} has neither url nor links")
 
-    note = described(entry["url"], entry.get("description"), cache) \
-        if entry.get("url") else (entry.get("description") or "")
+    note = desc(entry)
 
-    # The search haystack: title, description, every link label and every host.
+    # The search haystack: title, descriptions, every link label and every host.
     hay = " ".join(filter(None, [entry["title"], note]
                           + [l["text"] for l in links]
                           + [host_label(l["url"]) for l in links]
-                          + [described(l["url"], l.get("description"), cache)
-                             for l in links]))
+                          + [desc(l) for l in links]))
 
     out = [f'        <li class="card{" card-multi" if len(links) > 1 else ""}" '
            f'data-search="{e(" ".join(hay.split()).lower())}">']
 
     if len(links) > 1:
-        # Multi-link entries open a modal instead of navigating. The button is
-        # the accessible control; the <ul> below is what the modal shows, and
-        # is also the whole no-JS fallback.
+        # Multi-link entries do not navigate. The button opens a modal listing
+        # every link; the <ul> below is what the modal is built from, and is
+        # also the whole no-JS fallback.
         out.append(f'          <button class="card-title" type="button" '
                    f'data-open-modal aria-haspopup="dialog">{e(entry["title"])}</button>')
-        if note:
-            out.append(f'          <p class="card-note">{e(note)}</p>')
-        out.append('          <ul class="card-links">')
+        out.append(f'          <ul class="card-links">')
         for link in links:
-            desc = described(link["url"], link.get("description"), cache)
             out.append(f'            <li><a href="{e(link["url"])}"{link_attrs(link["url"])}>'
                        f'{e(link["text"])}</a>'
-                       + (f'<span class="link-note">{e(desc)}</span>' if desc else "")
+                       + (f'<span class="link-note">{e(desc(link))}</span>' if desc(link) else "")
                        + f'{badge(link["url"])}</li>')
         out.append('          </ul>')
         out.append(f'          <div class="card-foot">'
@@ -138,15 +152,17 @@ def render_entry(entry: dict, cache: dict) -> str:
         link = links[0]
         out.append(f'          <a class="card-title" href="{e(link["url"])}"'
                    f'{link_attrs(link["url"])}>{e(entry["title"])}</a>')
-        if note:
-            out.append(f'          <p class="card-note">{e(note)}</p>')
         out.append(f'          <div class="card-foot">{badge(link["url"])}</div>')
 
+    # Sits last in the markup, positioned into the top-right corner by CSS, so
+    # it is also the last thing reached by Tab rather than interrupting the
+    # title on the way in.
+    out.append("          " + info(note, entry["title"]))
     out.append("        </li>")
-    return "\n".join(out)
+    return "\n".join(x for x in out if x.strip())
 
 
-def build(doc: dict, cache: dict) -> str:
+def build(doc: dict) -> str:
     site = doc["site"]
     cats = doc["categories"]
 
@@ -186,7 +202,7 @@ def build(doc: dict, cache: dict) -> str:
             body.append(f'        <p class="panel-blurb">{e(cat["blurb"])}</p>')
         if entries:
             body.append('        <ul class="cards">')
-            body += [render_entry(x, cache) for x in entries]
+            body += [render_entry(x) for x in entries]
             body.append("        </ul>")
         if groups:
             body.append('        <div class="groups">')
@@ -374,8 +390,7 @@ def main() -> int:
     args = ap.parse_args()
 
     doc = yaml.safe_load(LINKS.read_text(encoding="utf-8"))
-    cache = json.loads(CACHE.read_text(encoding="utf-8")) if CACHE.exists() else {}
-    page = build(doc, cache)
+    page = build(doc)
 
     entries = sum(len(c.get("entries") or []) for c in doc["categories"])
     links = sum(len(all_links(x)) for c in doc["categories"]

@@ -268,6 +268,32 @@
   applyView(read(VIEW_KEY) || 'grid');
 
 
+
+  /* --- Description popovers ----------------------------------------------
+     Hover and keyboard focus are handled in CSS. This adds what CSS cannot:
+     a tap target on touch devices, and Escape to dismiss. */
+
+  document.addEventListener('click', function (ev) {
+    var btn = ev.target.closest('.info-btn');
+    var open = document.querySelector('.card-info.is-open');
+
+    if (open && (!btn || btn.parentElement !== open)) open.classList.remove('is-open');
+
+    if (btn) {
+      // Only meaningful where there is no hover; a mouse has already shown it.
+      if (!window.matchMedia('(hover: hover)').matches) {
+        ev.preventDefault();
+        btn.parentElement.classList.toggle('is-open');
+      }
+    }
+  });
+
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key !== 'Escape') return;
+    var open = document.querySelector('.card-info.is-open');
+    if (open) open.classList.remove('is-open');
+  });
+
   /* --- The link modal ----------------------------------------------------
      An entry with more than one link does not navigate. It opens a dialog
      listing every link, built from the <ul> already sitting in the card, so
@@ -282,7 +308,7 @@
     if (!modal || !modal.showModal) return false;   // no <dialog>: follow the links inline
 
     var title = card.querySelector('.card-title');
-    var note = card.querySelector('.card-note');
+    var note = card.querySelector('.card-info .popover');
     var source = card.querySelector('.card-links');
     if (!source) return false;
 

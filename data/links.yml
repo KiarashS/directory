@@ -3,16 +3,17 @@
 # An entry needs a title and a url. Anything with extra `links` renders as a
 # card that opens a modal listing all of them.
 #
-# `description` is optional: leave it out and the build fetches one from the
-# page itself (and caches it in data/descriptions.json). Write one in and it
-# is pinned — the fetch will never overwrite it.
+# `description` is optional and always yours to write — nothing is fetched or
+# generated. An entry that has one gets a small (i) button in the top-right
+# corner of its card; the text appears on hover or keyboard focus.
 #
 #   - title: Fluent Python 2nd Edition
 #     url: https://example.com/book
-#     description: Pinned by hand; the fetcher leaves this alone.
+#     description: Shown in the popover behind the (i) button.
 #     links:
 #       - text: Errata
 #         url: https://example.com/errata
+#         description: Sub-links can have one too.
 site:
   title: My Directory
   heading: Everything I keep

@@ -36,14 +36,10 @@ opens in a new tab.
 
 ### Descriptions
 
-Leave `description` out and the build fetches one from the page itself: its
-`og:description`, then its `<meta name="description">`, then its `<title>`. A
-`github.com/owner/repo` link uses the repository's own description instead.
-Results are cached in `data/descriptions.json` so the site builds without
-hitting the network.
-
-Write a `description` in and it is pinned — the fetcher skips that URL and never
-overwrites what you wrote:
+Optional, and always yours to write — nothing is fetched or generated. An entry
+with a `description` gets a small (i) button in the top-right corner of its
+card, and the text appears in a popover on hover or keyboard focus. On a touch
+screen, tapping the button toggles it.
 
 ```yaml
 - title: Simple Icons
@@ -51,27 +47,34 @@ overwrites what you wrote:
   description: 3052 free SVG icons for popular brands.
 ```
 
-A description that got fetched badly is fixed the same way: write the right one
-into `links.yml`.
+Sub-links take one too, and it shows next to that link inside the modal:
+
+```yaml
+links:
+  - text: Errata
+    url: https://example.com/errata
+    description: Corrections through the third printing.
+```
+
+Entries without a `description` get no (i) button. Descriptions are searchable
+either way.
 
 ## How the build works
 
 `.github/workflows/build.yml` runs on any push that touches `data/links.yml`,
 `scripts/`, or `static/`:
 
-1. `scripts/fetch_descriptions.py` fills in descriptions it does not already have.
-2. `scripts/build.py` renders `index.html` from the YAML and the cache.
-3. A check asserts every URL in the YAML appears in the rendered page.
-4. The regenerated `index.html` and cache are committed, and the site deploys to Pages.
+1. `scripts/build.py` renders `index.html` from the YAML.
+2. A check asserts every URL in the YAML appears in the rendered page.
+3. The regenerated `index.html` is committed, and the site deploys to Pages.
 
 Because the workflow only triggers on its *inputs*, its own commit does not set
-off another run. A weekly job re-tries links that previously failed.
+off another run. The build needs no network access.
 
 To run it locally:
 
 ```bash
-pip install pyyaml requests beautifulsoup4
-python3 scripts/fetch_descriptions.py   # optional; network
+pip install pyyaml
 python3 scripts/build.py                # writes index.html
 python3 scripts/build.py --check        # exits 1 if index.html is stale
 python3 -m http.server                  # then open http://localhost:8000
@@ -82,9 +85,7 @@ python3 -m http.server                  # then open http://localhost:8000
 | Path | What it is |
 | --- | --- |
 | `data/links.yml` | Every entry on the site. The only file you edit. |
-| `data/descriptions.json` | Fetched descriptions, cached. Generated. |
 | `scripts/build.py` | Renders `index.html`. |
-| `scripts/fetch_descriptions.py` | Fills the description cache. |
 | `static/css/directory.css`, `static/js/directory.js` | The front end. |
 | `index.html` | Generated output. Do not edit. |
 | `assets/`, `v/`, `viewer/` | The PDFs and the pdf.js viewer that displays them. |
