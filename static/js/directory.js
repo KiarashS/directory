@@ -218,7 +218,7 @@
     });
 
     input.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && input.value) {
+      if (e.key === 'Escape' && input.value && !(modal && modal.open)) {
         e.preventDefault();
         input.value = '';
         setQuery('');
@@ -266,6 +266,94 @@
     btn.addEventListener('click', function () { applyView(btn.getAttribute('data-view')); });
   });
   applyView(read(VIEW_KEY) || 'grid');
+
+
+  /* --- The link modal ----------------------------------------------------
+     An entry with more than one link does not navigate. It opens a dialog
+     listing every link, built from the <ul> already sitting in the card, so
+     with JS off that same list is simply visible on the card instead. */
+
+  var modal = document.querySelector('.link-modal');
+  var modalTitle = document.getElementById('link-modal-title');
+  var modalNote = document.querySelector('[data-modal-note]');
+  var modalList = document.querySelector('[data-modal-list]');
+
+  function openModal(card) {
+    if (!modal || !modal.showModal) return false;   // no <dialog>: follow the links inline
+
+    var title = card.querySelector('.card-title');
+    var note = card.querySelector('.card-note');
+    var source = card.querySelector('.card-links');
+    if (!source) return false;
+
+    modalTitle.textContent = title ? title.textContent : '';
+
+    if (note && note.textContent.trim()) {
+      modalNote.textContent = note.textContent;
+      modalNote.hidden = false;
+    } else {
+      modalNote.textContent = '';
+      modalNote.hidden = true;
+    }
+
+    // Rebuild the list each time rather than keeping 34 dialogs in the DOM.
+    modalList.replaceChildren();
+    Array.prototype.forEach.call(source.children, function (item) {
+      var anchor = item.querySelector('a');
+      if (!anchor) return;
+
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = anchor.href;
+      if (anchor.target) { a.target = anchor.target; a.rel = anchor.rel; }
+
+      var label = document.createElement('span');
+      label.className = 'link-label';
+      label.textContent = anchor.textContent;      // textContent, never innerHTML
+      a.appendChild(label);
+
+      var badge = item.querySelector('.badge');
+      if (badge) a.appendChild(badge.cloneNode(true));
+
+      var desc = item.querySelector('.link-note');
+      if (desc) {
+        var d = document.createElement('span');
+        d.className = 'link-note';
+        d.textContent = desc.textContent;
+        a.appendChild(d);
+      }
+
+      li.appendChild(a);
+      modalList.appendChild(li);
+    });
+
+    modal.showModal();
+    var first = modalList.querySelector('a');
+    if (first) first.focus();
+    return true;
+  }
+
+  document.addEventListener('click', function (ev) {
+    var trigger = ev.target.closest('[data-open-modal]');
+    if (trigger) {
+      var card = trigger.closest('.card');
+      if (card && openModal(card)) ev.preventDefault();
+      return;
+    }
+    if (ev.target.closest('[data-close-modal]') && modal) modal.close();
+  });
+
+  if (modal) {
+    // Clicking the backdrop closes. The dialog itself fills its own box, so a
+    // click landing directly on <dialog> is a click outside the panel.
+    modal.addEventListener('click', function (ev) {
+      if (ev.target === modal) modal.close();
+    });
+    // Following a link should not leave the dialog open behind it.
+    modalList.addEventListener('click', function (ev) {
+      if (ev.target.closest('a')) modal.close();
+    });
+  }
 
   /* --- Back to top ------------------------------------------------------- */
 

@@ -1,0 +1,937 @@
+# The directory's content. Everything on the site is built from this file.
+#
+# An entry needs a title and a url. Anything with extra `links` renders as a
+# card that opens a modal listing all of them.
+#
+# `description` is optional: leave it out and the build fetches one from the
+# page itself (and caches it in data/descriptions.json). Write one in and it
+# is pinned — the fetch will never overwrite it.
+#
+#   - title: Fluent Python 2nd Edition
+#     url: https://example.com/book
+#     description: Pinned by hand; the fetcher leaves this alone.
+#     links:
+#       - text: Errata
+#         url: https://example.com/errata
+site:
+  title: My Directory
+  heading: Everything I keep
+  heading_accent: in one place
+  tagline: A directory of the PDFs, reading links, web tools and open datasets I have collected over the years. Search it, or pick a shelf below.
+  url: https://directory.kiarashs.ir/
+  author: Kiarash Soleimanzadeh
+  author_url: https://kiarashs.ir
+  suggest_form: https://forms.gle/KB6dBAR9aPwbbq2S7
+categories:
+- slug: pdfs
+  name: PDFs
+  blurb: Cheat sheets, guides and reference PDFs, opened in the built-in reader.
+  entries:
+  - title: Action Verbs
+    url: ./v/action-verbs/
+  - title: Building Grammar Skills For the TOEFL
+    url: ./v/toefl-grammar/
+  - title: GRE_Equation_Guide_TTP
+    url: ./v/GRE-cheatsheet-ttp/
+    links:
+    - text: GRE Glossary 1
+      url: ./v/gre-glossary/
+    - text: GRE Glossary 2
+      url: https://focustutoring.com/a-glossary-of-math-terms-the-gre-expects-you-to-know/
+  - title: Transitions
+    url: ./v/transitions/
+  - title: Transitions Words and Phrases
+    url: ./v/transitions2/
+  - title: Analysis I Cheat Sheet
+    url: ./v/cheatsheet_analysis_I/
+  - title: Probability & Statistics Cheat Sheet
+    url: ./v/Probability_Statistics/
+  - title: Cheat sheet Python Dict Methods
+    url: ./v/python-dict-methods/
+  - title: Cheat sheet Python List Methods
+    url: ./v/python-list-methods/
+  - title: Cheat sheet Python Set Methods
+    url: ./v/python-set-methods/
+  - title: Cheat Sheet Python String Methods
+    url: ./v/python-string-methods/
+  - title: Transitions 3
+    url: ./v/transitions3/
+  - title: Writing brainstorm
+    url: ./v/writing-brainstorm/
+    links:
+    - text: Golden reasons for speaking
+      url: ./v/speaking-golden-reasons/
+    - text: Golden reasons 2
+      url: ./v/golden-reasons2/
+    - text: Golden reasons 3
+      url: ./v/golden-reasons3/
+  - title: Toefl Expressions & Brainstorm (Speak & Write)
+    url: ./v/toefl-expressions-brainstorm/
+  - title: Prepositions
+    url: ./v/prepositions/
+  - title: Prepositionary
+    url: ./v/prepositionary/
+  - title: Longman Essay Activator
+    url: ./v/longman-essay-activator/
+    links:
+    - text: Summary
+      url: ./v/essay-activator/
+  - title: Longman Topic Activator
+    url: ./v/longman-topic-activator/
+  - title: Longman Shit Activator
+    url: ./v/longman-shit-activator/
+  - title: Perfect Phrases For The TOEFL - Speaking and Writing
+    url: ./v/perfect-phrases-for-the-TOEFL/
+  - title: Longman Dictionary Of Common Errors
+    url: ./v/longman-dictionary-of-common-errors/
+  - title: Longman Common Mistakes In English
+    url: ./v/longman-common-mistakes/
+  - title: Collocations 2
+    url: ./v/collocations-2/
+    links:
+    - text: Collocations 3
+      url: ./v/collocations-3/
+    - text: Collocations 4
+      url: ./v/collocations-4/
+    - text: Collocations 5
+      url: ./v/collocations-5/
+  - title: Python cheat sheet
+    url: ./v/python-cheatsheet/
+  - title: Learn Python 3 the Hard Way
+    url: ./v/learn-python3/
+  - title: Learn More Python 3 the Hard Way
+    url: ./v/learn-more-python3/
+  - title: Python Crash Course, 2nd Edition
+    url: ./v/python-crash-course2/
+  - title: Idea Bank - Technology
+    url: ./v/idea-bank-technology/
+    links:
+    - text: Summary
+      url: ./v/Idea_Bank_Technology/
+  - title: Idea Bank - Education
+    url: ./v/idea-bank-education/
+    links:
+    - text: Summary
+      url: ./v/Idea_Bank_Education/
+  - title: Idea Bank - Government
+    url: ./v/idea-bank-government/
+    links:
+    - text: Summary
+      url: ./v/Idea_Bank_Government/
+  - title: Idea Bank - Business
+    url: ./v/idea-bank-business/
+    links:
+    - text: Summary
+      url: ./v/Idea_Bank_Business/
+  - title: Idea Bank - Health
+    url: ./v/idea-bank-health/
+    links:
+    - text: Summary
+      url: ./v/Idea_Bank_Health/
+  - title: Idea Bank - Examples
+    url: ./v/Idea_Bank_Examples/
+  - title: Git cheat sheet 1
+    url: ./v/git-cheatsheet1/
+  - title: Git cheat sheet 2
+    url: ./v/git-cheatsheet2/
+  - title: Git cheat sheet 3
+    url: ./v/git-cheatsheet3/
+  - title: Git cheat sheet 4
+    url: ./v/git-cheatsheet4/
+  - title: Matplotlib cheat sheet 1
+    url: ./v/matplotlib-cheatsheet1/
+  - title: Matplotlib for beginners - cheat sheet 2
+    url: ./v/matplotlib-cheatsheet2/
+  - title: Matplotlib for intermediate users - cheat sheet 3
+    url: ./v/matplotlib-cheatsheet3/
+  - title: Matplotlib tips & tricks - cheat sheet 4
+    url: ./v/matplotlib-cheatsheet4/
+  - title: Matplotlib cheat sheet 5
+    url: ./v/matplotlib-cheatsheet5/
+  - title: Cheat sheet deep learning tips tricks
+    url: ./v/dl-tips-cheatsheet/
+  - title: GRE math review - ETS
+    url: ./v/ets-gre-math-review/
+  - title: GRE math flashcards
+    url: ./v/gre-math-flashcards/
+  - title: GRE quant review
+    url: ./v/gre-quant-review/
+  - title: GRE Sentence Equivalence
+    url: ./v/gre-sentence-equivalence/
+  - title: NLP with python and NLTK - cheat sheet
+    url: ./v/nlp-with-python-nltk/
+  - title: 'Python in a Nutshell: A Desktop Quick Reference 3rd Edition'
+    url: ./v/python-nutshell3/
+  - title: Fluent Python 2nd Edition
+    url: ./v/fluent-python2/
+  - title: SQL cheat sheet V1
+    url: ./v/sql-v1/
+  - title: SQL cheat sheet V2
+    url: ./v/sql-v2-dark/
+  - title: Paraphrasing Strategies
+    url: ./v/paraphrase1/
+  - title: Javascript cheat sheet
+    url: ./v/javascript-cheatsheet/
+  - title: TypeScript Control Flow Analysis
+    url: ./v/typescript-control-flow-analysis/
+  - title: TypeScript Types
+    url: ./v/typescript-types/
+  - title: TypeScript Interfaces
+    url: ./v/typescript-interfaces/
+  - title: TypeScript Classes
+    url: ./v/typescript-classes/
+  - title: CSS3 cheat sheet
+    url: ./v/css3-cheatsheet/
+  - title: Python cheat sheets
+    url: ./v/python-cheatsheets/
+  - title: Matplotlib - List of named colors
+    url: ./v/matplotlib-colors/
+  - title: RGB hex colors chart
+    url: ./v/color-chart/
+  - title: Simplicity-The Finer Art Of Creating Software Cheat Sheet
+    url: ./v/simplicity-cheatsheet/
+  - title: Agile Poster
+    url: ./v/agile-poster/
+  - title: Agile and Scrum Cheat Sheet
+    url: ./v/agile-scrum-cheatsheet/
+  - title: The Ultimate Python Cheat Sheet
+    url: ./v/ultimate-python-cheatsheet/
+  - title: 'Python Cheat Sheet: Classes'
+    url: ./v/python-cheatsheet-classes/
+  - title: 'Python Cheat Sheet: Functions and Tricks'
+    url: ./v/python-cheatsheet-functricks/
+  - title: 'Python Cheat Sheet: 14 Interview Questions'
+    url: ./v/python-cheatsheet-interviewqs/
+  - title: 'Python Cheat Sheet: Keywords'
+    url: ./v/python-cheatsheet-keywords/
+  - title: 'Python Cheat Sheet: NumPy'
+    url: ./v/python-cheatsheet-numpy/
+  - title: Latex Cheat Sheet
+    url: ./v/latexsheet/
+  - title: Probability Cheat Sheet
+    url: ./v/probability-cheatheet/
+  - title: ASP Net Core Cheat Sheet
+    url: ./v/aspnetcore-cheatsheet/
+  - title: Python Regular Expressions Cheat Sheet
+    url: ./v/python-regular-exp/
+  - title: Python (RegEx(pressions|p)?)
+    url: ./v/python-regex/
+  - title: .Net Regular Expressions Cheat Sheet
+    url: ./v/net-regular-exp/
+  - title: SQL Commands Cheat Sheet
+    url: ./v/sql-commands/
+  - title: HTTP Headers Cheat Sheet
+    url: ./v/http-headers/
+  - title: HTTP Status Codes Cheat Sheet
+    url: ./v/http-status-codes/
+  - title: The Web Developer's SEO Cheat Sheet
+    url: ./v/seo-cheatsheet/
+  - title: Redux Cheat Sheet
+    url: ./v/redux-cheatsheet/
+  - title: 1300 Math Formulas
+    url: ./v/1300-math-formulas/
+  - title: Vajename Riazi
+    url: ./v/vajename-riazi/
+  - title: Common English Mistakes
+    url: ./v/common-english-mistakes/
+  - title: HTML 5 Cheat Sheet
+    url: ./v/html5-cheatsheet/
+  - title: Data Visualization Cheat Sheet
+    url: ./v/data-visualization-cheatsheet/
+  - title: Phrases + ING
+    url: ./v/phrases_ing/
+  - title: Redundancies
+    url: ./v/redundancies/
+  - title: Betty Azar Grammar - Red Summary (Basic)
+    url: ./v/betty-red/
+  - title: Betty Azar Grammar - Black Summary (Intermediate)
+    url: ./v/betty-black/
+  - title: Betty Azar Grammar - Blue Summary (Advanced)
+    url: ./v/betty-blue/
+  - title: LINQ explained with sketches
+    url: ./v/linq-sketches/
+  - title: Design patterns cheat sheet 1
+    url: ./v/design-patterns1/
+  - title: Design patterns cheat sheet 2
+    url: ./v/design-patterns2/
+  - title: Python Notes
+    url: ./v/python-notes/
+  - title: Pandas Notes
+    url: ./v/pandas-notes/
+  - title: Matplotlib Notes
+    url: ./v/matplotllib-notes/
+  - title: NumPy cheat sheet
+    url: ./v/numpy-cheatsheet/
+  - title: SciPy cheat sheet
+    url: ./v/scipy-cheatsheet/
+  - title: Pandas cheat sheet
+    url: ./v/pandas-cheatsheet/
+  - title: Review Probability Theory
+    url: ./v/probability-theory/
+  - title: Python String Format
+    url: ./v/python-string-format/
+  - title: Grammar Success in 20 Minutes a Day
+    url: ./v/grammar-success-in-20-minutes-a-day/
+  - title: English Verb Tenses
+    url: ./v/english-verb-tenses/
+  - title: English Grammar in Use 5th
+    url: ./v/english-grammar-in-use-5th/
+  - title: Guide to NumPy
+    url: ./v/guide-to-numpy/
+  - title: Clean Code in Python (2nd)
+    url: ./v/clean-code-in-python/
+  - title: Numerical Recipes
+    url: ./v/numerical-recipes/
+  - title: Microsoft-Machine Learning Cheat Sheet
+    url: ./v/ms-ml-cheatsheet/
+  - title: Machine Learning Cheat Sheet
+    url: ./v/ml-cheatsheet/
+  - title: Recurrent Neural Network Cheat Sheet
+    url: ./v/recurrent-neural-network-cheatsheet/
+  - title: Linear Algebra Done Right
+    url: ./v/linear-algebra-done-right/
+  - title: Calculus & Derivatives Cheat Sheet
+    url: ./v/calculus_derivatives/
+  - title: Statistic Formula
+    url: ./v/Statistic_Formula/
+  - title: Convergence Tests
+    url: ./v/convergence-tests/
+  - title: A Quick Guide to LaTex
+    url: ./v/latex-guide/
+  - title: Machine Learning Cheatsheet
+    url: ./v/machine-learning-cheatsheet/
+  - title: Docker Cheat sheet 1
+    url: ./v/docker1/
+    links:
+    - text: Docker Cheat sheet 2
+      url: ./v/docker2/
+    - text: Docker Cheat sheet 3
+      url: ./v/docker3/
+    - text: Docker Cheat sheet 4
+      url: https://dockerlabs.collabnix.com/docker/cheatsheet/
+    - text: Docker Cheat sheet 5
+      url: https://dockerlabs.collabnix.com/intermediate/docker-compose/compose-cheatsheet.html
+  - title: AWK Cheat sheet 1
+    url: ./v/awk1/
+    links:
+    - text: AWK Cheat sheet 2
+      url: ./v/awk2/
+  - title: Grammar and Punctuation Cheat sheet
+    url: ./v/grammar-punctuation/
+  - title: Homophones
+    url: ./v/homophones/
+  - title: Linking Words
+    url: ./v/linking-words/
+  - title: Prepositions Handbook
+    url: ./v/english-prepositions/
+  - title: Phrasal Verbs
+    url: ./v/easy-phrasal-verbs/
+  - title: Shortcut to Collocations
+    url: ./v/shortcut-to-collocations/
+  - title: List vs Set vs Dictionary vs Tuple (Python)
+    url: ./v/python-collections/
+  - title: Rust Programming Fundamentals
+    url: ./v/rust-programming-fundamentals/
+  - title: Causative verbs
+    url: ./v/causative-verbs/
+    links:
+    - text: Causative verbs 2
+      url: ./v/betty-blue/?page=37
+  - title: Reading Examples
+    url: ./v/readings1/
+    links:
+    - text: Reading Examples 2
+      url: ./v/readings2/
+    - text: Reading Examples 3
+      url: ./v/readings3/
+    - text: Reading Examples 4
+      url: ./v/reading4/
+    - text: Reading Examples 5
+      url: ./v/reading5/
+  - title: Speaking Ideas
+    url: ./v/speaking-ideas/
+    links:
+    - text: Fantastic Reasons
+      url: ./v/fantastic-reasons/
+    - text: Brainstorming cheatsheet
+      url: ./v/Brainstorming-cheatsheet/
+  - title: Speaking topics (blue)
+    url: ./v/speaking-topics/
+    links:
+    - text: Categorized writing topics
+      url: ./v/categorized-writing-topics/
+  - title: Categorized Phrases
+    url: ./v/categorized-phrases/
+  - title: Summary of collocations
+    url: ./v/summary-of-collocations/
+    links:
+    - text: Noteworthy clauses
+      url: ./v/noteworthy-clauses/
+  - title: English collocations in use - Intermediate
+    url: ./v/collocations-in-use-int/
+  - title: English collocations in use - Advanced
+    url: ./v/collocations-in-use-adv/
+  - title: English phrasal verbs in use - Advanced
+    url: ./v/phrasal-verbs-in-use-adv/
+  - title: Fantastic Reasons for Speaking and Writing
+    url: ./v/FantasticReasons/
+  - title: AI in Medicine - Presented by Kiarash Soleimanzadeh
+    url: ./v/ai-in-medicine-by-kiarash-soleimanzadeh/
+- slug: links
+  name: Links
+  blurb: Books, courses, notes and long-form reading worth keeping.
+  entries:
+  - title: Computer science teaching at Stanford
+    url: https://stanford.edu/~shervine/teaching/
+  - title: List of Data Science Cheat sheets to rule the world
+    url: https://github.com/FavioVazquez/ds-cheatsheets
+  - title: 'Scientific Visualization: Python + Matplotlib'
+    url: https://github.com/rougier/scientific-visualization-book
+  - title: Python & OpenGL for Scientific Visualization
+    url: https://www.labri.fr/perso/nrougier/python-opengl/
+  - title: From Python to Numpy
+    url: https://www.labri.fr/perso/nrougier/from-python-to-numpy/
+  - title: Cambridge Dictionary
+    url: ./v/cambridge-dictionary/
+  - title: Merriam-Webster Dictionary
+    url: ./v/mw-dictionary/
+  - title: NLP Cheat Sheet
+    url: https://cheatography.com/sree017/cheat-sheets/nlp/
+  - title: Machine Learning - Persian
+    url: https://mehdev.me/ml-andrew-ng/
+  - title: The Python Graph Gallery
+    url: https://www.python-graph-gallery.com/
+  - title: HTTP Status Codes
+    url: https://httpstatuses.com/
+  - title: HTTP Headers
+    url: https://github.com/for-GET/know-your-http-well/blob/master/headers.md
+  - title: HTTP Relations
+    url: https://github.com/for-GET/know-your-http-well/blob/master/relations.md
+  - title: Collecting All Cheat Sheets
+    url: https://overapi.com/
+  - title: Introduction to Probability textbook
+    url: http://probabilitybook.net/
+  - title: Top DATA SCIENCE Cheat Sheets (ML, DL, Python, R, SQL, Maths & Statistics)
+    url: https://medium.com/@anushkhabajpai/top-data-science-cheat-sheets-ml-dl-python-r-sql-maths-statistics-5239d4568225
+  - title: Rico's cheat Sheets
+    url: https://devhints.io/
+  - title: Laws of UX
+    url: https://lawsofux.com/
+  - title: Manage HTML DOM with vanilla JavaScript
+    url: https://htmldom.dev/
+  - title: HTML, CSS, and JS Cheat Sheets
+    url: https://htmlcheatsheet.com/
+  - title: React Cheat Sheet
+    url: https://reactcheatsheet.com/
+  - title: 90 Days Of DevOps
+    url: https://github.com/MichaelCade/90DaysOfDevOps/
+  - title: 30 Days of PWA
+    url: https://microsoft.github.io/win-student-devs/#/30DaysOfPWA/kickoff
+  - title: 30 Days of JavaScript
+    url: https://github.com/Asabeneh/30-Days-Of-JavaScript/
+  - title: Useful links, scripts, tools and best practice for Microsoft SQL Server Database
+    url: https://github.com/ktaranov/sqlserver-kit/
+  - title: SQL Server scripts for health checks and performance tuning
+    url: https://github.com/BrentOzarULTD/SQL-Server-First-Responder-Kit/
+  - title: Automate SQL Server tasks and encourage best practices
+    url: https://github.com/dataplat/dbatools/
+  - title: SQL Server Toolbox repository for Tiger team
+    url: https://github.com/microsoft/tigertoolbox/
+  - title: SQL Server Scripts for DBAs
+    url: https://github.com/bulentgucuk/DBA-Scripts/
+  - title: Mathematics for Machine Learning
+    url: https://mml-book.com/
+  - title: Learn from ML experts at Google
+    url: https://ai.google/education/
+  - title: Google's Machine Learning Crash Course
+    url: https://developers.google.com/machine-learning/crash-course/
+  - title: Learn mathematics for machine learning
+    url: https://github.com/dair-ai/Mathematics-for-ML/
+  - title: Linear Regression
+    url: https://github.com/JuzerShakir/Linear_Regression/
+  - title: Linear Regression 2
+    url: https://github.com/karthickai/Linear-Regression/
+  - title: All Algorithms/Data-Structures implemented in Python
+    url: https://the-algorithms.com/language/python
+  - title: A Hands-on Introduction to Natural Language Processing (NLP)
+    url: https://github.com/deskool/nlp-class
+  - title: ML YouTube Courses
+    url: https://github.com/dair-ai/ML-YouTube-Courses
+  - title: 4000 Essential English Words 1
+    url: https://www.essentialenglish.review/apps/4000-essential-english-words-1/
+  - title: 4000 Essential English Words 2
+    url: https://www.essentialenglish.review/apps/4000-essential-english-words-2/
+  - title: 4000 Essential English Words 3
+    url: https://www.essentialenglish.review/apps/4000-essential-english-words-3/
+  - title: 4000 Essential English Words 4
+    url: https://www.essentialenglish.review/apps/4000-essential-english-words-4/
+  - title: 4000 Essential English Words 5
+    url: https://www.essentialenglish.review/apps/4000-essential-english-words-5/
+  - title: 4000 Essential English Words 6
+    url: https://www.essentialenglish.review/apps/4000-essential-english-words-6/
+  - title: English Grammar in Use with Answers
+    url: https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/
+  - title: English Vocabulary in Use Elementary
+    url: https://www.essentialenglish.review/apps/english-vocabulary-in-use-elementary/
+  - title: English Vocabulary in Use Pre-intermediate and Intermediate
+    url: https://www.essentialenglish.review/apps/english-vocabulary-in-use-pre-intermediate-and-intermediate/
+  - title: English Vocabulary in Use Upper-intermediate
+    url: https://www.essentialenglish.review/apps/english-vocabulary-in-use-upper-intermediate/
+  - title: English Vocabulary in Use Advanced
+    url: https://www.essentialenglish.review/apps/english-vocabulary-in-use-advanced/
+  - title: illustrated Everyday Expressions with Stories 1
+    url: https://www.essentialenglish.review/apps/illustrated-everyday-expressions-with-stories-1/
+  - title: illustrated Everyday Expressions with Stories 2
+    url: https://www.essentialenglish.review/apps/illustrated-everyday-expressions-with-stories-2/
+  - title: 250 Ways to Say It in Business English
+    url: https://www.essentialenglish.review/apps/250-ways-to-say-it-in-business-english/
+  - title: More Speak English Like an American
+    url: https://www.essentialenglish.review/apps/more-speak-english-like-an-american/
+  - title: Mastering the American Accent
+    url: https://www.essentialenglish.review/apps/mastering-the-american-accent/
+  - title: 'Everyday Conversations: Learning American English'
+    url: https://www.essentialenglish.review/apps/everyday-conversations-learning-american-english/
+  - title: Easy American Idioms
+    url: https://www.essentialenglish.review/apps/easy-american-idioms/
+  - title: 'English the American Way: A Fun ESL Guide to Language and Culture in the U.S.'
+    url: https://www.essentialenglish.review/apps/english-the-american-way/
+  - title: Speak English Around Town
+    url: https://www.essentialenglish.review/apps/speak-english-around-town/
+  - title: Speak Business English Like an American
+    url: https://www.essentialenglish.review/apps/speak-business-english-like-an-american/
+  - title: Speak English Like an American
+    url: https://www.essentialenglish.review/apps/speak-english-like-an-american/
+  - title: Machine Learning Glossary/Cheat Sheet
+    url: https://ml-cheatsheet.readthedocs.io/en/latest/
+  - title: Practical Deep Learning
+    url: https://course.fast.ai/
+  - title: GRE - Quantitative Walkthroughs
+    url: https://www.gregmat.com/learn-quant/
+  - title: Speech and Language Processing - Stanford (textbook)
+    url: https://web.stanford.edu/~jurafsky/slp3/
+  - title: free-for.dev
+    url: https://free-for.dev/
+  - title: Track Awesome List
+    url: https://www.trackawesomelist.com/
+  - title: Tips and Tricks C#/.NET
+    url: https://linkdotnet.github.io/tips-and-tricks/
+  - title: Pandas - DataFrame Reference
+    url: https://www.w3schools.com/python/pandas/pandas_ref_dataframe.asp
+  - title: Python Reference
+    url: https://www.w3schools.com/python/python_reference.asp
+  - title: Introduction to Scientific Python
+    url: http://www.stanford.edu/~schmit/cme193
+  - title: Quick Cheat Sheet/Reference (Python, RegEx, and etc)
+    url: https://quickref.me/
+  - title: Python for Data Analysis (Book)
+    url: https://wesmckinney.com/book/
+  - title: Probabilistic Programming & Bayesian Methods for Hackers
+    url: https://dataorigami.net/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/
+  - title: Developer Roadmaps
+    url: https://roadmap.sh/
+  - title: Human Computer Interaction Course
+    url: https://elite.polito.it/teaching/02jsk-hci/
+  - title: NLP Course | For You
+    url: https://lena-voita.github.io/nlp_course
+  - title: Stanford AI Courses
+    url: https://ai.stanford.edu/courses/
+  - title: SQL Server KIT
+    url: https://sqlserver-kit.org/en
+  - title: Dive into Deep Learning
+    url: https://d2l.ai/
+  - title: Understanding Deep Learning
+    url: https://udlbook.github.io/udlbook/
+    links:
+    - text: slides
+      url: https://github.com/udlbook/udlbook/tree/main/Slides
+  - title: Deep Learning
+    url: https://www.deeplearningbook.org/
+  - title: Deep Learning Course
+    url: http://cv.znu.ac.ir/afsharchim/Deep%20Learning.htm
+  - title: Design Patterns in Python
+    links:
+    - text: Design Patterns in Python 1
+      url: https://python-patterns.guide/
+    - text: Design Patterns in Python 2
+      url: https://refactoring.guru/design-patterns/python
+    - text: Design Patterns in Python 3
+      url: https://github.com/faif/python-patterns
+  - title: AI Notes (Andrew Ng)
+    url: https://www.deeplearning.ai/ai-notes/index.html
+    links:
+    - text: A Complete Guide to Natural Language Processing
+      url: https://www.deeplearning.ai/resources/natural-language-processing/
+  - title: List of LaTeX mathematical symbols
+    url: https://oeis.org/wiki/List_of_LaTeX_mathematical_symbols
+  - title: Machine Learning tips and tricks cheat sheet
+    url: https://stanford.edu/~shervine/teaching/cs-229/cheatsheet-machine-learning-tips-and-tricks
+  - title: Recurrent Neural Networks cheatsheet
+    url: https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-recurrent-neural-networks
+  - title: Cheat Sheet of Machine Learning and Python (and Math) Cheat Sheets
+    url: https://medium.com/machine-learning-in-practice/cheat-sheet-of-machine-learning-and-python-and-math-cheat-sheets-a4afe4e791b6
+  - title: LaTeX
+    url: https://en.wikibooks.org/wiki/LaTeX
+    links:
+    - text: LaTeX 2
+      url: https://latexref.xyz/
+    - text: LaTeX 3
+      url: https://www.andy-roberts.net/latex/
+    - text: LaTeX 4
+      url: https://luong-komorebi.github.io/Begin-Latex-in-minutes/
+  - title: Improve how you architect webapps
+    url: https://www.patterns.dev/
+  - title: C# Coding Guidelines
+    url: https://csharpcodingguidelines.com/
+  - title: The Comprehensive TEX Archive Network
+    url: https://www.ctan.org/
+  - title: Exploring the art of artificial intelligence
+    url: https://aman.ai/
+  - title: Introduction to Machine Learning Course
+    url: https://cedar.buffalo.edu/~srihari/CSE574/index.html
+  - title: Deep Learning Course
+    url: https://cedar.buffalo.edu/~srihari/CSE676/index.html
+  - title: NeuroSymbolic Artificial Intelligence Course
+    url: https://cedar.buffalo.edu/~srihari/CSE701/index.html
+  - title: Introduction to Pattern Recognition Course
+    url: https://cedar.buffalo.edu/~srihari/CSE555/index.html
+  - title: Data Mining Course
+    url: https://cedar.buffalo.edu/~srihari/CSE626/index.html
+  - title: Probabilistic Graphical Models Course
+    url: https://cedar.buffalo.edu/~srihari/CSE674/index.html
+  - title: Deep Learning Course
+    url: http://ceit.aut.ac.ir/~keyvanrad/DL961.html
+  - title: Machine Learning Course
+    url: http://ceit.aut.ac.ir/~keyvanrad/ML932.html
+  - title: Speech and Language Processing (NLP) Course
+    url: https://web.stanford.edu/~jurafsky/slp3/
+  - title: Natural Language Processing (NLP) Courses
+    url: http://www.sauleh.ir/nlp97/course-materials/
+  - title: Fundamentals of Computer Vision Course
+    url: https://wp.kntu.ac.ir/nasihatkon/teaching/cvug/s2021/##teaching
+  - title: Machine Learning Engineering for Production (MLOps) Specialization on Coursera
+    url: https://github.com/amanchadha/coursera-machine-learning-engineering-for-prod-mlops-specialization
+  - title: Hands-on ML with Scikit-Learn, Keras & TF by Aurelien Geron
+    url: https://github.com/Akramz/Hands-on-Machine-Learning-with-Scikit-Learn-Keras-and-TensorFlow
+  - title: Natural Language Processing Specialization on Coursera
+    url: https://github.com/amanchadha/coursera-natural-language-processing-specialization
+  - title: Efficient Python Tricks and Tools for Data Scientists
+    url: https://khuyentran1401.github.io/Efficient_Python_tricks_and_tools_for_data_scientists/README.html
+  - title: Coursera AI for Medicine Specialization
+    url: https://github.com/amanchadha/coursera-ai-for-medicine-specialization
+  - title: Generative Adversarial Networks Specialization on Coursera
+    url: https://github.com/amanchadha/coursera-gan-specialization
+  - title: Preprocessing For Deep Learning
+    url: https://github.com/amanchadha/Preprocessing-for-deep-learning
+  - title: Top deep learning Github repositories
+    url: https://github.com/amanchadha/Top-Deep-Learning
+  - title: Trending deep learning Github repositories
+    url: https://github.com/amanchadha/Trending-Deep-Learning
+  - title: Deep Learning Specialization on Coursera
+    url: https://github.com/amanchadha/coursera-deep-learning-specialization
+    links:
+    - text: Deep Learning Specialization on Coursera 2
+      url: https://github.com/ahsan-83/Deep-Learning-Specialization-Coursera
+  - title: Zero to Mastery Deep Learning with TensorFlow
+    url: https://github.com/mrdbourke/tensorflow-deep-learning
+  - title: The University of Amsterdam Deep Learning Course
+    url: https://uvadlc.github.io/
+    links:
+    - text: notebooks
+      url: https://uvadlc-notebooks.readthedocs.io/en/latest/
+  - title: Math in ML
+    url: https://kiarashs.github.io/Math/
+  - title: Jupyter Notebook Gallery 1
+    url: https://notebook.community/
+    links:
+    - text: Jupyter Notebook Gallery 2
+      url: https://noteable.io/gallery/
+  - title: Deep Learning Notebooks
+    url: https://github.com/jeffprosise/Deep-Learning
+    links:
+    - text: Data-analysis, preparation, and visualization notebooks
+      url: https://github.com/KiarashS/Data-analysis-preparation-visualization
+    - text: Machine learning notebooks
+      url: https://github.com/KiarashS/Machine-Learning
+  - title: Cheatsheet collection for Math, ML, DL, AI. Update frequently
+    url: https://github.com/quanghuy0497/Cheatsheet-collection
+  - title: 'Social Media Mining: An Introduction (Ebook)'
+    url: http://socialmediamining.info/
+  - title: Feature Selection
+    url: https://jundongl.github.io/scikit-feature/
+  - title: Deep Learning at VU University Amsterdam
+    url: https://dlvu.github.io/
+  - title: Deep Learning For Computer Vision
+    url: https://dl4cv-nptel.github.io/DL4CVBK/intro.html
+  - title: Introduction to Deep Learning (with flavor of NLP)
+    url: https://chokkan.github.io/deeplearning/
+  - title: The Illustrated Machine Learning website
+    url: https://illustrated-machine-learning.github.io/
+  - title: Machine Learning Engineering
+    url: https://www.mlebook.com/wiki/doku.php?id=start
+  - title: Introduction to Data Mining
+    url: https://www-users.cse.umn.edu/~kumar001/dmbook/index.php
+  - title: Deep Learning
+    url: https://atcold.github.io/NYU-DLSP21/
+  - title: Deep Learning Systems
+    url: https://dlsyscourse.org/
+  - title: Machine/Deep Learning Resources *
+    url: https://mirerfangheibi.github.io/ml_resources/
+  - title: Introduction to Deep Learning
+    url: https://dl.ee.cuhk.edu.hk/
+  - title: Introduction to Deep Learning
+    url: https://www.cs.princeton.edu/courses/archive/spring16/cos495/
+  - title: 'Probabilistic Machine Learning: An Introduction'
+    url: https://probml.github.io/pml-book/book1.html
+  - title: Machine Learning University (MLU) from Amazon
+    url: https://aws.amazon.com/machine-learning/mlu/
+  - title: Machine Learning University-Explain
+    url: https://mlu-explain.github.io/
+  - title: Interpretable Machine Learning
+    url: https://christophm.github.io/interpretable-ml-book/
+  - title: Introduction to Machine Learning (I2ML)
+    url: https://slds-lmu.github.io/i2ml/
+  - title: Introduction to Deep Learning Course
+    url: https://rses-dl-course.github.io/
+  - title: 'Introduction: Advanced Explainable AI for computer vision'
+    url: https://jacobgil.github.io/pytorch-gradcam-book/introduction.html
+  - title: Deep Learning Drizzle *
+    url: https://deep-learning-drizzle.github.io/
+  - title: Introduction to Deep Learning (I2DL) (IN2346)
+    url: https://niessner.github.io/I2DL/
+  - title: Machine learning and Deep learning Fundamentals
+    url: https://kenndanielso.github.io/mlrefined/index.html
+  - title: 60 Implementations/tutorials of deep learning papers with side-by-side notes
+    url: https://github.com/labmlai/annotated_deep_learning_paper_implementations
+  - title: Introduction to Information Retrieval (textbook)
+    url: https://nlp.stanford.edu/IR-book/information-retrieval-book.html
+  - title: Introduction to Machine Learning
+    url: https://personal.utdallas.edu/~nicholas.ruozzi/cs4375/2023fa/index.html
+    links:
+    - text: Machine Learning
+      url: https://personal.utdallas.edu/~nicholas.ruozzi/cs6375/2022sp/index.html
+    - text: Numerical Methods for Machine Learning and Data Science
+      url: https://personal.utdallas.edu/~nicholas.ruozzi/cs4301/2020fa/index.html
+    - text: Statistical Methods in AI and ML
+      url: https://personal.utdallas.edu/~nicholas.ruozzi/cs6347/2023sp/index.html
+  - title: Google Python Style Guide
+    url: https://google.github.io/styleguide/pyguide.html
+  - title: Learn Makefiles
+    url: https://makefiletutorial.com/
+  - title: Machine learning tutorials
+    url: https://github.com/ethen8181/machine-learning
+  - title: Path to a free self-taught education in Computer Science!
+    url: https://github.com/ossu/computer-science
+  - title: Path to a free self-taught education in Data Science!
+    url: https://github.com/ossu/data-science
+  - title: Path to a free self-taught education in Bioinformatics!
+    url: https://github.com/ossu/bioinformatics
+  - title: Path to a free self-taught education in Mathematics!
+    url: https://github.com/ossu/math
+  - title: Feature Engineering and Feature Selection
+    url: https://github.com/Yimeng-Zhang/feature-engineering-and-feature-selection
+  - title: Annotated Research Paper Implementations
+    url: https://nn.labml.ai/
+  - title: LaTeX Color Definitions
+    url: https://latexcolor.com/
+  - title: React+TypeScript Cheatsheets
+    url: https://react-typescript-cheatsheet.netlify.app/
+  - title: Tailwind cheat sheet 1
+    url: https://umeshmk.github.io/Tailwindcss-cheatsheet/
+    links:
+    - text: Tailwind cheat sheet 2
+      url: https://nerdcave.com/tailwind-cheat-sheet
+    - text: Tailwind cheat sheet 3
+      url: https://tailwindcomponents.com/cheatsheet/
+  - title: Mermaid Cheat Sheet
+    url: https://jojozhuang.github.io/tutorial/mermaid-cheat-sheet/
+  - title: Introduction to Machine Learning
+    url: https://eecs189.org/
+  - title: 'Deep Learning for Coders with Fastai and PyTorch: AI Applications Without a PhD'
+    url: https://course.fast.ai/Resources/book.html
+  - title: Deep Learning - NYU
+    url: https://atcold.github.io/NYU-DLSP21/
+  - title: Notes on AI Topics
+    url: https://cs.nyu.edu/~davise/AINotes.html
+  - title: Free Online IT Courses For Beginners
+    url: https://eduitfree.com/
+  - title: Sharif University - Open Courses
+    url: https://ocw.sharif.ir/
+  - title: Sharif University - Machine Learning
+    url: https://sharifml.ir/
+  - title: Test Smells [Persian]
+    url: https://testsmells.ir/
+  - title: Handy online tools for developers
+    url: https://it-tools.tech/
+  - title: Readings that are close to Neo's readings to improve TOEFL reading skill
+    url: https://www.newsweek.com/
+  - title: Data Mining
+    url: https://sites.google.com/view/fayyaz/courses/data-mining?authuser=0
+    links:
+    - text: this link
+      url: https://drive.google.com/open?authuser=0&id=1-fw_z7WbtYxy3mQzBAGyQrvGMsZ91ESbfWwlncvmrew
+  - title: Deep Learning with Python - Book
+    url: https://deeplearningwithpython.io
+  - title: Linear Algebra - Gilbert Strang
+    url: https://www.youtube.com/playlist?list=PLUl4u3cNGP63oMNUHXqIUcrkS2PivhN3k
+- slug: tools
+  name: Tools
+  blurb: Small web tools that save an afternoon.
+  entries:
+  - title: JavaScript Event KeyCodes
+    url: https://keycode.info/
+  - title: Web Developer Checklist
+    url: https://www.toptal.com/developers/webdevchecklist
+  - title: Grid 1
+    url: https://grid.malven.co/
+    links:
+    - text: Grid 2
+      url: https://yoksel.github.io/grid-cheatsheet/
+    - text: Flex
+      url: https://flexbox.malven.co/
+  - title: Div Table
+    url: https://divtable.com/generator/
+  - title: SVG Waves
+    url: https://getwaves.io/
+    links:
+    - text: BG Jar
+      url: https://bgjar.com/
+  - title: Tiny Wow
+    url: https://tinywow.com/
+  - title: Icones
+    url: https://icones.js.org/
+  - title: Readme creator
+    url: https://readme.so/
+  - title: SVG icons/collections
+    url: https://iconoir.com/
+  - title: 'CSS Selectors: A Visual Guide'
+    url: https://fffuel.co/css-selectors/
+  - title: CSS Loaders
+    url: https://css-loaders.com/
+  - title: Feature Sliced Design
+    url: https://feature-sliced.design/
+  - title: 29 Websites For Free Icon Sets
+    url: https://dev.to/vincenius/websites-for-free-icon-sets-2paf
+  - title: Create and share beautiful images of your source code
+    url: https://carbon.now.sh/
+    links:
+    - text: Create and share beautiful images of your source code 2
+      url: https://ray.so/
+  - title: CSS grid cheat sheet
+    url: https://grid.malven.co/
+  - title: CSS flexbox cheat sheet
+    url: https://flexbox.malven.co/
+  - title: Math Solver
+    url: https://mathsolver.microsoft.com/en
+  - title: Conventional Commits
+    url: https://www.conventionalcommits.org/
+  - title: Glassmorphism CSS Generator 1
+    url: https://css.glass/
+    links:
+    - text: Glassmorphism CSS Generator 2
+      url: https://ui.glass/generator/
+  - title: All Online Tools in “One Box”
+    url: https://10015.io/
+  - title: Access 13.3M+ vector icons & stickers
+    url: https://www.flaticon.com/
+  - title: Tools for Academic Research
+    url: https://tools.kausalflow.com/tools/
+  - title: Freedom to choose icons
+    url: https://iconify.design/
+  - title: A huge collection of SVG logos
+    url: http://svgporn.com/
+  - title: IcoMoon (Pixel Perfect Icon Solutions)
+    url: https://icomoon.io/
+  - title: Simple Icons
+    url: https://simpleicons.org/
+    description: 3052 Free SVG icons for popular brands
+  - title: All-in-one OSINT tool for analysing any website
+    url: https://web-check.xyz/
+  - title: Fontello - icon fonts generator
+    url: https://fontello.com/
+  - title: Tiny Helpers
+    url: https://tiny-helpers.dev/
+  - title: Online database diagram editor and SQL generator
+    url: https://www.drawdb.app/
+  - title: Create beautiful images of your source code
+    url: https://chalk.ist/
+  - title: High Quality Science Illustrations
+    url: https://bioicons.com
+  - title: 2,000+ science and medical art visuals
+    url: https://bioart.niaid.nih.gov
+  - title: Extensions for modern developer tools
+    url: https://open-vsx.org/
+- slug: datasets
+  name: Datasets
+  blurb: Open datasets, mostly medical imaging and machine learning.
+  entries:
+  - title: ChestX-ray8
+    url: https://arxiv.org/abs/1705.02315
+    links:
+    - text: Download
+      url: https://nihcc.app.box.com/v/ChestXray-NIHCC
+  - title: OpenML
+    url: https://openml.org/
+    description: OpenML is an open platform for sharing datasets, algorithms, and experiments - to learn how to learn better, together.
+  - title: kaggle
+    url: https://www.kaggle.com/datasets
+  - title: Paper With Code
+    url: https://paperswithcode.com/datasets
+  - title: Registry of Open Data on AWS
+    url: https://registry.opendata.aws/
+  - title: UC Irvine Machine Learning Repository
+    url: https://archive.ics.uci.edu/
+  - title: Tensorflow Datasets
+    url: https://www.tensorflow.org/datasets
+  - title: Microsoft Open Data
+    url: http://microsoftopendata.com/
+  - title: Azure Open Datasets
+    url: https://learn.microsoft.com/en-us/azure/open-datasets/dataset-catalog
+  - title: Google Datasets Search
+    url: https://datasetsearch.research.google.com/
+  - title: COCO Dataset
+    url: https://cocodataset.org/
+  - title: Hugging Face Datasets
+    url: https://huggingface.co/datasets
+  - title: OASIS Dataset - The Open Access Series of Imaging Studies (brain)
+    url: https://www.oasis-brains.org/
+  - title: 'OpenNeuro: MRI, PET, MEG, EEG, and iEEG data'
+    url: https://openneuro.org/
+    description: A free and open platform for validating and sharing BIDS-compliant MRI, PET, MEG, EEG, and iEEG data.
+  - title: Alzheimer’s Disease Neuroimaging Initiative
+    url: https://adni.loni.usc.edu/
+  - title: Medical Information Mart for Intensive Care (MIMIC Dataset)
+    url: https://mimic.mit.edu/
+  - title: The Research Resource for Complex Physiologic Signals (PhysioNet)
+    url: https://physionet.org/
+  - title: 32,000 CT images
+    url: https://www.nih.gov/news-events/news-releases/nih-clinical-center-releases-dataset-32000-ct-images
+    links:
+    - text: Download
+      url: https://nihcc.app.box.com/v/DeepLesion
+  - title: ImageNet
+    url: https://image-net.org/index.php
+  - title: NBML
+    url: https://nbml.ir/fa/pages/NBML-Free-Databases
+    links:
+    - text: NBML 2
+      url: https://nbml.ir/fa/pages/Free-Databases
+  - title: Advanced Open Tools and Datasets for Autonomous Driving
+    url: https://apolloscape.auto/
+  - title: Biostatistics Datasets
+    url: https://hbiostat.org/data/
+  - title: Integrated Pattern Recognition and Biometrics Lab Datasets
+    url: https://iprobe.cse.msu.edu/datasets.php
+  - title: fastMRI
+    url: https://fastmri.med.nyu.edu/
+  - title: A Multi-site Dataset for Prostate MRI Segmentation
+    url: https://liuquande.github.io/SAML/
+  - title: miRNet
+    url: https://www.mirnet.ca/miRNet/home.xhtml
+- slug: courses
+  name: Courses
+  blurb: Course material, grouped by course.
+  groups:
+  - title: Course 1
+    body: Materials
+  - title: Course 2
+    body: Materials

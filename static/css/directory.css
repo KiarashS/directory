@@ -731,6 +731,152 @@ a.card-title:hover { color: var(--accent); }
 }
 .pill svg { width: 12px; height: 12px; flex: none; opacity: 0.65; }
 
+/* Multi-link entries ------------------------------------------------------
+   The card holds the full list of links in the markup: that is the whole
+   no-JS fallback. With JS the list is hidden and the card opens a modal
+   showing the same links. */
+
+button.card-title {
+  border: 0;
+  padding: 0;
+  background: none;
+  text-align: start;
+  font: inherit;
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  color: var(--text);
+  cursor: pointer;
+}
+button.card-title::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+.card-multi:hover button.card-title { color: var(--accent); }
+
+.card-links {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+}
+.card-links li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+}
+.card-links .link-note { color: var(--text-soft); }
+/* Once the modal exists the inline copy is redundant. */
+.js .card-multi .card-links { display: none; }
+
+.badge-count {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 550;
+}
+
+/* --- The link modal ------------------------------------------------------ */
+
+.link-modal {
+  width: min(560px, calc(100vw - 32px));
+  max-height: min(78vh, 720px);
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+.link-modal::backdrop {
+  background: rgba(10, 12, 17, 0.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+.link-modal[open] { display: flex; flex-direction: column; }
+
+.link-modal-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px 18px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.link-modal-head h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+.link-modal-head .icon-btn { width: 32px; height: 32px; flex: none; }
+.link-modal-head .icon-btn svg { width: 15px; height: 15px; }
+
+.link-modal-note {
+  margin: 0;
+  padding: 12px 18px 0;
+  color: var(--text-soft);
+  font-size: 0.88rem;
+}
+
+.link-modal-list {
+  margin: 0;
+  padding: 10px 10px 14px;
+  list-style: none;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.link-modal-list li { display: block; }
+.link-modal-list a {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  padding: 11px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-weight: 550;
+  font-size: 0.93rem;
+  transition: background 0.14s var(--ease);
+}
+.link-modal-list a:hover,
+.link-modal-list a:focus-visible { background: var(--surface-2); color: var(--accent); }
+.link-modal-list .link-note {
+  flex: 1 1 100%;
+  color: var(--text-soft);
+  font-weight: 400;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+.link-modal-list .badge { margin-inline-start: auto; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .link-modal[open] { animation: modal-in 0.16s var(--ease); }
+  @keyframes modal-in {
+    from { opacity: 0; transform: translateY(6px) scale(0.98); }
+  }
+}
+
+/* The panel blurb sits under each section heading. */
+.panel-blurb {
+  margin: -6px 0 16px;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+}
+.js .panel-blurb { display: none; }
+.js .panel[data-searching] .panel-blurb { display: none; }
+
 /* Compact list view ------------------------------------------------------- */
 
 .view-list .cards { grid-template-columns: 1fr; gap: 0; }
@@ -760,6 +906,7 @@ a.card-title:hover { color: var(--accent); }
   border-color: var(--line);
 }
 .view-list .card-title { flex: 1 1 320px; }
+.view-list .card-links { display: none; }
 .view-list .card-note {
   flex: 1 1 100%;
   order: 3;

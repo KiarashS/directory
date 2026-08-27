@@ -1,0 +1,151 @@
+name: Build and publish
+
+# The site is generated from data/links.yml. Editing that file — in the GitHub
+# web editor, or by pushing a commit — is the whole publishing workflow: this
+# runs, fills in any missing link descriptions, regenerates index.html, commits
+# what changed and deploys to Pages.
+on:
+  push:
+    branches: [main]
+    # Deliberately an include-list of *inputs*. The job commits index.html and
+    # data/descriptions.json itself, and neither is listed here, so its own
+    # commit cannot trigger another run.
+    paths:
+      - "data/links.yml"
+      - "scripts/**"
+      - "static/**"
+      - ".github/workflows/build.yml"
+  # Weekly sweep: retries links that failed a while back and picks up
+  # descriptions that have changed at the source.
+  schedule:
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+    inputs:
+      refetch:
+        description: "Re-fetch every description, ignoring the cache"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write      # commits the regenerated index.html
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install --quiet pyyaml requests beautifulsoup4
+
+      - name: Fetch any missing link descriptions
+        env:
+          # Raises the api.github.com rate limit for github.com/<owner>/<repo>
+          # links, which are described from the repo's own metadata.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ inputs.refetch }}" = "true" ]; then
+            python3 scripts/fetch_descriptions.py --all
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            python3 scripts/fetch_descriptions.py --retry-failures
+          else
+            python3 scripts/fetch_descriptions.py
+          fi
+
+      - name: Render index.html
+        run: python3 scripts/build.py
+
+      - name: Check nothing important went missing
+        run: |
+          python3 - <<'PY'
+          import pathlib, re, sys, yaml
+
+          doc = yaml.safe_load(pathlib.Path("data/links.yml").read_text(encoding="utf-8"))
+          page = pathlib.Path("index.html").read_text(encoding="utf-8")
+
+          urls = []
+          for cat in doc["categories"]:
+              for entry in cat.get("entries") or []:
+                  if entry.get("url"):
+                      urls.append(entry["url"])
+                  for link in entry.get("links") or []:
+                      urls.append(link["url"])
+
+          assert len(urls) >= 400, f"only {len(urls)} links in links.yml — refusing to publish"
+
+          missing = [u for u in urls if f'href="{u.replace("&", "&amp;")}"' not in page]
+          if missing:
+              print("links absent from the rendered page:", file=sys.stderr)
+              for u in missing[:20]:
+                  print(f"  {u}", file=sys.stderr)
+              sys.exit(1)
+
+          cards = len(re.findall(r'<li class="card', page))
+          print(f"ok: {len(urls)} links across {cards} cards, all present in index.html")
+          PY
+
+      - name: Commit whatever the build changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html data/descriptions.json
+          if git diff --cached --quiet; then
+            echo "index.html and the description cache are already current."
+          else
+            git commit -m "chore: rebuild the site ($(date -u +%Y-%m-%d))"
+            git push origin HEAD:${GITHUB_REF_NAME}
+          fi
+
+      # enablement:true switches Pages on if it is off, so the site does not
+      # need anyone to flip a switch in Settings before the first deploy.
+      - uses: actions/configure-pages@v5
+        id: pages
+        continue-on-error: true
+        with:
+          enablement: true
+
+      - name: Say so if Pages could not be configured
+        if: steps.pages.outcome == 'failure'
+        run: |
+          echo "::warning::Could not enable GitHub Pages automatically."
+          echo "::warning::Set Settings -> Pages -> Source to 'GitHub Actions'."
+
+      - name: Assemble the publishable site
+        # Everything except the repository plumbing. The PDFs under assets/ and
+        # the viewer pages under v/ are the bulk of it and have to ship.
+        run: |
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='scripts' \
+            --exclude='_site' \
+            ./ _site/
+          du -sh _site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
