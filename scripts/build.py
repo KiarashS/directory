@@ -6,7 +6,7 @@
 
 Pages produced:
 
-    /                      overview of every category
+    /                      the PDF entries (canonical: /pdfs/)
     /<category>/           that category's entries
     /courses/              the course list
     /courses/<slug>/       one course, its modules and materials
@@ -310,9 +310,11 @@ def nav(cats: list[dict], active: str | None, depth: int) -> str:
 
 
 def shell(*, site, cats, title, description, path, depth, active, hero, main,
-          index_json, total, hash_redirect=False) -> str:
+          index_json, total, hash_redirect=False, canonical_path=None) -> str:
     base = site["url"].rstrip("/") + "/"
-    canonical = base + path
+    # The front page shows the PDF entries, so it names /pdfs/ as canonical
+    # rather than advertising two URLs for one listing.
+    canonical = base + (path if canonical_path is None else canonical_path)
     nl = "\n"
 
     redirect = ""
@@ -524,35 +526,30 @@ def build_pages(doc: dict) -> dict[str, str]:
         if cat["slug"] not in ICONS:
             raise SystemExit(f"category {cat['slug']!r} has no icon; add one to ICONS")
 
-    # --- the overview -------------------------------------------------------
+    # --- the front page ----------------------------------------------------
+    # It lists the PDF entries rather than a menu of categories: that is the
+    # section that actually gets used, and the nav already names the others.
+    front = next((c for c in cats if c["slug"] == "pdfs"), cats[0])
+    front_entries = front.get("entries") or []
+
     hero = f'''  <div class="container hero">
     <h1>{e(site["heading"])} <span class="accent">{e(site["heading_accent"])}</span></h1>
     <p>{e(site["tagline"])}</p>
   </div>
 
 '''
-    cards = ['    <ul class="section-cards">']
-    for cat in cats:
-        n = len(cat.get("entries") or []) or len(cat.get("courses") or [])
-        cards.append(
-            f'      <li class="section-card">\n'
-            f'        <a href="{rel(cat["slug"] + "/", 0)}">\n'
-            f'          <span class="section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" '
-            f'fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" '
-            f'stroke-linejoin="round">{ICONS[cat["slug"]]}</svg></span>\n'
-            f'          <span class="section-name">{e(cat["name"])}</span>\n'
-            f'          <span class="section-count">{n}</span>\n'
-            f'        </a>\n'
-            f'        <p>{e(cat.get("blurb") or "")}</p>\n'
-            f'      </li>')
-    cards.append("    </ul>")
+
+    body = ['    <ul class="cards">']
+    body += [render_entry(x, 0) for x in front_entries]
+    body.append("    </ul>")
 
     pages["index.html"] = shell(
         site=site, cats=cats, title=f'{site["title"]} — files, links, tools and datasets',
         description=(f'A hand-kept directory of {total}+ PDFs, reading links, web tools '
                      f'and open datasets, collected by {site["author"]}.'),
-        path="", depth=0, active=None, hero=hero, main="\n".join(cards),
-        index_json=index_json, total=total, hash_redirect=True)
+        path="", depth=0, active=front["slug"], hero=hero, main="\n".join(body),
+        index_json=index_json, total=total, hash_redirect=True,
+        canonical_path=f'{front["slug"]}/')
 
     # --- one page per category ---------------------------------------------
     for cat in cats:

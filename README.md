@@ -9,7 +9,7 @@ Each category is a real page, not a fragment:
 
 | URL | |
 | --- | --- |
-| `/` | overview of every category |
+| `/` | the PDF entries, with `/pdfs/` as its canonical URL |
 | `/pdfs/`, `/links/`, `/tools/`, `/datasets/` | that category's entries |
 | `/courses/` | the course list |
 | `/courses/<slug>/` | one course, its modules and materials |
@@ -17,6 +17,11 @@ Each category is a real page, not a fragment:
 Search still spans everything. Each page carries a small index of every entry on
 the site, so a search from `/pdfs/` turns up matches in `/datasets/` and links
 across to them. Old `#pdfs`-style links redirect to `/pdfs/`.
+
+A search is in the URL as `?q=`, so it can be shared: `/?q=python` and
+`/datasets/?q=mri` both arrive already filtered. Typing rewrites the address with
+`replaceState`, so the Back button still goes back a page rather than a
+keystroke, and clearing the box drops the parameter.
 
 ## Adding or changing a link
 

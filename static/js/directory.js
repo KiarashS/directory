@@ -109,8 +109,9 @@
     if (raw) siteIndex = JSON.parse(raw.textContent);
   } catch (err) { /* a missing index just means search stays local */ }
 
-  // Which category this page is. Empty on the overview, which has no active
-  // link and therefore treats every index row as "elsewhere".
+  // Which category this page is showing. The front page lists the PDF entries,
+  // so its nav marks PDFs current and this resolves to "pdfs" there too —
+  // without that, all 139 of them would show up again as "found elsewhere".
   var current = document.querySelector('nav.tabs .tab[aria-current="page"]');
   var here = current ? current.getAttribute('data-slug') : '';
 
@@ -177,9 +178,31 @@
     if (liveRegion) liveRegion.textContent = searching ? summary : '';
   }
 
-  function setQuery(value) {
+  // Writing the address bar on every keystroke would be wasteful and would
+  // make the URL flicker, so the filter stays instant and only the URL waits.
+  var urlPending;
+
+  function syncUrl() {
+    clearTimeout(urlPending);
+    urlPending = setTimeout(function () {
+      var params = new URLSearchParams(window.location.search);
+      if (query.trim()) params.set('q', query.trim());
+      else params.delete('q');
+      // Once a search has been run the entry flag is stale; keeping it would
+      // put a ?h= in a link that no longer points at anything on screen.
+      params.delete('h');
+      var qs = params.toString();
+      // replaceState, not pushState: holding a key down should not bury the
+      // previous page under thirty history entries.
+      history.replaceState(null, '',
+        window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
+    }, 250);
+  }
+
+  function setQuery(value, opts) {
     query = value;
     render();
+    if (!opts || opts.url !== false) syncUrl();
   }
 
   if (input) {
@@ -223,9 +246,16 @@
     }
   });
 
-  // Nothing is filtered at rest, but running once keeps the rendered state and
-  // the script's idea of it in step from the first frame.
-  render();
+  // A shared ?q= link arrives already filtered, with its results bar and its
+  // cross-section group populated. Rendering once with no query does the same
+  // job of keeping the DOM and this script in step from the first frame.
+  var startQuery = (new URLSearchParams(window.location.search).get('q') || '').trim();
+  if (startQuery && input) {
+    input.value = startQuery;
+    setQuery(startQuery, { url: false });
+  } else {
+    render();
+  }
 
   /* --- View mode --------------------------------------------------------- */
 
@@ -395,9 +425,13 @@
 
     if (match) {
       match.classList.add('is-flagged');
-      requestAnimationFrame(function () {
-        match.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      });
+      // A ?q= in the same URL may have filtered this card out; scrolling to
+      // something hidden just jumps the page somewhere arbitrary.
+      if (!match.hidden) {
+        requestAnimationFrame(function () {
+          match.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      }
     }
   }
 })();

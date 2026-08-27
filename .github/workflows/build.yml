@@ -86,8 +86,26 @@ jobs:
                   print(f"  {slug}: {url}", file=sys.stderr)
               sys.exit(1)
 
-          pages = sorted(str(p) for p in pathlib.Path(".").glob("*/index.html"))
-          print(f"ok: {total} links, all present on their own page")
+          # The front page lists the PDF entries, so they have to be there too.
+          front = pathlib.Path("index.html").read_text(encoding="utf-8")
+          pdfs = next((c for c in doc["categories"] if c["slug"] == "pdfs"), None)
+          if pdfs:
+              absent = []
+              for entry in pdfs.get("entries") or []:
+                  urls = ([entry["url"]] if entry.get("url") else [])
+                  urls += [l["url"] for l in entry.get("links") or []]
+                  for url in urls:
+                      want = url if url.startswith(("http://", "https://")) \
+                          else "./" + (url[2:] if url.startswith("./") else url)
+                      if f'href="{want.replace("&", "&amp;")}"' not in front:
+                          absent.append(url)
+              if absent:
+                  print("PDF links missing from the front page:", file=sys.stderr)
+                  for url in absent[:20]:
+                      print(f"  {url}", file=sys.stderr)
+                  sys.exit(1)
+
+          print(f"ok: {total} links, all present on their own page and the front page")
           PY
 
       - name: Commit whatever the build changed
