@@ -844,7 +844,6 @@ categories:
     url: https://icomoon.io/
   - title: Simple Icons
     url: https://simpleicons.org/
-    description: 3052 Free SVG icons for popular brands
   - title: All-in-one OSINT tool for analysing any website
     url: https://web-check.xyz/
   - title: Fontello - icon fonts generator
@@ -872,7 +871,6 @@ categories:
       url: https://nihcc.app.box.com/v/ChestXray-NIHCC
   - title: OpenML
     url: https://openml.org/
-    description: OpenML is an open platform for sharing datasets, algorithms, and experiments - to learn how to learn better, together.
   - title: kaggle
     url: https://www.kaggle.com/datasets
   - title: Paper With Code
@@ -897,7 +895,6 @@ categories:
     url: https://www.oasis-brains.org/
   - title: 'OpenNeuro: MRI, PET, MEG, EEG, and iEEG data'
     url: https://openneuro.org/
-    description: A free and open platform for validating and sharing BIDS-compliant MRI, PET, MEG, EEG, and iEEG data.
   - title: Alzheimer’s Disease Neuroimaging Initiative
     url: https://adni.loni.usc.edu/
   - title: Medical Information Mart for Intensive Care (MIMIC Dataset)
