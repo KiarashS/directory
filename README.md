@@ -11,6 +11,7 @@ Each category is a real page, not a fragment:
 | --- | --- |
 | `/` | the PDF entries, with `/pdfs/` as its canonical URL |
 | `/pdfs/`, `/links/`, `/tools/`, `/datasets/` | that category's entries |
+| `/talks/` | talks, presentations and slide decks |
 | `/courses/` | the course list |
 | `/courses/<slug>/` | one course, its modules and materials |
 
@@ -53,6 +54,46 @@ showing every link instead:
 A URL starting with `./` is a file in this repository — a PDF under `assets/`
 shown through the viewer pages in `v/`. Anything else is treated as external and
 opens in a new tab.
+
+### Tags, pinning and dates
+
+```yaml
+- title: Fluent Python 2nd Edition
+  url: https://example.com/book
+  tags: [python, reference]
+  pinned: true
+  added: 2026-08-28
+```
+
+Tags render as chips and are clickable: a chip links to `?q=tag:python`, which
+matches only entries carrying that tag — a plain search for `python` still
+matches titles and link text as well. Several `tag:` terms intersect, so
+`tag:python tag:reference` finds entries with both.
+
+`pinned: true` holds an entry at the top of its page under every sort order.
+
+`added` sets the default order, newest first. A sort control next to the view
+switch offers Newest, Oldest and A–Z, and remembers your choice. Entries with no
+`added` keep the order they have in `links.yml` and sit below the dated ones, so
+dating the archive gradually never scrambles what is already there.
+
+### Talks
+
+A talk is an ordinary entry with two extras, shown as a line under the title:
+
+```yaml
+- title: Making a static site searchable
+  url: ./v/slides-deck/
+  event: PyCon
+  date: 2026-05-14
+  tags: [search]
+  links:
+    - text: Recording
+      url: https://example.com/video
+```
+
+Slides, video, code and paper are just its links, so a talk with several opens
+the same modal everything else does.
 
 ### Descriptions
 
@@ -131,6 +172,7 @@ To run it locally:
 ```bash
 pip install pyyaml
 python3 scripts/build.py                # writes every page
+python3 scripts/make_favicon.py         # only after editing the icon
 python3 scripts/build.py --check        # exits 1 if any page is stale
 python3 -m http.server                  # then open http://localhost:8000
 ```
@@ -141,6 +183,7 @@ python3 -m http.server                  # then open http://localhost:8000
 | --- | --- |
 | `data/links.yml` | Every entry on the site. The only file you edit. |
 | `scripts/build.py` | Renders every page. |
+| `scripts/make_favicon.py` | Regenerates the icon set from `static/icon.svg`. |
 | `static/css/directory.css`, `static/js/directory.js` | The front end. |
 | `index.html`, `<category>/index.html` | Generated output. Do not edit. |
 | `assets/`, `v/`, `viewer/` | The PDFs and the pdf.js viewer that displays them. |

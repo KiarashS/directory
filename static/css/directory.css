@@ -955,6 +955,120 @@ button.card-title::after {
 .js .panel-blurb { display: none; }
 .js .panel[data-searching] .panel-blurb { display: none; }
 
+
+/* --- Tags, pins and dates ------------------------------------------------- */
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tag {
+  /* Above the card title's stretched ::after, which would otherwise take the
+     click before the tag ever sees it. */
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  padding: 2px 9px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  color: var(--text-faint);
+  font-size: 0.73rem;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.tag::before { content: "#"; opacity: 0.55; }
+.tag:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.badge-pin {
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
+  font-weight: 600;
+}
+.badge-date {
+  background: transparent;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* A pinned card reads as lifted out of the ordinary run of the list. */
+.card.is-pinned {
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--line));
+}
+.card.is-pinned::before {
+  content: "";
+  position: absolute;
+  inset-inline: 14px;
+  top: -1px;
+  height: 2px;
+  border-radius: 0 0 2px 2px;
+  background: var(--accent);
+}
+
+.card-meta {
+  margin: 0;
+  color: var(--text-faint);
+  font-size: 0.82rem;
+}
+
+/* --- Sort control --------------------------------------------------------- */
+
+.sort-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: none;
+  height: 46px;
+  padding-inline: 12px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--text-soft);
+}
+.sort-control:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-ring);
+}
+.sort-icon { width: 17px; height: 17px; flex: none; }
+.sort-control select {
+  appearance: none;
+  border: 0;
+  padding: 0 22px 0 8px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+.sort-control select:focus { outline: none; }
+.sort-control::after {
+  content: "";
+  position: absolute;
+  right: 14px;
+  width: 7px; height: 7px;
+  border-right: 2px solid var(--text-faint);
+  border-bottom: 2px solid var(--text-faint);
+  rotate: 45deg;
+  translate: 0 -2px;
+  pointer-events: none;
+}
+/* The native menu is drawn by the OS, so its options need explicit colours
+   or a dark theme leaves them black-on-black on some platforms. */
+.sort-control option { background: var(--surface); color: var(--text); }
+
+@media (max-width: 720px) {
+  .sort-control { display: none; }
+}
+
 /* Compact list view ------------------------------------------------------- */
 
 .view-list .cards { grid-template-columns: 1fr; gap: 0; }
@@ -985,6 +1099,8 @@ button.card-title::after {
 }
 .view-list .card-title { flex: 1 1 320px; }
 .view-list .card-links { display: none; }
+.view-list .card-tags { order: 5; }
+.view-list .card-meta { flex: 1 1 100%; order: 4; }
 .view-list .card-info { position: static; order: 4; }
 .view-list .card-info .popover { right: 0; }
 .view-list .card:has(.card-info) .card-title { padding-right: 0; }

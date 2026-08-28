@@ -20,7 +20,7 @@
 
    Older caches are deleted on activate. */
 
-var CACHE = 'directory-v3';
+var CACHE = 'directory-v4';
 
 // The stylesheet and script are deliberately absent: pages request them with
 // a ?v=<content hash>, so the bare paths would be entries nothing ever asks
@@ -35,6 +35,7 @@ var SHELL = [
   './links/',
   './tools/',
   './datasets/',
+  './talks/',
   './courses/',
   './manifest.webmanifest',
   './favicon-32x32.png',

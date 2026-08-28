@@ -20,11 +20,13 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+  <link rel="icon" type="image/svg+xml" href="./static/icon.svg">
   <link rel="mask-icon" href="./safari-pinned-tab.svg" color="#4f5bd5">
   <meta name="msapplication-TileColor" content="#4f5bd5">
+  <meta name="msapplication-config" content="./browserconfig.xml">
   <link rel="manifest" href="./manifest.webmanifest">
 
-  <link rel="stylesheet" href="./static/css/directory.css?v=3ebec59e">
+  <link rel="stylesheet" href="./static/css/directory.css?v=a7c7b7c1">
 
   <script>
     // Runs before first paint, so none of this can flash.
@@ -42,7 +44,7 @@
       } catch (e) {}
 
       // Old #pdfs-style links are still in the wild; send them to the page.
-      var slugs = ["pdfs", "links", "tools", "datasets", "courses"];
+      var slugs = ["pdfs", "links", "tools", "datasets", "talks", "courses"];
       var h = location.hash.replace('#', '').toLowerCase();
       if (slugs.indexOf(h) !== -1) location.replace(h + '/');
     })();
@@ -55,6 +57,7 @@
       <g id="i-ext" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-5"/><path d="M10 14 20 4"/><path d="M15 4h5v5"/></g>
       <g id="i-pdf" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/></g>
       <g id="i-layers" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 8l9 5 9-5-9-5z"/><path d="m3 13 9 5 9-5"/></g>
+      <g id="i-pin" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.8V4h6v6.8l2 3.2H7z"/></g>
       <g id="i-info" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v4h1"/></g>
       <g id="i-mat-slides" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></g>
       <g id="i-mat-notes" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M9 12h6M9 16h4"/></g>
@@ -111,6 +114,16 @@
         </button>
       </div>
 
+      <div class="sort-control">
+        <label class="visually-hidden" for="sort">Sort entries</label>
+        <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16"/><path d="m3 8 4-4 4 4"/><path d="M17 20V4"/><path d="m13 16 4 4 4-4"/></svg>
+        <select id="sort" data-sort>
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="az">A – Z</option>
+        </select>
+      </div>
+
       <div class="view-switch" role="group" aria-label="Layout">
         <button type="button" data-view="grid" aria-pressed="true" aria-label="Grid view" title="Grid view">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>
@@ -140,6 +153,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.657 3.582 3 8 3s8-1.343 8-3V6"/><path d="M4 12v6c0 1.657 3.582 3 8 3s8-1.343 8-3v-6"/></svg>
         <span>Datasets</span><span class="tab-count">26</span>
       </a>
+      <a class="tab" href="./talks/" data-slug="talks">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8"/><path d="M12 16v4"/><path d="M8.5 10.5 11 13l4.5-4.5"/></svg>
+        <span>Talks</span><span class="tab-count">0</span>
+      </a>
       <a class="tab" href="./courses/" data-slug="courses">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 9L12 5 2 9l10 4 10-4v6"/><path d="M6 10.6V16c0 1.1 2.7 2 6 2s6-.9 6-2v-5.4"/></svg>
         <span>Courses</span><span class="tab-count">0</span>
@@ -154,15 +171,15 @@
     <p class="visually-hidden" role="status" aria-live="polite" data-live></p>
 
     <ul class="cards">
-        <li class="card" data-search="action verbs action verbs pdf">
+        <li class="card" data-search="action verbs action verbs pdf" data-order="0" data-sort-title="action verbs">
           <a class="card-title" href="./v/action-verbs/">Action Verbs</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="building grammar skills for the toefl building grammar skills for the toefl pdf">
+        <li class="card" data-search="building grammar skills for the toefl building grammar skills for the toefl pdf" data-order="1" data-sort-title="building grammar skills for the toefl">
           <a class="card-title" href="./v/toefl-grammar/">Building Grammar Skills For the TOEFL</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card card-multi" data-search="gre_equation_guide_ttp gre_equation_guide_ttp gre glossary 1 gre glossary 2 pdf pdf focustutoring.com">
+        <li class="card card-multi" data-search="gre_equation_guide_ttp gre_equation_guide_ttp gre glossary 1 gre glossary 2 pdf pdf focustutoring.com" data-order="2" data-sort-title="gre_equation_guide_ttp">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="GRE_Equation_Guide_TTP">GRE_Equation_Guide_TTP<span class="visually-hidden">, 3 links</span></button>
           <ul class="card-links">
             <li><a href="./v/GRE-cheatsheet-ttp/">GRE_Equation_Guide_TTP</a><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></li>
@@ -171,43 +188,43 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 3 links</span></div>
         </li>
-        <li class="card" data-search="transitions transitions pdf">
+        <li class="card" data-search="transitions transitions pdf" data-order="3" data-sort-title="transitions">
           <a class="card-title" href="./v/transitions/">Transitions</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="transitions words and phrases transitions words and phrases pdf">
+        <li class="card" data-search="transitions words and phrases transitions words and phrases pdf" data-order="4" data-sort-title="transitions words and phrases">
           <a class="card-title" href="./v/transitions2/">Transitions Words and Phrases</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="analysis i cheat sheet analysis i cheat sheet pdf">
+        <li class="card" data-search="analysis i cheat sheet analysis i cheat sheet pdf" data-order="5" data-sort-title="analysis i cheat sheet">
           <a class="card-title" href="./v/cheatsheet_analysis_I/">Analysis I Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="probability &amp; statistics cheat sheet probability &amp; statistics cheat sheet pdf">
+        <li class="card" data-search="probability &amp; statistics cheat sheet probability &amp; statistics cheat sheet pdf" data-order="6" data-sort-title="probability &amp; statistics cheat sheet">
           <a class="card-title" href="./v/Probability_Statistics/">Probability &amp; Statistics Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="cheat sheet python dict methods cheat sheet python dict methods pdf">
+        <li class="card" data-search="cheat sheet python dict methods cheat sheet python dict methods pdf" data-order="7" data-sort-title="cheat sheet python dict methods">
           <a class="card-title" href="./v/python-dict-methods/">Cheat sheet Python Dict Methods</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="cheat sheet python list methods cheat sheet python list methods pdf">
+        <li class="card" data-search="cheat sheet python list methods cheat sheet python list methods pdf" data-order="8" data-sort-title="cheat sheet python list methods">
           <a class="card-title" href="./v/python-list-methods/">Cheat sheet Python List Methods</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="cheat sheet python set methods cheat sheet python set methods pdf">
+        <li class="card" data-search="cheat sheet python set methods cheat sheet python set methods pdf" data-order="9" data-sort-title="cheat sheet python set methods">
           <a class="card-title" href="./v/python-set-methods/">Cheat sheet Python Set Methods</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="cheat sheet python string methods cheat sheet python string methods pdf">
+        <li class="card" data-search="cheat sheet python string methods cheat sheet python string methods pdf" data-order="10" data-sort-title="cheat sheet python string methods">
           <a class="card-title" href="./v/python-string-methods/">Cheat Sheet Python String Methods</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="transitions 3 transitions 3 pdf">
+        <li class="card" data-search="transitions 3 transitions 3 pdf" data-order="11" data-sort-title="transitions 3">
           <a class="card-title" href="./v/transitions3/">Transitions 3</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card card-multi" data-search="writing brainstorm writing brainstorm golden reasons for speaking golden reasons 2 golden reasons 3 pdf pdf pdf pdf">
+        <li class="card card-multi" data-search="writing brainstorm writing brainstorm golden reasons for speaking golden reasons 2 golden reasons 3 pdf pdf pdf pdf" data-order="12" data-sort-title="writing brainstorm">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Writing brainstorm">Writing brainstorm<span class="visually-hidden">, 4 links</span></button>
           <ul class="card-links">
             <li><a href="./v/writing-brainstorm/">Writing brainstorm</a><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></li>
@@ -217,19 +234,19 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 4 links</span></div>
         </li>
-        <li class="card" data-search="toefl expressions &amp; brainstorm (speak &amp; write) toefl expressions &amp; brainstorm (speak &amp; write) pdf">
+        <li class="card" data-search="toefl expressions &amp; brainstorm (speak &amp; write) toefl expressions &amp; brainstorm (speak &amp; write) pdf" data-order="13" data-sort-title="toefl expressions &amp; brainstorm (speak &amp; write)">
           <a class="card-title" href="./v/toefl-expressions-brainstorm/">Toefl Expressions &amp; Brainstorm (Speak &amp; Write)</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="prepositions prepositions pdf">
+        <li class="card" data-search="prepositions prepositions pdf" data-order="14" data-sort-title="prepositions">
           <a class="card-title" href="./v/prepositions/">Prepositions</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="prepositionary prepositionary pdf">
+        <li class="card" data-search="prepositionary prepositionary pdf" data-order="15" data-sort-title="prepositionary">
           <a class="card-title" href="./v/prepositionary/">Prepositionary</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card card-multi" data-search="longman essay activator longman essay activator summary pdf pdf">
+        <li class="card card-multi" data-search="longman essay activator longman essay activator summary pdf pdf" data-order="16" data-sort-title="longman essay activator">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Longman Essay Activator">Longman Essay Activator<span class="visually-hidden">, 2 links</span></button>
           <ul class="card-links">
             <li><a href="./v/longman-essay-activator/">Longman Essay Activator</a><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></li>
@@ -237,27 +254,27 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 2 links</span></div>
         </li>
-        <li class="card" data-search="longman topic activator longman topic activator pdf">
+        <li class="card" data-search="longman topic activator longman topic activator pdf" data-order="17" data-sort-title="longman topic activator">
           <a class="card-title" href="./v/longman-topic-activator/">Longman Topic Activator</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="longman shit activator longman shit activator pdf">
+        <li class="card" data-search="longman shit activator longman shit activator pdf" data-order="18" data-sort-title="longman shit activator">
           <a class="card-title" href="./v/longman-shit-activator/">Longman Shit Activator</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="perfect phrases for the toefl - speaking and writing perfect phrases for the toefl - speaking and writing pdf">
+        <li class="card" data-search="perfect phrases for the toefl - speaking and writing perfect phrases for the toefl - speaking and writing pdf" data-order="19" data-sort-title="perfect phrases for the toefl - speaking and writing">
           <a class="card-title" href="./v/perfect-phrases-for-the-TOEFL/">Perfect Phrases For The TOEFL - Speaking and Writing</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="longman dictionary of common errors longman dictionary of common errors pdf">
+        <li class="card" data-search="longman dictionary of common errors longman dictionary of common errors pdf" data-order="20" data-sort-title="longman dictionary of common errors">
           <a class="card-title" href="./v/longman-dictionary-of-common-errors/">Longman Dictionary Of Common Errors</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="longman common mistakes in english longman common mistakes in english pdf">
+        <li class="card" data-search="longman common mistakes in english longman common mistakes in english pdf" data-order="21" data-sort-title="longman common mistakes in english">
           <a class="card-title" href="./v/longman-common-mistakes/">Longman Common Mistakes In English</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card card-multi" data-search="collocations 2 collocations 2 collocations 3 collocations 4 collocations 5 pdf pdf pdf pdf">
+        <li class="card card-multi" data-search="collocations 2 collocations 2 collocations 3 collocations 4 collocations 5 pdf pdf pdf pdf" data-order="22" data-sort-title="collocations 2">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Collocations 2">Collocations 2<span class="visually-hidden">, 4 links</span></button>
           <ul class="card-links">
             <li><a href="./v/collocations-2/">Collocations 2</a><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></li>
@@ -267,23 +284,23 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 4 links</span></div>
         </li>
-        <li class="card" data-search="python cheat sheet python cheat sheet pdf">
+        <li class="card" data-search="python cheat sheet python cheat sheet pdf" data-order="23" data-sort-title="python cheat sheet">
           <a class="card-title" href="./v/python-cheatsheet/">Python cheat sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="learn python 3 the hard way learn python 3 the hard way pdf">
+        <li class="card" data-search="learn python 3 the hard way learn python 3 the hard way pdf" data-order="24" data-sort-title="learn python 3 the hard way">
           <a class="card-title" href="./v/learn-python3/">Learn Python 3 the Hard Way</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="learn more python 3 the hard way learn more python 3 the hard way pdf">
+        <li class="card" data-search="learn more python 3 the hard way learn more python 3 the hard way pdf" data-order="25" data-sort-title="learn more python 3 the hard way">
           <a class="card-title" href="./v/learn-more-python3/">Learn More Python 3 the Hard Way</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="python crash course, 2nd edition python crash course, 2nd edition pdf">
+        <li class="card" data-search="python crash course, 2nd edition python crash course, 2nd edition pdf" data-order="26" data-sort-title="python crash course, 2nd edition">
           <a class="card-title" href="./v/python-crash-course2/">Python Crash Course, 2nd Edition</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card card-multi" data-search="idea bank - technology idea bank - technology summary pdf pdf">
+        <li class="card card-multi" data-search="idea bank - technology idea bank - technology summary pdf pdf" data-order="27" data-sort-title="idea bank - technology">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Idea Bank - Technology">Idea Bank - Technology<span class="visually-hidden">, 2 links</span></button>
           <ul class="card-links">
             <li><a href="./v/idea-bank-technology/">Idea Bank - Technology</a><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></li>
@@ -291,7 +308,7 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 2 links</span></div>
         </li>
-        <li class="card card-multi" data-search="idea bank - education idea bank - education summary pdf pdf">
+        <li class="card card-multi" data-search="idea bank - education idea bank - education summary pdf pdf" data-order="28" data-sort-title="idea bank - education">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Idea Bank - Education">Idea Bank - Education<span class="visually-hidden">, 2 links</span></button>
           <ul class="card-links">
             <li><a href="./v/idea-bank-education/">Idea Bank - Education</a><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></li>
@@ -299,7 +316,7 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 2 links</span></div>
         </li>
-        <li class="card card-multi" data-search="idea bank - government idea bank - government summary pdf pdf">
+        <li class="card card-multi" data-search="idea bank - government idea bank - government summary pdf pdf" data-order="29" data-sort-title="idea bank - government">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Idea Bank - Government">Idea Bank - Government<span class="visually-hidden">, 2 links</span></button>
           <ul class="card-links">
             <li><a href="./v/idea-bank-government/">Idea Bank - Government</a><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></li>
@@ -307,7 +324,7 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 2 links</span></div>
         </li>
-        <li class="card card-multi" data-search="idea bank - business idea bank - business summary pdf pdf">
+        <li class="card card-multi" data-search="idea bank - business idea bank - business summary pdf pdf" data-order="30" data-sort-title="idea bank - business">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Idea Bank - Business">Idea Bank - Business<span class="visually-hidden">, 2 links</span></button>
           <ul class="card-links">
             <li><a href="./v/idea-bank-business/">Idea Bank - Business</a><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></li>
@@ -315,7 +332,7 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 2 links</span></div>
         </li>
-        <li class="card card-multi" data-search="idea bank - health idea bank - health summary pdf pdf">
+        <li class="card card-multi" data-search="idea bank - health idea bank - health summary pdf pdf" data-order="31" data-sort-title="idea bank - health">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Idea Bank - Health">Idea Bank - Health<span class="visually-hidden">, 2 links</span></button>
           <ul class="card-links">
             <li><a href="./v/idea-bank-health/">Idea Bank - Health</a><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></li>
@@ -323,351 +340,351 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 2 links</span></div>
         </li>
-        <li class="card" data-search="idea bank - examples idea bank - examples pdf">
+        <li class="card" data-search="idea bank - examples idea bank - examples pdf" data-order="32" data-sort-title="idea bank - examples">
           <a class="card-title" href="./v/Idea_Bank_Examples/">Idea Bank - Examples</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="git cheat sheet 1 git cheat sheet 1 pdf">
+        <li class="card" data-search="git cheat sheet 1 git cheat sheet 1 pdf" data-order="33" data-sort-title="git cheat sheet 1">
           <a class="card-title" href="./v/git-cheatsheet1/">Git cheat sheet 1</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="git cheat sheet 2 git cheat sheet 2 pdf">
+        <li class="card" data-search="git cheat sheet 2 git cheat sheet 2 pdf" data-order="34" data-sort-title="git cheat sheet 2">
           <a class="card-title" href="./v/git-cheatsheet2/">Git cheat sheet 2</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="git cheat sheet 3 git cheat sheet 3 pdf">
+        <li class="card" data-search="git cheat sheet 3 git cheat sheet 3 pdf" data-order="35" data-sort-title="git cheat sheet 3">
           <a class="card-title" href="./v/git-cheatsheet3/">Git cheat sheet 3</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="git cheat sheet 4 git cheat sheet 4 pdf">
+        <li class="card" data-search="git cheat sheet 4 git cheat sheet 4 pdf" data-order="36" data-sort-title="git cheat sheet 4">
           <a class="card-title" href="./v/git-cheatsheet4/">Git cheat sheet 4</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="matplotlib cheat sheet 1 matplotlib cheat sheet 1 pdf">
+        <li class="card" data-search="matplotlib cheat sheet 1 matplotlib cheat sheet 1 pdf" data-order="37" data-sort-title="matplotlib cheat sheet 1">
           <a class="card-title" href="./v/matplotlib-cheatsheet1/">Matplotlib cheat sheet 1</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="matplotlib for beginners - cheat sheet 2 matplotlib for beginners - cheat sheet 2 pdf">
+        <li class="card" data-search="matplotlib for beginners - cheat sheet 2 matplotlib for beginners - cheat sheet 2 pdf" data-order="38" data-sort-title="matplotlib for beginners - cheat sheet 2">
           <a class="card-title" href="./v/matplotlib-cheatsheet2/">Matplotlib for beginners - cheat sheet 2</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="matplotlib for intermediate users - cheat sheet 3 matplotlib for intermediate users - cheat sheet 3 pdf">
+        <li class="card" data-search="matplotlib for intermediate users - cheat sheet 3 matplotlib for intermediate users - cheat sheet 3 pdf" data-order="39" data-sort-title="matplotlib for intermediate users - cheat sheet 3">
           <a class="card-title" href="./v/matplotlib-cheatsheet3/">Matplotlib for intermediate users - cheat sheet 3</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="matplotlib tips &amp; tricks - cheat sheet 4 matplotlib tips &amp; tricks - cheat sheet 4 pdf">
+        <li class="card" data-search="matplotlib tips &amp; tricks - cheat sheet 4 matplotlib tips &amp; tricks - cheat sheet 4 pdf" data-order="40" data-sort-title="matplotlib tips &amp; tricks - cheat sheet 4">
           <a class="card-title" href="./v/matplotlib-cheatsheet4/">Matplotlib tips &amp; tricks - cheat sheet 4</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="matplotlib cheat sheet 5 matplotlib cheat sheet 5 pdf">
+        <li class="card" data-search="matplotlib cheat sheet 5 matplotlib cheat sheet 5 pdf" data-order="41" data-sort-title="matplotlib cheat sheet 5">
           <a class="card-title" href="./v/matplotlib-cheatsheet5/">Matplotlib cheat sheet 5</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="cheat sheet deep learning tips tricks cheat sheet deep learning tips tricks pdf">
+        <li class="card" data-search="cheat sheet deep learning tips tricks cheat sheet deep learning tips tricks pdf" data-order="42" data-sort-title="cheat sheet deep learning tips tricks">
           <a class="card-title" href="./v/dl-tips-cheatsheet/">Cheat sheet deep learning tips tricks</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="gre math review - ets gre math review - ets pdf">
+        <li class="card" data-search="gre math review - ets gre math review - ets pdf" data-order="43" data-sort-title="gre math review - ets">
           <a class="card-title" href="./v/ets-gre-math-review/">GRE math review - ETS</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="gre math flashcards gre math flashcards pdf">
+        <li class="card" data-search="gre math flashcards gre math flashcards pdf" data-order="44" data-sort-title="gre math flashcards">
           <a class="card-title" href="./v/gre-math-flashcards/">GRE math flashcards</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="gre quant review gre quant review pdf">
+        <li class="card" data-search="gre quant review gre quant review pdf" data-order="45" data-sort-title="gre quant review">
           <a class="card-title" href="./v/gre-quant-review/">GRE quant review</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="gre sentence equivalence gre sentence equivalence pdf">
+        <li class="card" data-search="gre sentence equivalence gre sentence equivalence pdf" data-order="46" data-sort-title="gre sentence equivalence">
           <a class="card-title" href="./v/gre-sentence-equivalence/">GRE Sentence Equivalence</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="nlp with python and nltk - cheat sheet nlp with python and nltk - cheat sheet pdf">
+        <li class="card" data-search="nlp with python and nltk - cheat sheet nlp with python and nltk - cheat sheet pdf" data-order="47" data-sort-title="nlp with python and nltk - cheat sheet">
           <a class="card-title" href="./v/nlp-with-python-nltk/">NLP with python and NLTK - cheat sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="python in a nutshell: a desktop quick reference 3rd edition python in a nutshell: a desktop quick reference 3rd edition pdf">
+        <li class="card" data-search="python in a nutshell: a desktop quick reference 3rd edition python in a nutshell: a desktop quick reference 3rd edition pdf" data-order="48" data-sort-title="python in a nutshell: a desktop quick reference 3rd edition">
           <a class="card-title" href="./v/python-nutshell3/">Python in a Nutshell: A Desktop Quick Reference 3rd Edition</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="fluent python 2nd edition fluent python 2nd edition pdf">
+        <li class="card" data-search="fluent python 2nd edition fluent python 2nd edition pdf" data-order="49" data-sort-title="fluent python 2nd edition">
           <a class="card-title" href="./v/fluent-python2/">Fluent Python 2nd Edition</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="sql cheat sheet v1 sql cheat sheet v1 pdf">
+        <li class="card" data-search="sql cheat sheet v1 sql cheat sheet v1 pdf" data-order="50" data-sort-title="sql cheat sheet v1">
           <a class="card-title" href="./v/sql-v1/">SQL cheat sheet V1</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="sql cheat sheet v2 sql cheat sheet v2 pdf">
+        <li class="card" data-search="sql cheat sheet v2 sql cheat sheet v2 pdf" data-order="51" data-sort-title="sql cheat sheet v2">
           <a class="card-title" href="./v/sql-v2-dark/">SQL cheat sheet V2</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="paraphrasing strategies paraphrasing strategies pdf">
+        <li class="card" data-search="paraphrasing strategies paraphrasing strategies pdf" data-order="52" data-sort-title="paraphrasing strategies">
           <a class="card-title" href="./v/paraphrase1/">Paraphrasing Strategies</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="javascript cheat sheet javascript cheat sheet pdf">
+        <li class="card" data-search="javascript cheat sheet javascript cheat sheet pdf" data-order="53" data-sort-title="javascript cheat sheet">
           <a class="card-title" href="./v/javascript-cheatsheet/">Javascript cheat sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="typescript control flow analysis typescript control flow analysis pdf">
+        <li class="card" data-search="typescript control flow analysis typescript control flow analysis pdf" data-order="54" data-sort-title="typescript control flow analysis">
           <a class="card-title" href="./v/typescript-control-flow-analysis/">TypeScript Control Flow Analysis</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="typescript types typescript types pdf">
+        <li class="card" data-search="typescript types typescript types pdf" data-order="55" data-sort-title="typescript types">
           <a class="card-title" href="./v/typescript-types/">TypeScript Types</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="typescript interfaces typescript interfaces pdf">
+        <li class="card" data-search="typescript interfaces typescript interfaces pdf" data-order="56" data-sort-title="typescript interfaces">
           <a class="card-title" href="./v/typescript-interfaces/">TypeScript Interfaces</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="typescript classes typescript classes pdf">
+        <li class="card" data-search="typescript classes typescript classes pdf" data-order="57" data-sort-title="typescript classes">
           <a class="card-title" href="./v/typescript-classes/">TypeScript Classes</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="css3 cheat sheet css3 cheat sheet pdf">
+        <li class="card" data-search="css3 cheat sheet css3 cheat sheet pdf" data-order="58" data-sort-title="css3 cheat sheet">
           <a class="card-title" href="./v/css3-cheatsheet/">CSS3 cheat sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="python cheat sheets python cheat sheets pdf">
+        <li class="card" data-search="python cheat sheets python cheat sheets pdf" data-order="59" data-sort-title="python cheat sheets">
           <a class="card-title" href="./v/python-cheatsheets/">Python cheat sheets</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="matplotlib - list of named colors matplotlib - list of named colors pdf">
+        <li class="card" data-search="matplotlib - list of named colors matplotlib - list of named colors pdf" data-order="60" data-sort-title="matplotlib - list of named colors">
           <a class="card-title" href="./v/matplotlib-colors/">Matplotlib - List of named colors</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="rgb hex colors chart rgb hex colors chart pdf">
+        <li class="card" data-search="rgb hex colors chart rgb hex colors chart pdf" data-order="61" data-sort-title="rgb hex colors chart">
           <a class="card-title" href="./v/color-chart/">RGB hex colors chart</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="simplicity-the finer art of creating software cheat sheet simplicity-the finer art of creating software cheat sheet pdf">
+        <li class="card" data-search="simplicity-the finer art of creating software cheat sheet simplicity-the finer art of creating software cheat sheet pdf" data-order="62" data-sort-title="simplicity-the finer art of creating software cheat sheet">
           <a class="card-title" href="./v/simplicity-cheatsheet/">Simplicity-The Finer Art Of Creating Software Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="agile poster agile poster pdf">
+        <li class="card" data-search="agile poster agile poster pdf" data-order="63" data-sort-title="agile poster">
           <a class="card-title" href="./v/agile-poster/">Agile Poster</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="agile and scrum cheat sheet agile and scrum cheat sheet pdf">
+        <li class="card" data-search="agile and scrum cheat sheet agile and scrum cheat sheet pdf" data-order="64" data-sort-title="agile and scrum cheat sheet">
           <a class="card-title" href="./v/agile-scrum-cheatsheet/">Agile and Scrum Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="the ultimate python cheat sheet the ultimate python cheat sheet pdf">
+        <li class="card" data-search="the ultimate python cheat sheet the ultimate python cheat sheet pdf" data-order="65" data-sort-title="the ultimate python cheat sheet">
           <a class="card-title" href="./v/ultimate-python-cheatsheet/">The Ultimate Python Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="python cheat sheet: classes python cheat sheet: classes pdf">
+        <li class="card" data-search="python cheat sheet: classes python cheat sheet: classes pdf" data-order="66" data-sort-title="python cheat sheet: classes">
           <a class="card-title" href="./v/python-cheatsheet-classes/">Python Cheat Sheet: Classes</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="python cheat sheet: functions and tricks python cheat sheet: functions and tricks pdf">
+        <li class="card" data-search="python cheat sheet: functions and tricks python cheat sheet: functions and tricks pdf" data-order="67" data-sort-title="python cheat sheet: functions and tricks">
           <a class="card-title" href="./v/python-cheatsheet-functricks/">Python Cheat Sheet: Functions and Tricks</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="python cheat sheet: 14 interview questions python cheat sheet: 14 interview questions pdf">
+        <li class="card" data-search="python cheat sheet: 14 interview questions python cheat sheet: 14 interview questions pdf" data-order="68" data-sort-title="python cheat sheet: 14 interview questions">
           <a class="card-title" href="./v/python-cheatsheet-interviewqs/">Python Cheat Sheet: 14 Interview Questions</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="python cheat sheet: keywords python cheat sheet: keywords pdf">
+        <li class="card" data-search="python cheat sheet: keywords python cheat sheet: keywords pdf" data-order="69" data-sort-title="python cheat sheet: keywords">
           <a class="card-title" href="./v/python-cheatsheet-keywords/">Python Cheat Sheet: Keywords</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="python cheat sheet: numpy python cheat sheet: numpy pdf">
+        <li class="card" data-search="python cheat sheet: numpy python cheat sheet: numpy pdf" data-order="70" data-sort-title="python cheat sheet: numpy">
           <a class="card-title" href="./v/python-cheatsheet-numpy/">Python Cheat Sheet: NumPy</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="latex cheat sheet latex cheat sheet pdf">
+        <li class="card" data-search="latex cheat sheet latex cheat sheet pdf" data-order="71" data-sort-title="latex cheat sheet">
           <a class="card-title" href="./v/latexsheet/">Latex Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="probability cheat sheet probability cheat sheet pdf">
+        <li class="card" data-search="probability cheat sheet probability cheat sheet pdf" data-order="72" data-sort-title="probability cheat sheet">
           <a class="card-title" href="./v/probability-cheatheet/">Probability Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="asp net core cheat sheet asp net core cheat sheet pdf">
+        <li class="card" data-search="asp net core cheat sheet asp net core cheat sheet pdf" data-order="73" data-sort-title="asp net core cheat sheet">
           <a class="card-title" href="./v/aspnetcore-cheatsheet/">ASP Net Core Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="python regular expressions cheat sheet python regular expressions cheat sheet pdf">
+        <li class="card" data-search="python regular expressions cheat sheet python regular expressions cheat sheet pdf" data-order="74" data-sort-title="python regular expressions cheat sheet">
           <a class="card-title" href="./v/python-regular-exp/">Python Regular Expressions Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="python (regex(pressions|p)?) python (regex(pressions|p)?) pdf">
+        <li class="card" data-search="python (regex(pressions|p)?) python (regex(pressions|p)?) pdf" data-order="75" data-sort-title="python (regex(pressions|p)?)">
           <a class="card-title" href="./v/python-regex/">Python (RegEx(pressions|p)?)</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search=".net regular expressions cheat sheet .net regular expressions cheat sheet pdf">
+        <li class="card" data-search=".net regular expressions cheat sheet .net regular expressions cheat sheet pdf" data-order="76" data-sort-title=".net regular expressions cheat sheet">
           <a class="card-title" href="./v/net-regular-exp/">.Net Regular Expressions Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="sql commands cheat sheet sql commands cheat sheet pdf">
+        <li class="card" data-search="sql commands cheat sheet sql commands cheat sheet pdf" data-order="77" data-sort-title="sql commands cheat sheet">
           <a class="card-title" href="./v/sql-commands/">SQL Commands Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="http headers cheat sheet http headers cheat sheet pdf">
+        <li class="card" data-search="http headers cheat sheet http headers cheat sheet pdf" data-order="78" data-sort-title="http headers cheat sheet">
           <a class="card-title" href="./v/http-headers/">HTTP Headers Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="http status codes cheat sheet http status codes cheat sheet pdf">
+        <li class="card" data-search="http status codes cheat sheet http status codes cheat sheet pdf" data-order="79" data-sort-title="http status codes cheat sheet">
           <a class="card-title" href="./v/http-status-codes/">HTTP Status Codes Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="the web developer&#x27;s seo cheat sheet the web developer&#x27;s seo cheat sheet pdf">
+        <li class="card" data-search="the web developer&#x27;s seo cheat sheet the web developer&#x27;s seo cheat sheet pdf" data-order="80" data-sort-title="the web developer&#x27;s seo cheat sheet">
           <a class="card-title" href="./v/seo-cheatsheet/">The Web Developer&#x27;s SEO Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="redux cheat sheet redux cheat sheet pdf">
+        <li class="card" data-search="redux cheat sheet redux cheat sheet pdf" data-order="81" data-sort-title="redux cheat sheet">
           <a class="card-title" href="./v/redux-cheatsheet/">Redux Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="1300 math formulas 1300 math formulas pdf">
+        <li class="card" data-search="1300 math formulas 1300 math formulas pdf" data-order="82" data-sort-title="1300 math formulas">
           <a class="card-title" href="./v/1300-math-formulas/">1300 Math Formulas</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="vajename riazi vajename riazi pdf">
+        <li class="card" data-search="vajename riazi vajename riazi pdf" data-order="83" data-sort-title="vajename riazi">
           <a class="card-title" href="./v/vajename-riazi/">Vajename Riazi</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="common english mistakes common english mistakes pdf">
+        <li class="card" data-search="common english mistakes common english mistakes pdf" data-order="84" data-sort-title="common english mistakes">
           <a class="card-title" href="./v/common-english-mistakes/">Common English Mistakes</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="html 5 cheat sheet html 5 cheat sheet pdf">
+        <li class="card" data-search="html 5 cheat sheet html 5 cheat sheet pdf" data-order="85" data-sort-title="html 5 cheat sheet">
           <a class="card-title" href="./v/html5-cheatsheet/">HTML 5 Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="data visualization cheat sheet data visualization cheat sheet pdf">
+        <li class="card" data-search="data visualization cheat sheet data visualization cheat sheet pdf" data-order="86" data-sort-title="data visualization cheat sheet">
           <a class="card-title" href="./v/data-visualization-cheatsheet/">Data Visualization Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="phrases + ing phrases + ing pdf">
+        <li class="card" data-search="phrases + ing phrases + ing pdf" data-order="87" data-sort-title="phrases + ing">
           <a class="card-title" href="./v/phrases_ing/">Phrases + ING</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="redundancies redundancies pdf">
+        <li class="card" data-search="redundancies redundancies pdf" data-order="88" data-sort-title="redundancies">
           <a class="card-title" href="./v/redundancies/">Redundancies</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="betty azar grammar - red summary (basic) betty azar grammar - red summary (basic) pdf">
+        <li class="card" data-search="betty azar grammar - red summary (basic) betty azar grammar - red summary (basic) pdf" data-order="89" data-sort-title="betty azar grammar - red summary (basic)">
           <a class="card-title" href="./v/betty-red/">Betty Azar Grammar - Red Summary (Basic)</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="betty azar grammar - black summary (intermediate) betty azar grammar - black summary (intermediate) pdf">
+        <li class="card" data-search="betty azar grammar - black summary (intermediate) betty azar grammar - black summary (intermediate) pdf" data-order="90" data-sort-title="betty azar grammar - black summary (intermediate)">
           <a class="card-title" href="./v/betty-black/">Betty Azar Grammar - Black Summary (Intermediate)</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="betty azar grammar - blue summary (advanced) betty azar grammar - blue summary (advanced) pdf">
+        <li class="card" data-search="betty azar grammar - blue summary (advanced) betty azar grammar - blue summary (advanced) pdf" data-order="91" data-sort-title="betty azar grammar - blue summary (advanced)">
           <a class="card-title" href="./v/betty-blue/">Betty Azar Grammar - Blue Summary (Advanced)</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="linq explained with sketches linq explained with sketches pdf">
+        <li class="card" data-search="linq explained with sketches linq explained with sketches pdf" data-order="92" data-sort-title="linq explained with sketches">
           <a class="card-title" href="./v/linq-sketches/">LINQ explained with sketches</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="design patterns cheat sheet 1 design patterns cheat sheet 1 pdf">
+        <li class="card" data-search="design patterns cheat sheet 1 design patterns cheat sheet 1 pdf" data-order="93" data-sort-title="design patterns cheat sheet 1">
           <a class="card-title" href="./v/design-patterns1/">Design patterns cheat sheet 1</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="design patterns cheat sheet 2 design patterns cheat sheet 2 pdf">
+        <li class="card" data-search="design patterns cheat sheet 2 design patterns cheat sheet 2 pdf" data-order="94" data-sort-title="design patterns cheat sheet 2">
           <a class="card-title" href="./v/design-patterns2/">Design patterns cheat sheet 2</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="python notes python notes pdf">
+        <li class="card" data-search="python notes python notes pdf" data-order="95" data-sort-title="python notes">
           <a class="card-title" href="./v/python-notes/">Python Notes</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="pandas notes pandas notes pdf">
+        <li class="card" data-search="pandas notes pandas notes pdf" data-order="96" data-sort-title="pandas notes">
           <a class="card-title" href="./v/pandas-notes/">Pandas Notes</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="matplotlib notes matplotlib notes pdf">
+        <li class="card" data-search="matplotlib notes matplotlib notes pdf" data-order="97" data-sort-title="matplotlib notes">
           <a class="card-title" href="./v/matplotllib-notes/">Matplotlib Notes</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="numpy cheat sheet numpy cheat sheet pdf">
+        <li class="card" data-search="numpy cheat sheet numpy cheat sheet pdf" data-order="98" data-sort-title="numpy cheat sheet">
           <a class="card-title" href="./v/numpy-cheatsheet/">NumPy cheat sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="scipy cheat sheet scipy cheat sheet pdf">
+        <li class="card" data-search="scipy cheat sheet scipy cheat sheet pdf" data-order="99" data-sort-title="scipy cheat sheet">
           <a class="card-title" href="./v/scipy-cheatsheet/">SciPy cheat sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="pandas cheat sheet pandas cheat sheet pdf">
+        <li class="card" data-search="pandas cheat sheet pandas cheat sheet pdf" data-order="100" data-sort-title="pandas cheat sheet">
           <a class="card-title" href="./v/pandas-cheatsheet/">Pandas cheat sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="review probability theory review probability theory pdf">
+        <li class="card" data-search="review probability theory review probability theory pdf" data-order="101" data-sort-title="review probability theory">
           <a class="card-title" href="./v/probability-theory/">Review Probability Theory</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="python string format python string format pdf">
+        <li class="card" data-search="python string format python string format pdf" data-order="102" data-sort-title="python string format">
           <a class="card-title" href="./v/python-string-format/">Python String Format</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="grammar success in 20 minutes a day grammar success in 20 minutes a day pdf">
+        <li class="card" data-search="grammar success in 20 minutes a day grammar success in 20 minutes a day pdf" data-order="103" data-sort-title="grammar success in 20 minutes a day">
           <a class="card-title" href="./v/grammar-success-in-20-minutes-a-day/">Grammar Success in 20 Minutes a Day</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="english verb tenses english verb tenses pdf">
+        <li class="card" data-search="english verb tenses english verb tenses pdf" data-order="104" data-sort-title="english verb tenses">
           <a class="card-title" href="./v/english-verb-tenses/">English Verb Tenses</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="english grammar in use 5th english grammar in use 5th pdf">
+        <li class="card" data-search="english grammar in use 5th english grammar in use 5th pdf" data-order="105" data-sort-title="english grammar in use 5th">
           <a class="card-title" href="./v/english-grammar-in-use-5th/">English Grammar in Use 5th</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="guide to numpy guide to numpy pdf">
+        <li class="card" data-search="guide to numpy guide to numpy pdf" data-order="106" data-sort-title="guide to numpy">
           <a class="card-title" href="./v/guide-to-numpy/">Guide to NumPy</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="clean code in python (2nd) clean code in python (2nd) pdf">
+        <li class="card" data-search="clean code in python (2nd) clean code in python (2nd) pdf" data-order="107" data-sort-title="clean code in python (2nd)">
           <a class="card-title" href="./v/clean-code-in-python/">Clean Code in Python (2nd)</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="numerical recipes numerical recipes pdf">
+        <li class="card" data-search="numerical recipes numerical recipes pdf" data-order="108" data-sort-title="numerical recipes">
           <a class="card-title" href="./v/numerical-recipes/">Numerical Recipes</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="microsoft-machine learning cheat sheet microsoft-machine learning cheat sheet pdf">
+        <li class="card" data-search="microsoft-machine learning cheat sheet microsoft-machine learning cheat sheet pdf" data-order="109" data-sort-title="microsoft-machine learning cheat sheet">
           <a class="card-title" href="./v/ms-ml-cheatsheet/">Microsoft-Machine Learning Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="machine learning cheat sheet machine learning cheat sheet pdf">
+        <li class="card" data-search="machine learning cheat sheet machine learning cheat sheet pdf" data-order="110" data-sort-title="machine learning cheat sheet">
           <a class="card-title" href="./v/ml-cheatsheet/">Machine Learning Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="recurrent neural network cheat sheet recurrent neural network cheat sheet pdf">
+        <li class="card" data-search="recurrent neural network cheat sheet recurrent neural network cheat sheet pdf" data-order="111" data-sort-title="recurrent neural network cheat sheet">
           <a class="card-title" href="./v/recurrent-neural-network-cheatsheet/">Recurrent Neural Network Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="linear algebra done right linear algebra done right pdf">
+        <li class="card" data-search="linear algebra done right linear algebra done right pdf" data-order="112" data-sort-title="linear algebra done right">
           <a class="card-title" href="./v/linear-algebra-done-right/">Linear Algebra Done Right</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="calculus &amp; derivatives cheat sheet calculus &amp; derivatives cheat sheet pdf">
+        <li class="card" data-search="calculus &amp; derivatives cheat sheet calculus &amp; derivatives cheat sheet pdf" data-order="113" data-sort-title="calculus &amp; derivatives cheat sheet">
           <a class="card-title" href="./v/calculus_derivatives/">Calculus &amp; Derivatives Cheat Sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="statistic formula statistic formula pdf">
+        <li class="card" data-search="statistic formula statistic formula pdf" data-order="114" data-sort-title="statistic formula">
           <a class="card-title" href="./v/Statistic_Formula/">Statistic Formula</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="convergence tests convergence tests pdf">
+        <li class="card" data-search="convergence tests convergence tests pdf" data-order="115" data-sort-title="convergence tests">
           <a class="card-title" href="./v/convergence-tests/">Convergence Tests</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="a quick guide to latex a quick guide to latex pdf">
+        <li class="card" data-search="a quick guide to latex a quick guide to latex pdf" data-order="116" data-sort-title="a quick guide to latex">
           <a class="card-title" href="./v/latex-guide/">A Quick Guide to LaTex</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="machine learning cheatsheet machine learning cheatsheet pdf">
+        <li class="card" data-search="machine learning cheatsheet machine learning cheatsheet pdf" data-order="117" data-sort-title="machine learning cheatsheet">
           <a class="card-title" href="./v/machine-learning-cheatsheet/">Machine Learning Cheatsheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card card-multi" data-search="docker cheat sheet 1 docker cheat sheet 1 docker cheat sheet 2 docker cheat sheet 3 docker cheat sheet 4 docker cheat sheet 5 pdf pdf pdf dockerlabs.collabnix.com dockerlabs.collabnix.com">
+        <li class="card card-multi" data-search="docker cheat sheet 1 docker cheat sheet 1 docker cheat sheet 2 docker cheat sheet 3 docker cheat sheet 4 docker cheat sheet 5 pdf pdf pdf dockerlabs.collabnix.com dockerlabs.collabnix.com" data-order="118" data-sort-title="docker cheat sheet 1">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Docker Cheat sheet 1">Docker Cheat sheet 1<span class="visually-hidden">, 5 links</span></button>
           <ul class="card-links">
             <li><a href="./v/docker1/">Docker Cheat sheet 1</a><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></li>
@@ -678,7 +695,7 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 5 links</span></div>
         </li>
-        <li class="card card-multi" data-search="awk cheat sheet 1 awk cheat sheet 1 awk cheat sheet 2 pdf pdf">
+        <li class="card card-multi" data-search="awk cheat sheet 1 awk cheat sheet 1 awk cheat sheet 2 pdf pdf" data-order="119" data-sort-title="awk cheat sheet 1">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="AWK Cheat sheet 1">AWK Cheat sheet 1<span class="visually-hidden">, 2 links</span></button>
           <ul class="card-links">
             <li><a href="./v/awk1/">AWK Cheat sheet 1</a><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></li>
@@ -686,39 +703,39 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 2 links</span></div>
         </li>
-        <li class="card" data-search="grammar and punctuation cheat sheet grammar and punctuation cheat sheet pdf">
+        <li class="card" data-search="grammar and punctuation cheat sheet grammar and punctuation cheat sheet pdf" data-order="120" data-sort-title="grammar and punctuation cheat sheet">
           <a class="card-title" href="./v/grammar-punctuation/">Grammar and Punctuation Cheat sheet</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="homophones homophones pdf">
+        <li class="card" data-search="homophones homophones pdf" data-order="121" data-sort-title="homophones">
           <a class="card-title" href="./v/homophones/">Homophones</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="linking words linking words pdf">
+        <li class="card" data-search="linking words linking words pdf" data-order="122" data-sort-title="linking words">
           <a class="card-title" href="./v/linking-words/">Linking Words</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="prepositions handbook prepositions handbook pdf">
+        <li class="card" data-search="prepositions handbook prepositions handbook pdf" data-order="123" data-sort-title="prepositions handbook">
           <a class="card-title" href="./v/english-prepositions/">Prepositions Handbook</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="phrasal verbs phrasal verbs pdf">
+        <li class="card" data-search="phrasal verbs phrasal verbs pdf" data-order="124" data-sort-title="phrasal verbs">
           <a class="card-title" href="./v/easy-phrasal-verbs/">Phrasal Verbs</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="shortcut to collocations shortcut to collocations pdf">
+        <li class="card" data-search="shortcut to collocations shortcut to collocations pdf" data-order="125" data-sort-title="shortcut to collocations">
           <a class="card-title" href="./v/shortcut-to-collocations/">Shortcut to Collocations</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="list vs set vs dictionary vs tuple (python) list vs set vs dictionary vs tuple (python) pdf">
+        <li class="card" data-search="list vs set vs dictionary vs tuple (python) list vs set vs dictionary vs tuple (python) pdf" data-order="126" data-sort-title="list vs set vs dictionary vs tuple (python)">
           <a class="card-title" href="./v/python-collections/">List vs Set vs Dictionary vs Tuple (Python)</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="rust programming fundamentals rust programming fundamentals pdf">
+        <li class="card" data-search="rust programming fundamentals rust programming fundamentals pdf" data-order="127" data-sort-title="rust programming fundamentals">
           <a class="card-title" href="./v/rust-programming-fundamentals/">Rust Programming Fundamentals</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card card-multi" data-search="causative verbs causative verbs causative verbs 2 pdf pdf">
+        <li class="card card-multi" data-search="causative verbs causative verbs causative verbs 2 pdf pdf" data-order="128" data-sort-title="causative verbs">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Causative verbs">Causative verbs<span class="visually-hidden">, 2 links</span></button>
           <ul class="card-links">
             <li><a href="./v/causative-verbs/">Causative verbs</a><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></li>
@@ -726,7 +743,7 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 2 links</span></div>
         </li>
-        <li class="card card-multi" data-search="reading examples reading examples reading examples 2 reading examples 3 reading examples 4 reading examples 5 pdf pdf pdf pdf pdf">
+        <li class="card card-multi" data-search="reading examples reading examples reading examples 2 reading examples 3 reading examples 4 reading examples 5 pdf pdf pdf pdf pdf" data-order="129" data-sort-title="reading examples">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Reading Examples">Reading Examples<span class="visually-hidden">, 5 links</span></button>
           <ul class="card-links">
             <li><a href="./v/readings1/">Reading Examples</a><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></li>
@@ -737,7 +754,7 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 5 links</span></div>
         </li>
-        <li class="card card-multi" data-search="speaking ideas speaking ideas fantastic reasons brainstorming cheatsheet pdf pdf pdf">
+        <li class="card card-multi" data-search="speaking ideas speaking ideas fantastic reasons brainstorming cheatsheet pdf pdf pdf" data-order="130" data-sort-title="speaking ideas">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Speaking Ideas">Speaking Ideas<span class="visually-hidden">, 3 links</span></button>
           <ul class="card-links">
             <li><a href="./v/speaking-ideas/">Speaking Ideas</a><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></li>
@@ -746,7 +763,7 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 3 links</span></div>
         </li>
-        <li class="card card-multi" data-search="speaking topics (blue) speaking topics (blue) categorized writing topics pdf pdf">
+        <li class="card card-multi" data-search="speaking topics (blue) speaking topics (blue) categorized writing topics pdf pdf" data-order="131" data-sort-title="speaking topics (blue)">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Speaking topics (blue)">Speaking topics (blue)<span class="visually-hidden">, 2 links</span></button>
           <ul class="card-links">
             <li><a href="./v/speaking-topics/">Speaking topics (blue)</a><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></li>
@@ -754,11 +771,11 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 2 links</span></div>
         </li>
-        <li class="card" data-search="categorized phrases categorized phrases pdf">
+        <li class="card" data-search="categorized phrases categorized phrases pdf" data-order="132" data-sort-title="categorized phrases">
           <a class="card-title" href="./v/categorized-phrases/">Categorized Phrases</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card card-multi" data-search="summary of collocations summary of collocations noteworthy clauses pdf pdf">
+        <li class="card card-multi" data-search="summary of collocations summary of collocations noteworthy clauses pdf pdf" data-order="133" data-sort-title="summary of collocations">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Summary of collocations">Summary of collocations<span class="visually-hidden">, 2 links</span></button>
           <ul class="card-links">
             <li><a href="./v/summary-of-collocations/">Summary of collocations</a><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></li>
@@ -766,23 +783,23 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 2 links</span></div>
         </li>
-        <li class="card" data-search="english collocations in use - intermediate english collocations in use - intermediate pdf">
+        <li class="card" data-search="english collocations in use - intermediate english collocations in use - intermediate pdf" data-order="134" data-sort-title="english collocations in use - intermediate">
           <a class="card-title" href="./v/collocations-in-use-int/">English collocations in use - Intermediate</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="english collocations in use - advanced english collocations in use - advanced pdf">
+        <li class="card" data-search="english collocations in use - advanced english collocations in use - advanced pdf" data-order="135" data-sort-title="english collocations in use - advanced">
           <a class="card-title" href="./v/collocations-in-use-adv/">English collocations in use - Advanced</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="english phrasal verbs in use - advanced english phrasal verbs in use - advanced pdf">
+        <li class="card" data-search="english phrasal verbs in use - advanced english phrasal verbs in use - advanced pdf" data-order="136" data-sort-title="english phrasal verbs in use - advanced">
           <a class="card-title" href="./v/phrasal-verbs-in-use-adv/">English phrasal verbs in use - Advanced</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="fantastic reasons for speaking and writing fantastic reasons for speaking and writing pdf">
+        <li class="card" data-search="fantastic reasons for speaking and writing fantastic reasons for speaking and writing pdf" data-order="137" data-sort-title="fantastic reasons for speaking and writing">
           <a class="card-title" href="./v/FantasticReasons/">Fantastic Reasons for Speaking and Writing</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="ai in medicine - presented by kiarash soleimanzadeh ai in medicine - presented by kiarash soleimanzadeh pdf">
+        <li class="card" data-search="ai in medicine - presented by kiarash soleimanzadeh ai in medicine - presented by kiarash soleimanzadeh pdf" data-order="138" data-sort-title="ai in medicine - presented by kiarash soleimanzadeh">
           <a class="card-title" href="./v/ai-in-medicine-by-kiarash-soleimanzadeh/">AI in Medicine - Presented by Kiarash Soleimanzadeh</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
@@ -825,8 +842,8 @@
     </div>
   </footer>
 
-  <script type="application/json" id="search-index">[["Action Verbs","pdfs"],["Building Grammar Skills For the TOEFL","pdfs"],["GRE_Equation_Guide_TTP","pdfs"],["Transitions","pdfs"],["Transitions Words and Phrases","pdfs"],["Analysis I Cheat Sheet","pdfs"],["Probability & Statistics Cheat Sheet","pdfs"],["Cheat sheet Python Dict Methods","pdfs"],["Cheat sheet Python List Methods","pdfs"],["Cheat sheet Python Set Methods","pdfs"],["Cheat Sheet Python String Methods","pdfs"],["Transitions 3","pdfs"],["Writing brainstorm","pdfs"],["Toefl Expressions & Brainstorm (Speak & Write)","pdfs"],["Prepositions","pdfs"],["Prepositionary","pdfs"],["Longman Essay Activator","pdfs"],["Longman Topic Activator","pdfs"],["Longman Shit Activator","pdfs"],["Perfect Phrases For The TOEFL - Speaking and Writing","pdfs"],["Longman Dictionary Of Common Errors","pdfs"],["Longman Common Mistakes In English","pdfs"],["Collocations 2","pdfs"],["Python cheat sheet","pdfs"],["Learn Python 3 the Hard Way","pdfs"],["Learn More Python 3 the Hard Way","pdfs"],["Python Crash Course, 2nd Edition","pdfs"],["Idea Bank - Technology","pdfs"],["Idea Bank - Education","pdfs"],["Idea Bank - Government","pdfs"],["Idea Bank - Business","pdfs"],["Idea Bank - Health","pdfs"],["Idea Bank - Examples","pdfs"],["Git cheat sheet 1","pdfs"],["Git cheat sheet 2","pdfs"],["Git cheat sheet 3","pdfs"],["Git cheat sheet 4","pdfs"],["Matplotlib cheat sheet 1","pdfs"],["Matplotlib for beginners - cheat sheet 2","pdfs"],["Matplotlib for intermediate users - cheat sheet 3","pdfs"],["Matplotlib tips & tricks - cheat sheet 4","pdfs"],["Matplotlib cheat sheet 5","pdfs"],["Cheat sheet deep learning tips tricks","pdfs"],["GRE math review - ETS","pdfs"],["GRE math flashcards","pdfs"],["GRE quant review","pdfs"],["GRE Sentence Equivalence","pdfs"],["NLP with python and NLTK - cheat sheet","pdfs"],["Python in a Nutshell: A Desktop Quick Reference 3rd Edition","pdfs"],["Fluent Python 2nd Edition","pdfs"],["SQL cheat sheet V1","pdfs"],["SQL cheat sheet V2","pdfs"],["Paraphrasing Strategies","pdfs"],["Javascript cheat sheet","pdfs"],["TypeScript Control Flow Analysis","pdfs"],["TypeScript Types","pdfs"],["TypeScript Interfaces","pdfs"],["TypeScript Classes","pdfs"],["CSS3 cheat sheet","pdfs"],["Python cheat sheets","pdfs"],["Matplotlib - List of named colors","pdfs"],["RGB hex colors chart","pdfs"],["Simplicity-The Finer Art Of Creating Software Cheat Sheet","pdfs"],["Agile Poster","pdfs"],["Agile and Scrum Cheat Sheet","pdfs"],["The Ultimate Python Cheat Sheet","pdfs"],["Python Cheat Sheet: Classes","pdfs"],["Python Cheat Sheet: Functions and Tricks","pdfs"],["Python Cheat Sheet: 14 Interview Questions","pdfs"],["Python Cheat Sheet: Keywords","pdfs"],["Python Cheat Sheet: NumPy","pdfs"],["Latex Cheat Sheet","pdfs"],["Probability Cheat Sheet","pdfs"],["ASP Net Core Cheat Sheet","pdfs"],["Python Regular Expressions Cheat Sheet","pdfs"],["Python (RegEx(pressions|p)?)","pdfs"],[".Net Regular Expressions Cheat Sheet","pdfs"],["SQL Commands Cheat Sheet","pdfs"],["HTTP Headers Cheat Sheet","pdfs"],["HTTP Status Codes Cheat Sheet","pdfs"],["The Web Developer's SEO Cheat Sheet","pdfs"],["Redux Cheat Sheet","pdfs"],["1300 Math Formulas","pdfs"],["Vajename Riazi","pdfs"],["Common English Mistakes","pdfs"],["HTML 5 Cheat Sheet","pdfs"],["Data Visualization Cheat Sheet","pdfs"],["Phrases + ING","pdfs"],["Redundancies","pdfs"],["Betty Azar Grammar - Red Summary (Basic)","pdfs"],["Betty Azar Grammar - Black Summary (Intermediate)","pdfs"],["Betty Azar Grammar - Blue Summary (Advanced)","pdfs"],["LINQ explained with sketches","pdfs"],["Design patterns cheat sheet 1","pdfs"],["Design patterns cheat sheet 2","pdfs"],["Python Notes","pdfs"],["Pandas Notes","pdfs"],["Matplotlib Notes","pdfs"],["NumPy cheat sheet","pdfs"],["SciPy cheat sheet","pdfs"],["Pandas cheat sheet","pdfs"],["Review Probability Theory","pdfs"],["Python String Format","pdfs"],["Grammar Success in 20 Minutes a Day","pdfs"],["English Verb Tenses","pdfs"],["English Grammar in Use 5th","pdfs"],["Guide to NumPy","pdfs"],["Clean Code in Python (2nd)","pdfs"],["Numerical Recipes","pdfs"],["Microsoft-Machine Learning Cheat Sheet","pdfs"],["Machine Learning Cheat Sheet","pdfs"],["Recurrent Neural Network Cheat Sheet","pdfs"],["Linear Algebra Done Right","pdfs"],["Calculus & Derivatives Cheat Sheet","pdfs"],["Statistic Formula","pdfs"],["Convergence Tests","pdfs"],["A Quick Guide to LaTex","pdfs"],["Machine Learning Cheatsheet","pdfs"],["Docker Cheat sheet 1","pdfs"],["AWK Cheat sheet 1","pdfs"],["Grammar and Punctuation Cheat sheet","pdfs"],["Homophones","pdfs"],["Linking Words","pdfs"],["Prepositions Handbook","pdfs"],["Phrasal Verbs","pdfs"],["Shortcut to Collocations","pdfs"],["List vs Set vs Dictionary vs Tuple (Python)","pdfs"],["Rust Programming Fundamentals","pdfs"],["Causative verbs","pdfs"],["Reading Examples","pdfs"],["Speaking Ideas","pdfs"],["Speaking topics (blue)","pdfs"],["Categorized Phrases","pdfs"],["Summary of collocations","pdfs"],["English collocations in use - Intermediate","pdfs"],["English collocations in use - Advanced","pdfs"],["English phrasal verbs in use - Advanced","pdfs"],["Fantastic Reasons for Speaking and Writing","pdfs"],["AI in Medicine - Presented by Kiarash Soleimanzadeh","pdfs"],["Computer science teaching at Stanford","links"],["List of Data Science Cheat sheets to rule the world","links"],["Scientific Visualization: Python + Matplotlib","links"],["Python & OpenGL for Scientific Visualization","links"],["From Python to Numpy","links"],["Cambridge Dictionary","links"],["Merriam-Webster Dictionary","links"],["NLP Cheat Sheet","links"],["Machine Learning - Persian","links"],["The Python Graph Gallery","links"],["HTTP Status Codes","links"],["HTTP Headers","links"],["HTTP Relations","links"],["Collecting All Cheat Sheets","links"],["Introduction to Probability textbook","links"],["Top DATA SCIENCE Cheat Sheets (ML, DL, Python, R, SQL, Maths & Statistics)","links"],["Rico's cheat Sheets","links"],["Laws of UX","links"],["Manage HTML DOM with vanilla JavaScript","links"],["HTML, CSS, and JS Cheat Sheets","links"],["React Cheat Sheet","links"],["90 Days Of DevOps","links"],["30 Days of PWA","links"],["30 Days of JavaScript","links"],["Useful links, scripts, tools and best practice for Microsoft SQL Server Database","links"],["SQL Server scripts for health checks and performance tuning","links"],["Automate SQL Server tasks and encourage best practices","links"],["SQL Server Toolbox repository for Tiger team","links"],["SQL Server Scripts for DBAs","links"],["Mathematics for Machine Learning","links"],["Learn from ML experts at Google","links"],["Google's Machine Learning Crash Course","links"],["Learn mathematics for machine learning","links"],["Linear Regression","links"],["Linear Regression 2","links"],["All Algorithms/Data-Structures implemented in Python","links"],["A Hands-on Introduction to Natural Language Processing (NLP)","links"],["ML YouTube Courses","links"],["4000 Essential English Words 1","links"],["4000 Essential English Words 2","links"],["4000 Essential English Words 3","links"],["4000 Essential English Words 4","links"],["4000 Essential English Words 5","links"],["4000 Essential English Words 6","links"],["English Grammar in Use with Answers","links"],["English Vocabulary in Use Elementary","links"],["English Vocabulary in Use Pre-intermediate and Intermediate","links"],["English Vocabulary in Use Upper-intermediate","links"],["English Vocabulary in Use Advanced","links"],["illustrated Everyday Expressions with Stories 1","links"],["illustrated Everyday Expressions with Stories 2","links"],["250 Ways to Say It in Business English","links"],["More Speak English Like an American","links"],["Mastering the American Accent","links"],["Everyday Conversations: Learning American English","links"],["Easy American Idioms","links"],["English the American Way: A Fun ESL Guide to Language and Culture in the U.S.","links"],["Speak English Around Town","links"],["Speak Business English Like an American","links"],["Speak English Like an American","links"],["Machine Learning Glossary/Cheat Sheet","links"],["Practical Deep Learning","links"],["GRE - Quantitative Walkthroughs","links"],["Speech and Language Processing - Stanford (textbook)","links"],["free-for.dev","links"],["Track Awesome List","links"],["Tips and Tricks C#/.NET","links"],["Pandas - DataFrame Reference","links"],["Python Reference","links"],["Introduction to Scientific Python","links"],["Quick Cheat Sheet/Reference (Python, RegEx, and etc)","links"],["Python for Data Analysis (Book)","links"],["Probabilistic Programming & Bayesian Methods for Hackers","links"],["Developer Roadmaps","links"],["Human Computer Interaction Course","links"],["NLP Course | For You","links"],["Stanford AI Courses","links"],["SQL Server KIT","links"],["Dive into Deep Learning","links"],["Understanding Deep Learning","links"],["Deep Learning","links"],["Deep Learning Course","links"],["Design Patterns in Python","links"],["AI Notes (Andrew Ng)","links"],["List of LaTeX mathematical symbols","links"],["Machine Learning tips and tricks cheat sheet","links"],["Recurrent Neural Networks cheatsheet","links"],["Cheat Sheet of Machine Learning and Python (and Math) Cheat Sheets","links"],["LaTeX","links"],["Improve how you architect webapps","links"],["C# Coding Guidelines","links"],["The Comprehensive TEX Archive Network","links"],["Exploring the art of artificial intelligence","links"],["Introduction to Machine Learning Course","links"],["Deep Learning Course","links"],["NeuroSymbolic Artificial Intelligence Course","links"],["Introduction to Pattern Recognition Course","links"],["Data Mining Course","links"],["Probabilistic Graphical Models Course","links"],["Deep Learning Course","links"],["Machine Learning Course","links"],["Speech and Language Processing (NLP) Course","links"],["Natural Language Processing (NLP) Courses","links"],["Fundamentals of Computer Vision Course","links"],["Machine Learning Engineering for Production (MLOps) Specialization on Coursera","links"],["Hands-on ML with Scikit-Learn, Keras & TF by Aurelien Geron","links"],["Natural Language Processing Specialization on Coursera","links"],["Efficient Python Tricks and Tools for Data Scientists","links"],["Coursera AI for Medicine Specialization","links"],["Generative Adversarial Networks Specialization on Coursera","links"],["Preprocessing For Deep Learning","links"],["Top deep learning Github repositories","links"],["Trending deep learning Github repositories","links"],["Deep Learning Specialization on Coursera","links"],["Zero to Mastery Deep Learning with TensorFlow","links"],["The University of Amsterdam Deep Learning Course","links"],["Math in ML","links"],["Jupyter Notebook Gallery 1","links"],["Deep Learning Notebooks","links"],["Cheatsheet collection for Math, ML, DL, AI. Update frequently","links"],["Social Media Mining: An Introduction (Ebook)","links"],["Feature Selection","links"],["Deep Learning at VU University Amsterdam","links"],["Deep Learning For Computer Vision","links"],["Introduction to Deep Learning (with flavor of NLP)","links"],["The Illustrated Machine Learning website","links"],["Machine Learning Engineering","links"],["Introduction to Data Mining","links"],["Deep Learning","links"],["Deep Learning Systems","links"],["Machine/Deep Learning Resources *","links"],["Introduction to Deep Learning","links"],["Introduction to Deep Learning","links"],["Probabilistic Machine Learning: An Introduction","links"],["Machine Learning University (MLU) from Amazon","links"],["Machine Learning University-Explain","links"],["Interpretable Machine Learning","links"],["Introduction to Machine Learning (I2ML)","links"],["Introduction to Deep Learning Course","links"],["Introduction: Advanced Explainable AI for computer vision","links"],["Deep Learning Drizzle *","links"],["Introduction to Deep Learning (I2DL) (IN2346)","links"],["Machine learning and Deep learning Fundamentals","links"],["60 Implementations/tutorials of deep learning papers with side-by-side notes","links"],["Introduction to Information Retrieval (textbook)","links"],["Introduction to Machine Learning","links"],["Google Python Style Guide","links"],["Learn Makefiles","links"],["Machine learning tutorials","links"],["Path to a free self-taught education in Computer Science!","links"],["Path to a free self-taught education in Data Science!","links"],["Path to a free self-taught education in Bioinformatics!","links"],["Path to a free self-taught education in Mathematics!","links"],["Feature Engineering and Feature Selection","links"],["Annotated Research Paper Implementations","links"],["LaTeX Color Definitions","links"],["React+TypeScript Cheatsheets","links"],["Tailwind cheat sheet 1","links"],["Mermaid Cheat Sheet","links"],["Introduction to Machine Learning","links"],["Deep Learning for Coders with Fastai and PyTorch: AI Applications Without a PhD","links"],["Deep Learning - NYU","links"],["Notes on AI Topics","links"],["Free Online IT Courses For Beginners","links"],["Sharif University - Open Courses","links"],["Sharif University - Machine Learning","links"],["Test Smells [Persian]","links"],["Handy online tools for developers","links"],["Readings that are close to Neo's readings to improve TOEFL reading skill","links"],["Data Mining","links"],["Deep Learning with Python - Book","links"],["Linear Algebra - Gilbert Strang","links"],["JavaScript Event KeyCodes","tools"],["Web Developer Checklist","tools"],["Grid 1","tools"],["Div Table","tools"],["SVG Waves","tools"],["Tiny Wow","tools"],["Icones","tools"],["Readme creator","tools"],["SVG icons/collections","tools"],["CSS Selectors: A Visual Guide","tools"],["CSS Loaders","tools"],["Feature Sliced Design","tools"],["29 Websites For Free Icon Sets","tools"],["Create and share beautiful images of your source code","tools"],["CSS grid cheat sheet","tools"],["CSS flexbox cheat sheet","tools"],["Math Solver","tools"],["Conventional Commits","tools"],["Glassmorphism CSS Generator 1","tools"],["All Online Tools in “One Box”","tools"],["Access 13.3M+ vector icons & stickers","tools"],["Tools for Academic Research","tools"],["Freedom to choose icons","tools"],["A huge collection of SVG logos","tools"],["IcoMoon (Pixel Perfect Icon Solutions)","tools"],["Simple Icons","tools"],["All-in-one OSINT tool for analysing any website","tools"],["Fontello - icon fonts generator","tools"],["Tiny Helpers","tools"],["Online database diagram editor and SQL generator","tools"],["Create beautiful images of your source code","tools"],["High Quality Science Illustrations","tools"],["2,000+ science and medical art visuals","tools"],["Extensions for modern developer tools","tools"],["ChestX-ray8","datasets"],["OpenML","datasets"],["kaggle","datasets"],["Paper With Code","datasets"],["Registry of Open Data on AWS","datasets"],["UC Irvine Machine Learning Repository","datasets"],["Tensorflow Datasets","datasets"],["Microsoft Open Data","datasets"],["Azure Open Datasets","datasets"],["Google Datasets Search","datasets"],["COCO Dataset","datasets"],["Hugging Face Datasets","datasets"],["OASIS Dataset - The Open Access Series of Imaging Studies (brain)","datasets"],["OpenNeuro: MRI, PET, MEG, EEG, and iEEG data","datasets"],["Alzheimer’s Disease Neuroimaging Initiative","datasets"],["Medical Information Mart for Intensive Care (MIMIC Dataset)","datasets"],["The Research Resource for Complex Physiologic Signals (PhysioNet)","datasets"],["32,000 CT images","datasets"],["ImageNet","datasets"],["NBML","datasets"],["Advanced Open Tools and Datasets for Autonomous Driving","datasets"],["Biostatistics Datasets","datasets"],["Integrated Pattern Recognition and Biometrics Lab Datasets","datasets"],["fastMRI","datasets"],["A Multi-site Dataset for Prostate MRI Segmentation","datasets"],["miRNet","datasets"]]</script>
-  <script src="./static/js/directory.js?v=40feda7b" defer></script>
+  <script type="application/json" id="search-index">[["Action Verbs","pdfs",[]],["Building Grammar Skills For the TOEFL","pdfs",[]],["GRE_Equation_Guide_TTP","pdfs",[]],["Transitions","pdfs",[]],["Transitions Words and Phrases","pdfs",[]],["Analysis I Cheat Sheet","pdfs",[]],["Probability & Statistics Cheat Sheet","pdfs",[]],["Cheat sheet Python Dict Methods","pdfs",[]],["Cheat sheet Python List Methods","pdfs",[]],["Cheat sheet Python Set Methods","pdfs",[]],["Cheat Sheet Python String Methods","pdfs",[]],["Transitions 3","pdfs",[]],["Writing brainstorm","pdfs",[]],["Toefl Expressions & Brainstorm (Speak & Write)","pdfs",[]],["Prepositions","pdfs",[]],["Prepositionary","pdfs",[]],["Longman Essay Activator","pdfs",[]],["Longman Topic Activator","pdfs",[]],["Longman Shit Activator","pdfs",[]],["Perfect Phrases For The TOEFL - Speaking and Writing","pdfs",[]],["Longman Dictionary Of Common Errors","pdfs",[]],["Longman Common Mistakes In English","pdfs",[]],["Collocations 2","pdfs",[]],["Python cheat sheet","pdfs",[]],["Learn Python 3 the Hard Way","pdfs",[]],["Learn More Python 3 the Hard Way","pdfs",[]],["Python Crash Course, 2nd Edition","pdfs",[]],["Idea Bank - Technology","pdfs",[]],["Idea Bank - Education","pdfs",[]],["Idea Bank - Government","pdfs",[]],["Idea Bank - Business","pdfs",[]],["Idea Bank - Health","pdfs",[]],["Idea Bank - Examples","pdfs",[]],["Git cheat sheet 1","pdfs",[]],["Git cheat sheet 2","pdfs",[]],["Git cheat sheet 3","pdfs",[]],["Git cheat sheet 4","pdfs",[]],["Matplotlib cheat sheet 1","pdfs",[]],["Matplotlib for beginners - cheat sheet 2","pdfs",[]],["Matplotlib for intermediate users - cheat sheet 3","pdfs",[]],["Matplotlib tips & tricks - cheat sheet 4","pdfs",[]],["Matplotlib cheat sheet 5","pdfs",[]],["Cheat sheet deep learning tips tricks","pdfs",[]],["GRE math review - ETS","pdfs",[]],["GRE math flashcards","pdfs",[]],["GRE quant review","pdfs",[]],["GRE Sentence Equivalence","pdfs",[]],["NLP with python and NLTK - cheat sheet","pdfs",[]],["Python in a Nutshell: A Desktop Quick Reference 3rd Edition","pdfs",[]],["Fluent Python 2nd Edition","pdfs",[]],["SQL cheat sheet V1","pdfs",[]],["SQL cheat sheet V2","pdfs",[]],["Paraphrasing Strategies","pdfs",[]],["Javascript cheat sheet","pdfs",[]],["TypeScript Control Flow Analysis","pdfs",[]],["TypeScript Types","pdfs",[]],["TypeScript Interfaces","pdfs",[]],["TypeScript Classes","pdfs",[]],["CSS3 cheat sheet","pdfs",[]],["Python cheat sheets","pdfs",[]],["Matplotlib - List of named colors","pdfs",[]],["RGB hex colors chart","pdfs",[]],["Simplicity-The Finer Art Of Creating Software Cheat Sheet","pdfs",[]],["Agile Poster","pdfs",[]],["Agile and Scrum Cheat Sheet","pdfs",[]],["The Ultimate Python Cheat Sheet","pdfs",[]],["Python Cheat Sheet: Classes","pdfs",[]],["Python Cheat Sheet: Functions and Tricks","pdfs",[]],["Python Cheat Sheet: 14 Interview Questions","pdfs",[]],["Python Cheat Sheet: Keywords","pdfs",[]],["Python Cheat Sheet: NumPy","pdfs",[]],["Latex Cheat Sheet","pdfs",[]],["Probability Cheat Sheet","pdfs",[]],["ASP Net Core Cheat Sheet","pdfs",[]],["Python Regular Expressions Cheat Sheet","pdfs",[]],["Python (RegEx(pressions|p)?)","pdfs",[]],[".Net Regular Expressions Cheat Sheet","pdfs",[]],["SQL Commands Cheat Sheet","pdfs",[]],["HTTP Headers Cheat Sheet","pdfs",[]],["HTTP Status Codes Cheat Sheet","pdfs",[]],["The Web Developer's SEO Cheat Sheet","pdfs",[]],["Redux Cheat Sheet","pdfs",[]],["1300 Math Formulas","pdfs",[]],["Vajename Riazi","pdfs",[]],["Common English Mistakes","pdfs",[]],["HTML 5 Cheat Sheet","pdfs",[]],["Data Visualization Cheat Sheet","pdfs",[]],["Phrases + ING","pdfs",[]],["Redundancies","pdfs",[]],["Betty Azar Grammar - Red Summary (Basic)","pdfs",[]],["Betty Azar Grammar - Black Summary (Intermediate)","pdfs",[]],["Betty Azar Grammar - Blue Summary (Advanced)","pdfs",[]],["LINQ explained with sketches","pdfs",[]],["Design patterns cheat sheet 1","pdfs",[]],["Design patterns cheat sheet 2","pdfs",[]],["Python Notes","pdfs",[]],["Pandas Notes","pdfs",[]],["Matplotlib Notes","pdfs",[]],["NumPy cheat sheet","pdfs",[]],["SciPy cheat sheet","pdfs",[]],["Pandas cheat sheet","pdfs",[]],["Review Probability Theory","pdfs",[]],["Python String Format","pdfs",[]],["Grammar Success in 20 Minutes a Day","pdfs",[]],["English Verb Tenses","pdfs",[]],["English Grammar in Use 5th","pdfs",[]],["Guide to NumPy","pdfs",[]],["Clean Code in Python (2nd)","pdfs",[]],["Numerical Recipes","pdfs",[]],["Microsoft-Machine Learning Cheat Sheet","pdfs",[]],["Machine Learning Cheat Sheet","pdfs",[]],["Recurrent Neural Network Cheat Sheet","pdfs",[]],["Linear Algebra Done Right","pdfs",[]],["Calculus & Derivatives Cheat Sheet","pdfs",[]],["Statistic Formula","pdfs",[]],["Convergence Tests","pdfs",[]],["A Quick Guide to LaTex","pdfs",[]],["Machine Learning Cheatsheet","pdfs",[]],["Docker Cheat sheet 1","pdfs",[]],["AWK Cheat sheet 1","pdfs",[]],["Grammar and Punctuation Cheat sheet","pdfs",[]],["Homophones","pdfs",[]],["Linking Words","pdfs",[]],["Prepositions Handbook","pdfs",[]],["Phrasal Verbs","pdfs",[]],["Shortcut to Collocations","pdfs",[]],["List vs Set vs Dictionary vs Tuple (Python)","pdfs",[]],["Rust Programming Fundamentals","pdfs",[]],["Causative verbs","pdfs",[]],["Reading Examples","pdfs",[]],["Speaking Ideas","pdfs",[]],["Speaking topics (blue)","pdfs",[]],["Categorized Phrases","pdfs",[]],["Summary of collocations","pdfs",[]],["English collocations in use - Intermediate","pdfs",[]],["English collocations in use - Advanced","pdfs",[]],["English phrasal verbs in use - Advanced","pdfs",[]],["Fantastic Reasons for Speaking and Writing","pdfs",[]],["AI in Medicine - Presented by Kiarash Soleimanzadeh","pdfs",[]],["Computer science teaching at Stanford","links",[]],["List of Data Science Cheat sheets to rule the world","links",[]],["Scientific Visualization: Python + Matplotlib","links",[]],["Python & OpenGL for Scientific Visualization","links",[]],["From Python to Numpy","links",[]],["Cambridge Dictionary","links",[]],["Merriam-Webster Dictionary","links",[]],["NLP Cheat Sheet","links",[]],["Machine Learning - Persian","links",[]],["The Python Graph Gallery","links",[]],["HTTP Status Codes","links",[]],["HTTP Headers","links",[]],["HTTP Relations","links",[]],["Collecting All Cheat Sheets","links",[]],["Introduction to Probability textbook","links",[]],["Top DATA SCIENCE Cheat Sheets (ML, DL, Python, R, SQL, Maths & Statistics)","links",[]],["Rico's cheat Sheets","links",[]],["Laws of UX","links",[]],["Manage HTML DOM with vanilla JavaScript","links",[]],["HTML, CSS, and JS Cheat Sheets","links",[]],["React Cheat Sheet","links",[]],["90 Days Of DevOps","links",[]],["30 Days of PWA","links",[]],["30 Days of JavaScript","links",[]],["Useful links, scripts, tools and best practice for Microsoft SQL Server Database","links",[]],["SQL Server scripts for health checks and performance tuning","links",[]],["Automate SQL Server tasks and encourage best practices","links",[]],["SQL Server Toolbox repository for Tiger team","links",[]],["SQL Server Scripts for DBAs","links",[]],["Mathematics for Machine Learning","links",[]],["Learn from ML experts at Google","links",[]],["Google's Machine Learning Crash Course","links",[]],["Learn mathematics for machine learning","links",[]],["Linear Regression","links",[]],["Linear Regression 2","links",[]],["All Algorithms/Data-Structures implemented in Python","links",[]],["A Hands-on Introduction to Natural Language Processing (NLP)","links",[]],["ML YouTube Courses","links",[]],["4000 Essential English Words 1","links",[]],["4000 Essential English Words 2","links",[]],["4000 Essential English Words 3","links",[]],["4000 Essential English Words 4","links",[]],["4000 Essential English Words 5","links",[]],["4000 Essential English Words 6","links",[]],["English Grammar in Use with Answers","links",[]],["English Vocabulary in Use Elementary","links",[]],["English Vocabulary in Use Pre-intermediate and Intermediate","links",[]],["English Vocabulary in Use Upper-intermediate","links",[]],["English Vocabulary in Use Advanced","links",[]],["illustrated Everyday Expressions with Stories 1","links",[]],["illustrated Everyday Expressions with Stories 2","links",[]],["250 Ways to Say It in Business English","links",[]],["More Speak English Like an American","links",[]],["Mastering the American Accent","links",[]],["Everyday Conversations: Learning American English","links",[]],["Easy American Idioms","links",[]],["English the American Way: A Fun ESL Guide to Language and Culture in the U.S.","links",[]],["Speak English Around Town","links",[]],["Speak Business English Like an American","links",[]],["Speak English Like an American","links",[]],["Machine Learning Glossary/Cheat Sheet","links",[]],["Practical Deep Learning","links",[]],["GRE - Quantitative Walkthroughs","links",[]],["Speech and Language Processing - Stanford (textbook)","links",[]],["free-for.dev","links",[]],["Track Awesome List","links",[]],["Tips and Tricks C#/.NET","links",[]],["Pandas - DataFrame Reference","links",[]],["Python Reference","links",[]],["Introduction to Scientific Python","links",[]],["Quick Cheat Sheet/Reference (Python, RegEx, and etc)","links",[]],["Python for Data Analysis (Book)","links",[]],["Probabilistic Programming & Bayesian Methods for Hackers","links",[]],["Developer Roadmaps","links",[]],["Human Computer Interaction Course","links",[]],["NLP Course | For You","links",[]],["Stanford AI Courses","links",[]],["SQL Server KIT","links",[]],["Dive into Deep Learning","links",[]],["Understanding Deep Learning","links",[]],["Deep Learning","links",[]],["Deep Learning Course","links",[]],["Design Patterns in Python","links",[]],["AI Notes (Andrew Ng)","links",[]],["List of LaTeX mathematical symbols","links",[]],["Machine Learning tips and tricks cheat sheet","links",[]],["Recurrent Neural Networks cheatsheet","links",[]],["Cheat Sheet of Machine Learning and Python (and Math) Cheat Sheets","links",[]],["LaTeX","links",[]],["Improve how you architect webapps","links",[]],["C# Coding Guidelines","links",[]],["The Comprehensive TEX Archive Network","links",[]],["Exploring the art of artificial intelligence","links",[]],["Introduction to Machine Learning Course","links",[]],["Deep Learning Course","links",[]],["NeuroSymbolic Artificial Intelligence Course","links",[]],["Introduction to Pattern Recognition Course","links",[]],["Data Mining Course","links",[]],["Probabilistic Graphical Models Course","links",[]],["Deep Learning Course","links",[]],["Machine Learning Course","links",[]],["Speech and Language Processing (NLP) Course","links",[]],["Natural Language Processing (NLP) Courses","links",[]],["Fundamentals of Computer Vision Course","links",[]],["Machine Learning Engineering for Production (MLOps) Specialization on Coursera","links",[]],["Hands-on ML with Scikit-Learn, Keras & TF by Aurelien Geron","links",[]],["Natural Language Processing Specialization on Coursera","links",[]],["Efficient Python Tricks and Tools for Data Scientists","links",[]],["Coursera AI for Medicine Specialization","links",[]],["Generative Adversarial Networks Specialization on Coursera","links",[]],["Preprocessing For Deep Learning","links",[]],["Top deep learning Github repositories","links",[]],["Trending deep learning Github repositories","links",[]],["Deep Learning Specialization on Coursera","links",[]],["Zero to Mastery Deep Learning with TensorFlow","links",[]],["The University of Amsterdam Deep Learning Course","links",[]],["Math in ML","links",[]],["Jupyter Notebook Gallery 1","links",[]],["Deep Learning Notebooks","links",[]],["Cheatsheet collection for Math, ML, DL, AI. Update frequently","links",[]],["Social Media Mining: An Introduction (Ebook)","links",[]],["Feature Selection","links",[]],["Deep Learning at VU University Amsterdam","links",[]],["Deep Learning For Computer Vision","links",[]],["Introduction to Deep Learning (with flavor of NLP)","links",[]],["The Illustrated Machine Learning website","links",[]],["Machine Learning Engineering","links",[]],["Introduction to Data Mining","links",[]],["Deep Learning","links",[]],["Deep Learning Systems","links",[]],["Machine/Deep Learning Resources *","links",[]],["Introduction to Deep Learning","links",[]],["Introduction to Deep Learning","links",[]],["Probabilistic Machine Learning: An Introduction","links",[]],["Machine Learning University (MLU) from Amazon","links",[]],["Machine Learning University-Explain","links",[]],["Interpretable Machine Learning","links",[]],["Introduction to Machine Learning (I2ML)","links",[]],["Introduction to Deep Learning Course","links",[]],["Introduction: Advanced Explainable AI for computer vision","links",[]],["Deep Learning Drizzle *","links",[]],["Introduction to Deep Learning (I2DL) (IN2346)","links",[]],["Machine learning and Deep learning Fundamentals","links",[]],["60 Implementations/tutorials of deep learning papers with side-by-side notes","links",[]],["Introduction to Information Retrieval (textbook)","links",[]],["Introduction to Machine Learning","links",[]],["Google Python Style Guide","links",[]],["Learn Makefiles","links",[]],["Machine learning tutorials","links",[]],["Path to a free self-taught education in Computer Science!","links",[]],["Path to a free self-taught education in Data Science!","links",[]],["Path to a free self-taught education in Bioinformatics!","links",[]],["Path to a free self-taught education in Mathematics!","links",[]],["Feature Engineering and Feature Selection","links",[]],["Annotated Research Paper Implementations","links",[]],["LaTeX Color Definitions","links",[]],["React+TypeScript Cheatsheets","links",[]],["Tailwind cheat sheet 1","links",[]],["Mermaid Cheat Sheet","links",[]],["Introduction to Machine Learning","links",[]],["Deep Learning for Coders with Fastai and PyTorch: AI Applications Without a PhD","links",[]],["Deep Learning - NYU","links",[]],["Notes on AI Topics","links",[]],["Free Online IT Courses For Beginners","links",[]],["Sharif University - Open Courses","links",[]],["Sharif University - Machine Learning","links",[]],["Test Smells [Persian]","links",[]],["Handy online tools for developers","links",[]],["Readings that are close to Neo's readings to improve TOEFL reading skill","links",[]],["Data Mining","links",[]],["Deep Learning with Python - Book","links",[]],["Linear Algebra - Gilbert Strang","links",[]],["JavaScript Event KeyCodes","tools",[]],["Web Developer Checklist","tools",[]],["Grid 1","tools",[]],["Div Table","tools",[]],["SVG Waves","tools",[]],["Tiny Wow","tools",[]],["Icones","tools",[]],["Readme creator","tools",[]],["SVG icons/collections","tools",[]],["CSS Selectors: A Visual Guide","tools",[]],["CSS Loaders","tools",[]],["Feature Sliced Design","tools",[]],["29 Websites For Free Icon Sets","tools",[]],["Create and share beautiful images of your source code","tools",[]],["CSS grid cheat sheet","tools",[]],["CSS flexbox cheat sheet","tools",[]],["Math Solver","tools",[]],["Conventional Commits","tools",[]],["Glassmorphism CSS Generator 1","tools",[]],["All Online Tools in “One Box”","tools",[]],["Access 13.3M+ vector icons & stickers","tools",[]],["Tools for Academic Research","tools",[]],["Freedom to choose icons","tools",[]],["A huge collection of SVG logos","tools",[]],["IcoMoon (Pixel Perfect Icon Solutions)","tools",[]],["Simple Icons","tools",[]],["All-in-one OSINT tool for analysing any website","tools",[]],["Fontello - icon fonts generator","tools",[]],["Tiny Helpers","tools",[]],["Online database diagram editor and SQL generator","tools",[]],["Create beautiful images of your source code","tools",[]],["High Quality Science Illustrations","tools",[]],["2,000+ science and medical art visuals","tools",[]],["Extensions for modern developer tools","tools",[]],["ChestX-ray8","datasets",[]],["OpenML","datasets",[]],["kaggle","datasets",[]],["Paper With Code","datasets",[]],["Registry of Open Data on AWS","datasets",[]],["UC Irvine Machine Learning Repository","datasets",[]],["Tensorflow Datasets","datasets",[]],["Microsoft Open Data","datasets",[]],["Azure Open Datasets","datasets",[]],["Google Datasets Search","datasets",[]],["COCO Dataset","datasets",[]],["Hugging Face Datasets","datasets",[]],["OASIS Dataset - The Open Access Series of Imaging Studies (brain)","datasets",[]],["OpenNeuro: MRI, PET, MEG, EEG, and iEEG data","datasets",[]],["Alzheimer’s Disease Neuroimaging Initiative","datasets",[]],["Medical Information Mart for Intensive Care (MIMIC Dataset)","datasets",[]],["The Research Resource for Complex Physiologic Signals (PhysioNet)","datasets",[]],["32,000 CT images","datasets",[]],["ImageNet","datasets",[]],["NBML","datasets",[]],["Advanced Open Tools and Datasets for Autonomous Driving","datasets",[]],["Biostatistics Datasets","datasets",[]],["Integrated Pattern Recognition and Biometrics Lab Datasets","datasets",[]],["fastMRI","datasets",[]],["A Multi-site Dataset for Prostate MRI Segmentation","datasets",[]],["miRNet","datasets",[]]]</script>
+  <script src="./static/js/directory.js?v=dbf8210c" defer></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {

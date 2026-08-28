@@ -5,20 +5,34 @@
 # An entry needs a title and a url. Anything with extra `links` renders as a
 # card that opens a modal listing all of them.
 #
-# `description` is optional and always yours to write — nothing is fetched or
-# generated. An entry that has one gets a small (i) button in the top-right
-# corner of its card; the text appears on hover or keyboard focus.
-#
 #   - title: Fluent Python 2nd Edition
 #     url: https://example.com/book
-#     description: Shown in the popover behind the (i) button.
+#     description: Optional. Shown in a popover behind an (i) button.
+#     tags: [python, reference]     # optional; searchable, and clickable chips
+#     pinned: true                  # optional; holds the entry at the top
+#     added: 2026-08-28             # optional; the default sort is newest first
 #     links:
 #       - text: Errata
 #         url: https://example.com/errata
 #
-# Courses are different: each one gets its own page at
-# /courses/<slug>/, with its materials grouped into modules. Paste this
-# under `courses:` to start one.
+# Nothing is fetched or generated — a `description` exists only if you write it.
+#
+# Entries with no `added` keep the order they have in this file and sit below
+# the dated ones, so adding dates gradually does not scramble anything.
+#
+# Talks take two more optional fields, shown as a line under the title:
+#
+#   - title: Making a static site searchable
+#     url: ./v/slides-deck/
+#     event: PyCon
+#     date: 2026-05-14
+#     tags: [talk, search]
+#     links:
+#       - text: Recording
+#         url: https://example.com/video
+#
+# Courses are different: each one gets its own page at /courses/<slug>/, with
+# its materials grouped into modules. Paste this under `courses:` to start one.
 #
 #   - slug: intro-ml
 #     title: Introduction to Machine Learning
@@ -26,7 +40,7 @@
 #     instructor: Some Lecturer
 #     term: Spring 2026
 #     description: One or two lines about the course.
-#     links:                       # optional, shown at the top of the page
+#     links:
 #       - text: Syllabus
 #         url: ./assets/syllabus.pdf
 #     modules:
@@ -36,9 +50,6 @@
 #           - title: Lecture slides
 #             url: ./v/wk1-slides/
 #             type: slides         # slides notes assignment reading video code dataset
-#           - title: Problem set 1
-#             url: ./assets/ps1.pdf
-#             type: assignment
 site:
   title: My Directory
   heading: Everything I keep
@@ -950,6 +961,10 @@ categories:
     url: https://liuquande.github.io/SAML/
   - title: miRNet
     url: https://www.mirnet.ca/miRNet/home.xhtml
+- slug: talks
+  name: Talks
+  blurb: Talks, presentations and slide decks.
+  entries: []
 - slug: courses
   name: Courses
   blurb: Course material, grouped by module.

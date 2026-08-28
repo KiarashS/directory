@@ -2,8 +2,10 @@
 <browserconfig>
     <msapplication>
         <tile>
-            <square150x150logo src="/mstile-150x150.png"/>
-            <TileColor>#da532c</TileColor>
+            <!-- Relative, not "/mstile-...": the site is served from a subpath
+                 on kiarashs.github.io, where a root-absolute path 404s. -->
+            <square150x150logo src="mstile-150x150.png"/>
+            <TileColor>#4f5bd5</TileColor>
         </tile>
     </msapplication>
 </browserconfig>

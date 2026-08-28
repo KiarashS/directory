@@ -20,11 +20,13 @@
   <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+  <link rel="icon" type="image/svg+xml" href="../static/icon.svg">
   <link rel="mask-icon" href="../safari-pinned-tab.svg" color="#4f5bd5">
   <meta name="msapplication-TileColor" content="#4f5bd5">
+  <meta name="msapplication-config" content="../browserconfig.xml">
   <link rel="manifest" href="../manifest.webmanifest">
 
-  <link rel="stylesheet" href="../static/css/directory.css?v=3ebec59e">
+  <link rel="stylesheet" href="../static/css/directory.css?v=a7c7b7c1">
 
   <script>
     // Runs before first paint, so none of this can flash.
@@ -50,6 +52,7 @@
       <g id="i-ext" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-5"/><path d="M10 14 20 4"/><path d="M15 4h5v5"/></g>
       <g id="i-pdf" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/></g>
       <g id="i-layers" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 8l9 5 9-5-9-5z"/><path d="m3 13 9 5 9-5"/></g>
+      <g id="i-pin" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.8V4h6v6.8l2 3.2H7z"/></g>
       <g id="i-info" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v4h1"/></g>
       <g id="i-mat-slides" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></g>
       <g id="i-mat-notes" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M9 12h6M9 16h4"/></g>
@@ -107,6 +110,16 @@
         </button>
       </div>
 
+      <div class="sort-control">
+        <label class="visually-hidden" for="sort">Sort entries</label>
+        <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16"/><path d="m3 8 4-4 4 4"/><path d="M17 20V4"/><path d="m13 16 4 4 4-4"/></svg>
+        <select id="sort" data-sort>
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="az">A – Z</option>
+        </select>
+      </div>
+
       <div class="view-switch" role="group" aria-label="Layout">
         <button type="button" data-view="grid" aria-pressed="true" aria-label="Grid view" title="Grid view">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>
@@ -136,6 +149,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.657 3.582 3 8 3s8-1.343 8-3V6"/><path d="M4 12v6c0 1.657 3.582 3 8 3s8-1.343 8-3v-6"/></svg>
         <span>Datasets</span><span class="tab-count">26</span>
       </a>
+      <a class="tab" href="../talks/" data-slug="talks">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8"/><path d="M12 16v4"/><path d="M8.5 10.5 11 13l4.5-4.5"/></svg>
+        <span>Talks</span><span class="tab-count">0</span>
+      </a>
       <a class="tab" href="../courses/" data-slug="courses">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 9L12 5 2 9l10 4 10-4v6"/><path d="M6 10.6V16c0 1.1 2.7 2 6 2s6-.9 6-2v-5.4"/></svg>
         <span>Courses</span><span class="tab-count">0</span>
@@ -150,323 +167,323 @@
     <p class="visually-hidden" role="status" aria-live="polite" data-live></p>
 
     <ul class="cards">
-        <li class="card" data-search="computer science teaching at stanford computer science teaching at stanford stanford.edu">
+        <li class="card" data-search="computer science teaching at stanford computer science teaching at stanford stanford.edu" data-order="0" data-sort-title="computer science teaching at stanford">
           <a class="card-title" href="https://stanford.edu/~shervine/teaching/" target="_blank" rel="noopener nofollow">Computer science teaching at Stanford</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> stanford.edu</span></div>
         </li>
-        <li class="card" data-search="list of data science cheat sheets to rule the world list of data science cheat sheets to rule the world github.com">
+        <li class="card" data-search="list of data science cheat sheets to rule the world list of data science cheat sheets to rule the world github.com" data-order="1" data-sort-title="list of data science cheat sheets to rule the world">
           <a class="card-title" href="https://github.com/FavioVazquez/ds-cheatsheets" target="_blank" rel="noopener nofollow">List of Data Science Cheat sheets to rule the world</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="scientific visualization: python + matplotlib scientific visualization: python + matplotlib github.com">
+        <li class="card" data-search="scientific visualization: python + matplotlib scientific visualization: python + matplotlib github.com" data-order="2" data-sort-title="scientific visualization: python + matplotlib">
           <a class="card-title" href="https://github.com/rougier/scientific-visualization-book" target="_blank" rel="noopener nofollow">Scientific Visualization: Python + Matplotlib</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="python &amp; opengl for scientific visualization python &amp; opengl for scientific visualization labri.fr">
+        <li class="card" data-search="python &amp; opengl for scientific visualization python &amp; opengl for scientific visualization labri.fr" data-order="3" data-sort-title="python &amp; opengl for scientific visualization">
           <a class="card-title" href="https://www.labri.fr/perso/nrougier/python-opengl/" target="_blank" rel="noopener nofollow">Python &amp; OpenGL for Scientific Visualization</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> labri.fr</span></div>
         </li>
-        <li class="card" data-search="from python to numpy from python to numpy labri.fr">
+        <li class="card" data-search="from python to numpy from python to numpy labri.fr" data-order="4" data-sort-title="from python to numpy">
           <a class="card-title" href="https://www.labri.fr/perso/nrougier/from-python-to-numpy/" target="_blank" rel="noopener nofollow">From Python to Numpy</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> labri.fr</span></div>
         </li>
-        <li class="card" data-search="cambridge dictionary cambridge dictionary pdf">
+        <li class="card" data-search="cambridge dictionary cambridge dictionary pdf" data-order="5" data-sort-title="cambridge dictionary">
           <a class="card-title" href="../v/cambridge-dictionary/">Cambridge Dictionary</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="merriam-webster dictionary merriam-webster dictionary pdf">
+        <li class="card" data-search="merriam-webster dictionary merriam-webster dictionary pdf" data-order="6" data-sort-title="merriam-webster dictionary">
           <a class="card-title" href="../v/mw-dictionary/">Merriam-Webster Dictionary</a>
           <div class="card-foot"><span class="badge badge-pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg> PDF</span></div>
         </li>
-        <li class="card" data-search="nlp cheat sheet nlp cheat sheet cheatography.com">
+        <li class="card" data-search="nlp cheat sheet nlp cheat sheet cheatography.com" data-order="7" data-sort-title="nlp cheat sheet">
           <a class="card-title" href="https://cheatography.com/sree017/cheat-sheets/nlp/" target="_blank" rel="noopener nofollow">NLP Cheat Sheet</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> cheatography.com</span></div>
         </li>
-        <li class="card" data-search="machine learning - persian machine learning - persian mehdev.me">
+        <li class="card" data-search="machine learning - persian machine learning - persian mehdev.me" data-order="8" data-sort-title="machine learning - persian">
           <a class="card-title" href="https://mehdev.me/ml-andrew-ng/" target="_blank" rel="noopener nofollow">Machine Learning - Persian</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> mehdev.me</span></div>
         </li>
-        <li class="card" data-search="the python graph gallery the python graph gallery python-graph-gallery.com">
+        <li class="card" data-search="the python graph gallery the python graph gallery python-graph-gallery.com" data-order="9" data-sort-title="the python graph gallery">
           <a class="card-title" href="https://www.python-graph-gallery.com/" target="_blank" rel="noopener nofollow">The Python Graph Gallery</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> python-graph-gallery.com</span></div>
         </li>
-        <li class="card" data-search="http status codes http status codes httpstatuses.com">
+        <li class="card" data-search="http status codes http status codes httpstatuses.com" data-order="10" data-sort-title="http status codes">
           <a class="card-title" href="https://httpstatuses.com/" target="_blank" rel="noopener nofollow">HTTP Status Codes</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> httpstatuses.com</span></div>
         </li>
-        <li class="card" data-search="http headers http headers github.com">
+        <li class="card" data-search="http headers http headers github.com" data-order="11" data-sort-title="http headers">
           <a class="card-title" href="https://github.com/for-GET/know-your-http-well/blob/master/headers.md" target="_blank" rel="noopener nofollow">HTTP Headers</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="http relations http relations github.com">
+        <li class="card" data-search="http relations http relations github.com" data-order="12" data-sort-title="http relations">
           <a class="card-title" href="https://github.com/for-GET/know-your-http-well/blob/master/relations.md" target="_blank" rel="noopener nofollow">HTTP Relations</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="collecting all cheat sheets collecting all cheat sheets overapi.com">
+        <li class="card" data-search="collecting all cheat sheets collecting all cheat sheets overapi.com" data-order="13" data-sort-title="collecting all cheat sheets">
           <a class="card-title" href="https://overapi.com/" target="_blank" rel="noopener nofollow">Collecting All Cheat Sheets</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> overapi.com</span></div>
         </li>
-        <li class="card" data-search="introduction to probability textbook introduction to probability textbook probabilitybook.net">
+        <li class="card" data-search="introduction to probability textbook introduction to probability textbook probabilitybook.net" data-order="14" data-sort-title="introduction to probability textbook">
           <a class="card-title" href="http://probabilitybook.net/" target="_blank" rel="noopener nofollow">Introduction to Probability textbook</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> probabilitybook.net</span></div>
         </li>
-        <li class="card" data-search="top data science cheat sheets (ml, dl, python, r, sql, maths &amp; statistics) top data science cheat sheets (ml, dl, python, r, sql, maths &amp; statistics) medium.com">
+        <li class="card" data-search="top data science cheat sheets (ml, dl, python, r, sql, maths &amp; statistics) top data science cheat sheets (ml, dl, python, r, sql, maths &amp; statistics) medium.com" data-order="15" data-sort-title="top data science cheat sheets (ml, dl, python, r, sql, maths &amp; statistics)">
           <a class="card-title" href="https://medium.com/@anushkhabajpai/top-data-science-cheat-sheets-ml-dl-python-r-sql-maths-statistics-5239d4568225" target="_blank" rel="noopener nofollow">Top DATA SCIENCE Cheat Sheets (ML, DL, Python, R, SQL, Maths &amp; Statistics)</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> medium.com</span></div>
         </li>
-        <li class="card" data-search="rico&#x27;s cheat sheets rico&#x27;s cheat sheets devhints.io">
+        <li class="card" data-search="rico&#x27;s cheat sheets rico&#x27;s cheat sheets devhints.io" data-order="16" data-sort-title="rico&#x27;s cheat sheets">
           <a class="card-title" href="https://devhints.io/" target="_blank" rel="noopener nofollow">Rico&#x27;s cheat Sheets</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> devhints.io</span></div>
         </li>
-        <li class="card" data-search="laws of ux laws of ux lawsofux.com">
+        <li class="card" data-search="laws of ux laws of ux lawsofux.com" data-order="17" data-sort-title="laws of ux">
           <a class="card-title" href="https://lawsofux.com/" target="_blank" rel="noopener nofollow">Laws of UX</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> lawsofux.com</span></div>
         </li>
-        <li class="card" data-search="manage html dom with vanilla javascript manage html dom with vanilla javascript htmldom.dev">
+        <li class="card" data-search="manage html dom with vanilla javascript manage html dom with vanilla javascript htmldom.dev" data-order="18" data-sort-title="manage html dom with vanilla javascript">
           <a class="card-title" href="https://htmldom.dev/" target="_blank" rel="noopener nofollow">Manage HTML DOM with vanilla JavaScript</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> htmldom.dev</span></div>
         </li>
-        <li class="card" data-search="html, css, and js cheat sheets html, css, and js cheat sheets htmlcheatsheet.com">
+        <li class="card" data-search="html, css, and js cheat sheets html, css, and js cheat sheets htmlcheatsheet.com" data-order="19" data-sort-title="html, css, and js cheat sheets">
           <a class="card-title" href="https://htmlcheatsheet.com/" target="_blank" rel="noopener nofollow">HTML, CSS, and JS Cheat Sheets</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> htmlcheatsheet.com</span></div>
         </li>
-        <li class="card" data-search="react cheat sheet react cheat sheet reactcheatsheet.com">
+        <li class="card" data-search="react cheat sheet react cheat sheet reactcheatsheet.com" data-order="20" data-sort-title="react cheat sheet">
           <a class="card-title" href="https://reactcheatsheet.com/" target="_blank" rel="noopener nofollow">React Cheat Sheet</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> reactcheatsheet.com</span></div>
         </li>
-        <li class="card" data-search="90 days of devops 90 days of devops github.com">
+        <li class="card" data-search="90 days of devops 90 days of devops github.com" data-order="21" data-sort-title="90 days of devops">
           <a class="card-title" href="https://github.com/MichaelCade/90DaysOfDevOps/" target="_blank" rel="noopener nofollow">90 Days Of DevOps</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="30 days of pwa 30 days of pwa microsoft.github.io">
+        <li class="card" data-search="30 days of pwa 30 days of pwa microsoft.github.io" data-order="22" data-sort-title="30 days of pwa">
           <a class="card-title" href="https://microsoft.github.io/win-student-devs/#/30DaysOfPWA/kickoff" target="_blank" rel="noopener nofollow">30 Days of PWA</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> microsoft.github.io</span></div>
         </li>
-        <li class="card" data-search="30 days of javascript 30 days of javascript github.com">
+        <li class="card" data-search="30 days of javascript 30 days of javascript github.com" data-order="23" data-sort-title="30 days of javascript">
           <a class="card-title" href="https://github.com/Asabeneh/30-Days-Of-JavaScript/" target="_blank" rel="noopener nofollow">30 Days of JavaScript</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="useful links, scripts, tools and best practice for microsoft sql server database useful links, scripts, tools and best practice for microsoft sql server database github.com">
+        <li class="card" data-search="useful links, scripts, tools and best practice for microsoft sql server database useful links, scripts, tools and best practice for microsoft sql server database github.com" data-order="24" data-sort-title="useful links, scripts, tools and best practice for microsoft sql server database">
           <a class="card-title" href="https://github.com/ktaranov/sqlserver-kit/" target="_blank" rel="noopener nofollow">Useful links, scripts, tools and best practice for Microsoft SQL Server Database</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="sql server scripts for health checks and performance tuning sql server scripts for health checks and performance tuning github.com">
+        <li class="card" data-search="sql server scripts for health checks and performance tuning sql server scripts for health checks and performance tuning github.com" data-order="25" data-sort-title="sql server scripts for health checks and performance tuning">
           <a class="card-title" href="https://github.com/BrentOzarULTD/SQL-Server-First-Responder-Kit/" target="_blank" rel="noopener nofollow">SQL Server scripts for health checks and performance tuning</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="automate sql server tasks and encourage best practices automate sql server tasks and encourage best practices github.com">
+        <li class="card" data-search="automate sql server tasks and encourage best practices automate sql server tasks and encourage best practices github.com" data-order="26" data-sort-title="automate sql server tasks and encourage best practices">
           <a class="card-title" href="https://github.com/dataplat/dbatools/" target="_blank" rel="noopener nofollow">Automate SQL Server tasks and encourage best practices</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="sql server toolbox repository for tiger team sql server toolbox repository for tiger team github.com">
+        <li class="card" data-search="sql server toolbox repository for tiger team sql server toolbox repository for tiger team github.com" data-order="27" data-sort-title="sql server toolbox repository for tiger team">
           <a class="card-title" href="https://github.com/microsoft/tigertoolbox/" target="_blank" rel="noopener nofollow">SQL Server Toolbox repository for Tiger team</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="sql server scripts for dbas sql server scripts for dbas github.com">
+        <li class="card" data-search="sql server scripts for dbas sql server scripts for dbas github.com" data-order="28" data-sort-title="sql server scripts for dbas">
           <a class="card-title" href="https://github.com/bulentgucuk/DBA-Scripts/" target="_blank" rel="noopener nofollow">SQL Server Scripts for DBAs</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="mathematics for machine learning mathematics for machine learning mml-book.com">
+        <li class="card" data-search="mathematics for machine learning mathematics for machine learning mml-book.com" data-order="29" data-sort-title="mathematics for machine learning">
           <a class="card-title" href="https://mml-book.com/" target="_blank" rel="noopener nofollow">Mathematics for Machine Learning</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> mml-book.com</span></div>
         </li>
-        <li class="card" data-search="learn from ml experts at google learn from ml experts at google ai.google">
+        <li class="card" data-search="learn from ml experts at google learn from ml experts at google ai.google" data-order="30" data-sort-title="learn from ml experts at google">
           <a class="card-title" href="https://ai.google/education/" target="_blank" rel="noopener nofollow">Learn from ML experts at Google</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> ai.google</span></div>
         </li>
-        <li class="card" data-search="google&#x27;s machine learning crash course google&#x27;s machine learning crash course developers.google.com">
+        <li class="card" data-search="google&#x27;s machine learning crash course google&#x27;s machine learning crash course developers.google.com" data-order="31" data-sort-title="google&#x27;s machine learning crash course">
           <a class="card-title" href="https://developers.google.com/machine-learning/crash-course/" target="_blank" rel="noopener nofollow">Google&#x27;s Machine Learning Crash Course</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> developers.google.com</span></div>
         </li>
-        <li class="card" data-search="learn mathematics for machine learning learn mathematics for machine learning github.com">
+        <li class="card" data-search="learn mathematics for machine learning learn mathematics for machine learning github.com" data-order="32" data-sort-title="learn mathematics for machine learning">
           <a class="card-title" href="https://github.com/dair-ai/Mathematics-for-ML/" target="_blank" rel="noopener nofollow">Learn mathematics for machine learning</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="linear regression linear regression github.com">
+        <li class="card" data-search="linear regression linear regression github.com" data-order="33" data-sort-title="linear regression">
           <a class="card-title" href="https://github.com/JuzerShakir/Linear_Regression/" target="_blank" rel="noopener nofollow">Linear Regression</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="linear regression 2 linear regression 2 github.com">
+        <li class="card" data-search="linear regression 2 linear regression 2 github.com" data-order="34" data-sort-title="linear regression 2">
           <a class="card-title" href="https://github.com/karthickai/Linear-Regression/" target="_blank" rel="noopener nofollow">Linear Regression 2</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="all algorithms/data-structures implemented in python all algorithms/data-structures implemented in python the-algorithms.com">
+        <li class="card" data-search="all algorithms/data-structures implemented in python all algorithms/data-structures implemented in python the-algorithms.com" data-order="35" data-sort-title="all algorithms/data-structures implemented in python">
           <a class="card-title" href="https://the-algorithms.com/language/python" target="_blank" rel="noopener nofollow">All Algorithms/Data-Structures implemented in Python</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> the-algorithms.com</span></div>
         </li>
-        <li class="card" data-search="a hands-on introduction to natural language processing (nlp) a hands-on introduction to natural language processing (nlp) github.com">
+        <li class="card" data-search="a hands-on introduction to natural language processing (nlp) a hands-on introduction to natural language processing (nlp) github.com" data-order="36" data-sort-title="a hands-on introduction to natural language processing (nlp)">
           <a class="card-title" href="https://github.com/deskool/nlp-class" target="_blank" rel="noopener nofollow">A Hands-on Introduction to Natural Language Processing (NLP)</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="ml youtube courses ml youtube courses github.com">
+        <li class="card" data-search="ml youtube courses ml youtube courses github.com" data-order="37" data-sort-title="ml youtube courses">
           <a class="card-title" href="https://github.com/dair-ai/ML-YouTube-Courses" target="_blank" rel="noopener nofollow">ML YouTube Courses</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="4000 essential english words 1 4000 essential english words 1 essentialenglish.review">
+        <li class="card" data-search="4000 essential english words 1 4000 essential english words 1 essentialenglish.review" data-order="38" data-sort-title="4000 essential english words 1">
           <a class="card-title" href="https://www.essentialenglish.review/apps/4000-essential-english-words-1/" target="_blank" rel="noopener nofollow">4000 Essential English Words 1</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="4000 essential english words 2 4000 essential english words 2 essentialenglish.review">
+        <li class="card" data-search="4000 essential english words 2 4000 essential english words 2 essentialenglish.review" data-order="39" data-sort-title="4000 essential english words 2">
           <a class="card-title" href="https://www.essentialenglish.review/apps/4000-essential-english-words-2/" target="_blank" rel="noopener nofollow">4000 Essential English Words 2</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="4000 essential english words 3 4000 essential english words 3 essentialenglish.review">
+        <li class="card" data-search="4000 essential english words 3 4000 essential english words 3 essentialenglish.review" data-order="40" data-sort-title="4000 essential english words 3">
           <a class="card-title" href="https://www.essentialenglish.review/apps/4000-essential-english-words-3/" target="_blank" rel="noopener nofollow">4000 Essential English Words 3</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="4000 essential english words 4 4000 essential english words 4 essentialenglish.review">
+        <li class="card" data-search="4000 essential english words 4 4000 essential english words 4 essentialenglish.review" data-order="41" data-sort-title="4000 essential english words 4">
           <a class="card-title" href="https://www.essentialenglish.review/apps/4000-essential-english-words-4/" target="_blank" rel="noopener nofollow">4000 Essential English Words 4</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="4000 essential english words 5 4000 essential english words 5 essentialenglish.review">
+        <li class="card" data-search="4000 essential english words 5 4000 essential english words 5 essentialenglish.review" data-order="42" data-sort-title="4000 essential english words 5">
           <a class="card-title" href="https://www.essentialenglish.review/apps/4000-essential-english-words-5/" target="_blank" rel="noopener nofollow">4000 Essential English Words 5</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="4000 essential english words 6 4000 essential english words 6 essentialenglish.review">
+        <li class="card" data-search="4000 essential english words 6 4000 essential english words 6 essentialenglish.review" data-order="43" data-sort-title="4000 essential english words 6">
           <a class="card-title" href="https://www.essentialenglish.review/apps/4000-essential-english-words-6/" target="_blank" rel="noopener nofollow">4000 Essential English Words 6</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="english grammar in use with answers english grammar in use with answers essentialenglish.review">
+        <li class="card" data-search="english grammar in use with answers english grammar in use with answers essentialenglish.review" data-order="44" data-sort-title="english grammar in use with answers">
           <a class="card-title" href="https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/" target="_blank" rel="noopener nofollow">English Grammar in Use with Answers</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="english vocabulary in use elementary english vocabulary in use elementary essentialenglish.review">
+        <li class="card" data-search="english vocabulary in use elementary english vocabulary in use elementary essentialenglish.review" data-order="45" data-sort-title="english vocabulary in use elementary">
           <a class="card-title" href="https://www.essentialenglish.review/apps/english-vocabulary-in-use-elementary/" target="_blank" rel="noopener nofollow">English Vocabulary in Use Elementary</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="english vocabulary in use pre-intermediate and intermediate english vocabulary in use pre-intermediate and intermediate essentialenglish.review">
+        <li class="card" data-search="english vocabulary in use pre-intermediate and intermediate english vocabulary in use pre-intermediate and intermediate essentialenglish.review" data-order="46" data-sort-title="english vocabulary in use pre-intermediate and intermediate">
           <a class="card-title" href="https://www.essentialenglish.review/apps/english-vocabulary-in-use-pre-intermediate-and-intermediate/" target="_blank" rel="noopener nofollow">English Vocabulary in Use Pre-intermediate and Intermediate</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="english vocabulary in use upper-intermediate english vocabulary in use upper-intermediate essentialenglish.review">
+        <li class="card" data-search="english vocabulary in use upper-intermediate english vocabulary in use upper-intermediate essentialenglish.review" data-order="47" data-sort-title="english vocabulary in use upper-intermediate">
           <a class="card-title" href="https://www.essentialenglish.review/apps/english-vocabulary-in-use-upper-intermediate/" target="_blank" rel="noopener nofollow">English Vocabulary in Use Upper-intermediate</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="english vocabulary in use advanced english vocabulary in use advanced essentialenglish.review">
+        <li class="card" data-search="english vocabulary in use advanced english vocabulary in use advanced essentialenglish.review" data-order="48" data-sort-title="english vocabulary in use advanced">
           <a class="card-title" href="https://www.essentialenglish.review/apps/english-vocabulary-in-use-advanced/" target="_blank" rel="noopener nofollow">English Vocabulary in Use Advanced</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="illustrated everyday expressions with stories 1 illustrated everyday expressions with stories 1 essentialenglish.review">
+        <li class="card" data-search="illustrated everyday expressions with stories 1 illustrated everyday expressions with stories 1 essentialenglish.review" data-order="49" data-sort-title="illustrated everyday expressions with stories 1">
           <a class="card-title" href="https://www.essentialenglish.review/apps/illustrated-everyday-expressions-with-stories-1/" target="_blank" rel="noopener nofollow">illustrated Everyday Expressions with Stories 1</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="illustrated everyday expressions with stories 2 illustrated everyday expressions with stories 2 essentialenglish.review">
+        <li class="card" data-search="illustrated everyday expressions with stories 2 illustrated everyday expressions with stories 2 essentialenglish.review" data-order="50" data-sort-title="illustrated everyday expressions with stories 2">
           <a class="card-title" href="https://www.essentialenglish.review/apps/illustrated-everyday-expressions-with-stories-2/" target="_blank" rel="noopener nofollow">illustrated Everyday Expressions with Stories 2</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="250 ways to say it in business english 250 ways to say it in business english essentialenglish.review">
+        <li class="card" data-search="250 ways to say it in business english 250 ways to say it in business english essentialenglish.review" data-order="51" data-sort-title="250 ways to say it in business english">
           <a class="card-title" href="https://www.essentialenglish.review/apps/250-ways-to-say-it-in-business-english/" target="_blank" rel="noopener nofollow">250 Ways to Say It in Business English</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="more speak english like an american more speak english like an american essentialenglish.review">
+        <li class="card" data-search="more speak english like an american more speak english like an american essentialenglish.review" data-order="52" data-sort-title="more speak english like an american">
           <a class="card-title" href="https://www.essentialenglish.review/apps/more-speak-english-like-an-american/" target="_blank" rel="noopener nofollow">More Speak English Like an American</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="mastering the american accent mastering the american accent essentialenglish.review">
+        <li class="card" data-search="mastering the american accent mastering the american accent essentialenglish.review" data-order="53" data-sort-title="mastering the american accent">
           <a class="card-title" href="https://www.essentialenglish.review/apps/mastering-the-american-accent/" target="_blank" rel="noopener nofollow">Mastering the American Accent</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="everyday conversations: learning american english everyday conversations: learning american english essentialenglish.review">
+        <li class="card" data-search="everyday conversations: learning american english everyday conversations: learning american english essentialenglish.review" data-order="54" data-sort-title="everyday conversations: learning american english">
           <a class="card-title" href="https://www.essentialenglish.review/apps/everyday-conversations-learning-american-english/" target="_blank" rel="noopener nofollow">Everyday Conversations: Learning American English</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="easy american idioms easy american idioms essentialenglish.review">
+        <li class="card" data-search="easy american idioms easy american idioms essentialenglish.review" data-order="55" data-sort-title="easy american idioms">
           <a class="card-title" href="https://www.essentialenglish.review/apps/easy-american-idioms/" target="_blank" rel="noopener nofollow">Easy American Idioms</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="english the american way: a fun esl guide to language and culture in the u.s. english the american way: a fun esl guide to language and culture in the u.s. essentialenglish.review">
+        <li class="card" data-search="english the american way: a fun esl guide to language and culture in the u.s. english the american way: a fun esl guide to language and culture in the u.s. essentialenglish.review" data-order="56" data-sort-title="english the american way: a fun esl guide to language and culture in the u.s.">
           <a class="card-title" href="https://www.essentialenglish.review/apps/english-the-american-way/" target="_blank" rel="noopener nofollow">English the American Way: A Fun ESL Guide to Language and Culture in the U.S.</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="speak english around town speak english around town essentialenglish.review">
+        <li class="card" data-search="speak english around town speak english around town essentialenglish.review" data-order="57" data-sort-title="speak english around town">
           <a class="card-title" href="https://www.essentialenglish.review/apps/speak-english-around-town/" target="_blank" rel="noopener nofollow">Speak English Around Town</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="speak business english like an american speak business english like an american essentialenglish.review">
+        <li class="card" data-search="speak business english like an american speak business english like an american essentialenglish.review" data-order="58" data-sort-title="speak business english like an american">
           <a class="card-title" href="https://www.essentialenglish.review/apps/speak-business-english-like-an-american/" target="_blank" rel="noopener nofollow">Speak Business English Like an American</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="speak english like an american speak english like an american essentialenglish.review">
+        <li class="card" data-search="speak english like an american speak english like an american essentialenglish.review" data-order="59" data-sort-title="speak english like an american">
           <a class="card-title" href="https://www.essentialenglish.review/apps/speak-english-like-an-american/" target="_blank" rel="noopener nofollow">Speak English Like an American</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> essentialenglish.review</span></div>
         </li>
-        <li class="card" data-search="machine learning glossary/cheat sheet machine learning glossary/cheat sheet ml-cheatsheet.readthedocs.io">
+        <li class="card" data-search="machine learning glossary/cheat sheet machine learning glossary/cheat sheet ml-cheatsheet.readthedocs.io" data-order="60" data-sort-title="machine learning glossary/cheat sheet">
           <a class="card-title" href="https://ml-cheatsheet.readthedocs.io/en/latest/" target="_blank" rel="noopener nofollow">Machine Learning Glossary/Cheat Sheet</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> ml-cheatsheet.readthedocs.io</span></div>
         </li>
-        <li class="card" data-search="practical deep learning practical deep learning course.fast.ai">
+        <li class="card" data-search="practical deep learning practical deep learning course.fast.ai" data-order="61" data-sort-title="practical deep learning">
           <a class="card-title" href="https://course.fast.ai/" target="_blank" rel="noopener nofollow">Practical Deep Learning</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> course.fast.ai</span></div>
         </li>
-        <li class="card" data-search="gre - quantitative walkthroughs gre - quantitative walkthroughs gregmat.com">
+        <li class="card" data-search="gre - quantitative walkthroughs gre - quantitative walkthroughs gregmat.com" data-order="62" data-sort-title="gre - quantitative walkthroughs">
           <a class="card-title" href="https://www.gregmat.com/learn-quant/" target="_blank" rel="noopener nofollow">GRE - Quantitative Walkthroughs</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> gregmat.com</span></div>
         </li>
-        <li class="card" data-search="speech and language processing - stanford (textbook) speech and language processing - stanford (textbook) web.stanford.edu">
+        <li class="card" data-search="speech and language processing - stanford (textbook) speech and language processing - stanford (textbook) web.stanford.edu" data-order="63" data-sort-title="speech and language processing - stanford (textbook)">
           <a class="card-title" href="https://web.stanford.edu/~jurafsky/slp3/" target="_blank" rel="noopener nofollow">Speech and Language Processing - Stanford (textbook)</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> web.stanford.edu</span></div>
         </li>
-        <li class="card" data-search="free-for.dev free-for.dev free-for.dev">
+        <li class="card" data-search="free-for.dev free-for.dev free-for.dev" data-order="64" data-sort-title="free-for.dev">
           <a class="card-title" href="https://free-for.dev/" target="_blank" rel="noopener nofollow">free-for.dev</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> free-for.dev</span></div>
         </li>
-        <li class="card" data-search="track awesome list track awesome list trackawesomelist.com">
+        <li class="card" data-search="track awesome list track awesome list trackawesomelist.com" data-order="65" data-sort-title="track awesome list">
           <a class="card-title" href="https://www.trackawesomelist.com/" target="_blank" rel="noopener nofollow">Track Awesome List</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> trackawesomelist.com</span></div>
         </li>
-        <li class="card" data-search="tips and tricks c#/.net tips and tricks c#/.net linkdotnet.github.io">
+        <li class="card" data-search="tips and tricks c#/.net tips and tricks c#/.net linkdotnet.github.io" data-order="66" data-sort-title="tips and tricks c#/.net">
           <a class="card-title" href="https://linkdotnet.github.io/tips-and-tricks/" target="_blank" rel="noopener nofollow">Tips and Tricks C#/.NET</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> linkdotnet.github.io</span></div>
         </li>
-        <li class="card" data-search="pandas - dataframe reference pandas - dataframe reference w3schools.com">
+        <li class="card" data-search="pandas - dataframe reference pandas - dataframe reference w3schools.com" data-order="67" data-sort-title="pandas - dataframe reference">
           <a class="card-title" href="https://www.w3schools.com/python/pandas/pandas_ref_dataframe.asp" target="_blank" rel="noopener nofollow">Pandas - DataFrame Reference</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> w3schools.com</span></div>
         </li>
-        <li class="card" data-search="python reference python reference w3schools.com">
+        <li class="card" data-search="python reference python reference w3schools.com" data-order="68" data-sort-title="python reference">
           <a class="card-title" href="https://www.w3schools.com/python/python_reference.asp" target="_blank" rel="noopener nofollow">Python Reference</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> w3schools.com</span></div>
         </li>
-        <li class="card" data-search="introduction to scientific python introduction to scientific python stanford.edu">
+        <li class="card" data-search="introduction to scientific python introduction to scientific python stanford.edu" data-order="69" data-sort-title="introduction to scientific python">
           <a class="card-title" href="http://www.stanford.edu/~schmit/cme193" target="_blank" rel="noopener nofollow">Introduction to Scientific Python</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> stanford.edu</span></div>
         </li>
-        <li class="card" data-search="quick cheat sheet/reference (python, regex, and etc) quick cheat sheet/reference (python, regex, and etc) quickref.me">
+        <li class="card" data-search="quick cheat sheet/reference (python, regex, and etc) quick cheat sheet/reference (python, regex, and etc) quickref.me" data-order="70" data-sort-title="quick cheat sheet/reference (python, regex, and etc)">
           <a class="card-title" href="https://quickref.me/" target="_blank" rel="noopener nofollow">Quick Cheat Sheet/Reference (Python, RegEx, and etc)</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> quickref.me</span></div>
         </li>
-        <li class="card" data-search="python for data analysis (book) python for data analysis (book) wesmckinney.com">
+        <li class="card" data-search="python for data analysis (book) python for data analysis (book) wesmckinney.com" data-order="71" data-sort-title="python for data analysis (book)">
           <a class="card-title" href="https://wesmckinney.com/book/" target="_blank" rel="noopener nofollow">Python for Data Analysis (Book)</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> wesmckinney.com</span></div>
         </li>
-        <li class="card" data-search="probabilistic programming &amp; bayesian methods for hackers probabilistic programming &amp; bayesian methods for hackers dataorigami.net">
+        <li class="card" data-search="probabilistic programming &amp; bayesian methods for hackers probabilistic programming &amp; bayesian methods for hackers dataorigami.net" data-order="72" data-sort-title="probabilistic programming &amp; bayesian methods for hackers">
           <a class="card-title" href="https://dataorigami.net/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/" target="_blank" rel="noopener nofollow">Probabilistic Programming &amp; Bayesian Methods for Hackers</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> dataorigami.net</span></div>
         </li>
-        <li class="card" data-search="developer roadmaps developer roadmaps roadmap.sh">
+        <li class="card" data-search="developer roadmaps developer roadmaps roadmap.sh" data-order="73" data-sort-title="developer roadmaps">
           <a class="card-title" href="https://roadmap.sh/" target="_blank" rel="noopener nofollow">Developer Roadmaps</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> roadmap.sh</span></div>
         </li>
-        <li class="card" data-search="human computer interaction course human computer interaction course elite.polito.it">
+        <li class="card" data-search="human computer interaction course human computer interaction course elite.polito.it" data-order="74" data-sort-title="human computer interaction course">
           <a class="card-title" href="https://elite.polito.it/teaching/02jsk-hci/" target="_blank" rel="noopener nofollow">Human Computer Interaction Course</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> elite.polito.it</span></div>
         </li>
-        <li class="card" data-search="nlp course | for you nlp course | for you lena-voita.github.io">
+        <li class="card" data-search="nlp course | for you nlp course | for you lena-voita.github.io" data-order="75" data-sort-title="nlp course | for you">
           <a class="card-title" href="https://lena-voita.github.io/nlp_course" target="_blank" rel="noopener nofollow">NLP Course | For You</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> lena-voita.github.io</span></div>
         </li>
-        <li class="card" data-search="stanford ai courses stanford ai courses ai.stanford.edu">
+        <li class="card" data-search="stanford ai courses stanford ai courses ai.stanford.edu" data-order="76" data-sort-title="stanford ai courses">
           <a class="card-title" href="https://ai.stanford.edu/courses/" target="_blank" rel="noopener nofollow">Stanford AI Courses</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> ai.stanford.edu</span></div>
         </li>
-        <li class="card" data-search="sql server kit sql server kit sqlserver-kit.org">
+        <li class="card" data-search="sql server kit sql server kit sqlserver-kit.org" data-order="77" data-sort-title="sql server kit">
           <a class="card-title" href="https://sqlserver-kit.org/en" target="_blank" rel="noopener nofollow">SQL Server KIT</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> sqlserver-kit.org</span></div>
         </li>
-        <li class="card" data-search="dive into deep learning dive into deep learning d2l.ai">
+        <li class="card" data-search="dive into deep learning dive into deep learning d2l.ai" data-order="78" data-sort-title="dive into deep learning">
           <a class="card-title" href="https://d2l.ai/" target="_blank" rel="noopener nofollow">Dive into Deep Learning</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> d2l.ai</span></div>
         </li>
-        <li class="card card-multi" data-search="understanding deep learning understanding deep learning slides udlbook.github.io github.com">
+        <li class="card card-multi" data-search="understanding deep learning understanding deep learning slides udlbook.github.io github.com" data-order="79" data-sort-title="understanding deep learning">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Understanding Deep Learning">Understanding Deep Learning<span class="visually-hidden">, 2 links</span></button>
           <ul class="card-links">
             <li><a href="https://udlbook.github.io/udlbook/" target="_blank" rel="noopener nofollow">Understanding Deep Learning</a><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> udlbook.github.io</span></li>
@@ -474,15 +491,15 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 2 links</span></div>
         </li>
-        <li class="card" data-search="deep learning deep learning deeplearningbook.org">
+        <li class="card" data-search="deep learning deep learning deeplearningbook.org" data-order="80" data-sort-title="deep learning">
           <a class="card-title" href="https://www.deeplearningbook.org/" target="_blank" rel="noopener nofollow">Deep Learning</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> deeplearningbook.org</span></div>
         </li>
-        <li class="card" data-search="deep learning course deep learning course cv.znu.ac.ir">
+        <li class="card" data-search="deep learning course deep learning course cv.znu.ac.ir" data-order="81" data-sort-title="deep learning course">
           <a class="card-title" href="http://cv.znu.ac.ir/afsharchim/Deep%20Learning.htm" target="_blank" rel="noopener nofollow">Deep Learning Course</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> cv.znu.ac.ir</span></div>
         </li>
-        <li class="card card-multi" data-search="design patterns in python design patterns in python 1 design patterns in python 2 design patterns in python 3 python-patterns.guide refactoring.guru github.com">
+        <li class="card card-multi" data-search="design patterns in python design patterns in python 1 design patterns in python 2 design patterns in python 3 python-patterns.guide refactoring.guru github.com" data-order="82" data-sort-title="design patterns in python">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Design Patterns in Python">Design Patterns in Python<span class="visually-hidden">, 3 links</span></button>
           <ul class="card-links">
             <li><a href="https://python-patterns.guide/" target="_blank" rel="noopener nofollow">Design Patterns in Python 1</a><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> python-patterns.guide</span></li>
@@ -491,7 +508,7 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 3 links</span></div>
         </li>
-        <li class="card card-multi" data-search="ai notes (andrew ng) ai notes (andrew ng) a complete guide to natural language processing deeplearning.ai deeplearning.ai">
+        <li class="card card-multi" data-search="ai notes (andrew ng) ai notes (andrew ng) a complete guide to natural language processing deeplearning.ai deeplearning.ai" data-order="83" data-sort-title="ai notes (andrew ng)">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="AI Notes (Andrew Ng)">AI Notes (Andrew Ng)<span class="visually-hidden">, 2 links</span></button>
           <ul class="card-links">
             <li><a href="https://www.deeplearning.ai/ai-notes/index.html" target="_blank" rel="noopener nofollow">AI Notes (Andrew Ng)</a><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> deeplearning.ai</span></li>
@@ -499,23 +516,23 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 2 links</span></div>
         </li>
-        <li class="card" data-search="list of latex mathematical symbols list of latex mathematical symbols oeis.org">
+        <li class="card" data-search="list of latex mathematical symbols list of latex mathematical symbols oeis.org" data-order="84" data-sort-title="list of latex mathematical symbols">
           <a class="card-title" href="https://oeis.org/wiki/List_of_LaTeX_mathematical_symbols" target="_blank" rel="noopener nofollow">List of LaTeX mathematical symbols</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> oeis.org</span></div>
         </li>
-        <li class="card" data-search="machine learning tips and tricks cheat sheet machine learning tips and tricks cheat sheet stanford.edu">
+        <li class="card" data-search="machine learning tips and tricks cheat sheet machine learning tips and tricks cheat sheet stanford.edu" data-order="85" data-sort-title="machine learning tips and tricks cheat sheet">
           <a class="card-title" href="https://stanford.edu/~shervine/teaching/cs-229/cheatsheet-machine-learning-tips-and-tricks" target="_blank" rel="noopener nofollow">Machine Learning tips and tricks cheat sheet</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> stanford.edu</span></div>
         </li>
-        <li class="card" data-search="recurrent neural networks cheatsheet recurrent neural networks cheatsheet stanford.edu">
+        <li class="card" data-search="recurrent neural networks cheatsheet recurrent neural networks cheatsheet stanford.edu" data-order="86" data-sort-title="recurrent neural networks cheatsheet">
           <a class="card-title" href="https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-recurrent-neural-networks" target="_blank" rel="noopener nofollow">Recurrent Neural Networks cheatsheet</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> stanford.edu</span></div>
         </li>
-        <li class="card" data-search="cheat sheet of machine learning and python (and math) cheat sheets cheat sheet of machine learning and python (and math) cheat sheets medium.com">
+        <li class="card" data-search="cheat sheet of machine learning and python (and math) cheat sheets cheat sheet of machine learning and python (and math) cheat sheets medium.com" data-order="87" data-sort-title="cheat sheet of machine learning and python (and math) cheat sheets">
           <a class="card-title" href="https://medium.com/machine-learning-in-practice/cheat-sheet-of-machine-learning-and-python-and-math-cheat-sheets-a4afe4e791b6" target="_blank" rel="noopener nofollow">Cheat Sheet of Machine Learning and Python (and Math) Cheat Sheets</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> medium.com</span></div>
         </li>
-        <li class="card card-multi" data-search="latex latex latex 2 latex 3 latex 4 en.wikibooks.org latexref.xyz andy-roberts.net luong-komorebi.github.io">
+        <li class="card card-multi" data-search="latex latex latex 2 latex 3 latex 4 en.wikibooks.org latexref.xyz andy-roberts.net luong-komorebi.github.io" data-order="88" data-sort-title="latex">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="LaTeX">LaTeX<span class="visually-hidden">, 4 links</span></button>
           <ul class="card-links">
             <li><a href="https://en.wikibooks.org/wiki/LaTeX" target="_blank" rel="noopener nofollow">LaTeX</a><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> en.wikibooks.org</span></li>
@@ -525,103 +542,103 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 4 links</span></div>
         </li>
-        <li class="card" data-search="improve how you architect webapps improve how you architect webapps patterns.dev">
+        <li class="card" data-search="improve how you architect webapps improve how you architect webapps patterns.dev" data-order="89" data-sort-title="improve how you architect webapps">
           <a class="card-title" href="https://www.patterns.dev/" target="_blank" rel="noopener nofollow">Improve how you architect webapps</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> patterns.dev</span></div>
         </li>
-        <li class="card" data-search="c# coding guidelines c# coding guidelines csharpcodingguidelines.com">
+        <li class="card" data-search="c# coding guidelines c# coding guidelines csharpcodingguidelines.com" data-order="90" data-sort-title="c# coding guidelines">
           <a class="card-title" href="https://csharpcodingguidelines.com/" target="_blank" rel="noopener nofollow">C# Coding Guidelines</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> csharpcodingguidelines.com</span></div>
         </li>
-        <li class="card" data-search="the comprehensive tex archive network the comprehensive tex archive network ctan.org">
+        <li class="card" data-search="the comprehensive tex archive network the comprehensive tex archive network ctan.org" data-order="91" data-sort-title="the comprehensive tex archive network">
           <a class="card-title" href="https://www.ctan.org/" target="_blank" rel="noopener nofollow">The Comprehensive TEX Archive Network</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> ctan.org</span></div>
         </li>
-        <li class="card" data-search="exploring the art of artificial intelligence exploring the art of artificial intelligence aman.ai">
+        <li class="card" data-search="exploring the art of artificial intelligence exploring the art of artificial intelligence aman.ai" data-order="92" data-sort-title="exploring the art of artificial intelligence">
           <a class="card-title" href="https://aman.ai/" target="_blank" rel="noopener nofollow">Exploring the art of artificial intelligence</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> aman.ai</span></div>
         </li>
-        <li class="card" data-search="introduction to machine learning course introduction to machine learning course cedar.buffalo.edu">
+        <li class="card" data-search="introduction to machine learning course introduction to machine learning course cedar.buffalo.edu" data-order="93" data-sort-title="introduction to machine learning course">
           <a class="card-title" href="https://cedar.buffalo.edu/~srihari/CSE574/index.html" target="_blank" rel="noopener nofollow">Introduction to Machine Learning Course</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> cedar.buffalo.edu</span></div>
         </li>
-        <li class="card" data-search="deep learning course deep learning course cedar.buffalo.edu">
+        <li class="card" data-search="deep learning course deep learning course cedar.buffalo.edu" data-order="94" data-sort-title="deep learning course">
           <a class="card-title" href="https://cedar.buffalo.edu/~srihari/CSE676/index.html" target="_blank" rel="noopener nofollow">Deep Learning Course</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> cedar.buffalo.edu</span></div>
         </li>
-        <li class="card" data-search="neurosymbolic artificial intelligence course neurosymbolic artificial intelligence course cedar.buffalo.edu">
+        <li class="card" data-search="neurosymbolic artificial intelligence course neurosymbolic artificial intelligence course cedar.buffalo.edu" data-order="95" data-sort-title="neurosymbolic artificial intelligence course">
           <a class="card-title" href="https://cedar.buffalo.edu/~srihari/CSE701/index.html" target="_blank" rel="noopener nofollow">NeuroSymbolic Artificial Intelligence Course</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> cedar.buffalo.edu</span></div>
         </li>
-        <li class="card" data-search="introduction to pattern recognition course introduction to pattern recognition course cedar.buffalo.edu">
+        <li class="card" data-search="introduction to pattern recognition course introduction to pattern recognition course cedar.buffalo.edu" data-order="96" data-sort-title="introduction to pattern recognition course">
           <a class="card-title" href="https://cedar.buffalo.edu/~srihari/CSE555/index.html" target="_blank" rel="noopener nofollow">Introduction to Pattern Recognition Course</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> cedar.buffalo.edu</span></div>
         </li>
-        <li class="card" data-search="data mining course data mining course cedar.buffalo.edu">
+        <li class="card" data-search="data mining course data mining course cedar.buffalo.edu" data-order="97" data-sort-title="data mining course">
           <a class="card-title" href="https://cedar.buffalo.edu/~srihari/CSE626/index.html" target="_blank" rel="noopener nofollow">Data Mining Course</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> cedar.buffalo.edu</span></div>
         </li>
-        <li class="card" data-search="probabilistic graphical models course probabilistic graphical models course cedar.buffalo.edu">
+        <li class="card" data-search="probabilistic graphical models course probabilistic graphical models course cedar.buffalo.edu" data-order="98" data-sort-title="probabilistic graphical models course">
           <a class="card-title" href="https://cedar.buffalo.edu/~srihari/CSE674/index.html" target="_blank" rel="noopener nofollow">Probabilistic Graphical Models Course</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> cedar.buffalo.edu</span></div>
         </li>
-        <li class="card" data-search="deep learning course deep learning course ceit.aut.ac.ir">
+        <li class="card" data-search="deep learning course deep learning course ceit.aut.ac.ir" data-order="99" data-sort-title="deep learning course">
           <a class="card-title" href="http://ceit.aut.ac.ir/~keyvanrad/DL961.html" target="_blank" rel="noopener nofollow">Deep Learning Course</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> ceit.aut.ac.ir</span></div>
         </li>
-        <li class="card" data-search="machine learning course machine learning course ceit.aut.ac.ir">
+        <li class="card" data-search="machine learning course machine learning course ceit.aut.ac.ir" data-order="100" data-sort-title="machine learning course">
           <a class="card-title" href="http://ceit.aut.ac.ir/~keyvanrad/ML932.html" target="_blank" rel="noopener nofollow">Machine Learning Course</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> ceit.aut.ac.ir</span></div>
         </li>
-        <li class="card" data-search="speech and language processing (nlp) course speech and language processing (nlp) course web.stanford.edu">
+        <li class="card" data-search="speech and language processing (nlp) course speech and language processing (nlp) course web.stanford.edu" data-order="101" data-sort-title="speech and language processing (nlp) course">
           <a class="card-title" href="https://web.stanford.edu/~jurafsky/slp3/" target="_blank" rel="noopener nofollow">Speech and Language Processing (NLP) Course</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> web.stanford.edu</span></div>
         </li>
-        <li class="card" data-search="natural language processing (nlp) courses natural language processing (nlp) courses sauleh.ir">
+        <li class="card" data-search="natural language processing (nlp) courses natural language processing (nlp) courses sauleh.ir" data-order="102" data-sort-title="natural language processing (nlp) courses">
           <a class="card-title" href="http://www.sauleh.ir/nlp97/course-materials/" target="_blank" rel="noopener nofollow">Natural Language Processing (NLP) Courses</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> sauleh.ir</span></div>
         </li>
-        <li class="card" data-search="fundamentals of computer vision course fundamentals of computer vision course wp.kntu.ac.ir">
+        <li class="card" data-search="fundamentals of computer vision course fundamentals of computer vision course wp.kntu.ac.ir" data-order="103" data-sort-title="fundamentals of computer vision course">
           <a class="card-title" href="https://wp.kntu.ac.ir/nasihatkon/teaching/cvug/s2021/##teaching" target="_blank" rel="noopener nofollow">Fundamentals of Computer Vision Course</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> wp.kntu.ac.ir</span></div>
         </li>
-        <li class="card" data-search="machine learning engineering for production (mlops) specialization on coursera machine learning engineering for production (mlops) specialization on coursera github.com">
+        <li class="card" data-search="machine learning engineering for production (mlops) specialization on coursera machine learning engineering for production (mlops) specialization on coursera github.com" data-order="104" data-sort-title="machine learning engineering for production (mlops) specialization on coursera">
           <a class="card-title" href="https://github.com/amanchadha/coursera-machine-learning-engineering-for-prod-mlops-specialization" target="_blank" rel="noopener nofollow">Machine Learning Engineering for Production (MLOps) Specialization on Coursera</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="hands-on ml with scikit-learn, keras &amp; tf by aurelien geron hands-on ml with scikit-learn, keras &amp; tf by aurelien geron github.com">
+        <li class="card" data-search="hands-on ml with scikit-learn, keras &amp; tf by aurelien geron hands-on ml with scikit-learn, keras &amp; tf by aurelien geron github.com" data-order="105" data-sort-title="hands-on ml with scikit-learn, keras &amp; tf by aurelien geron">
           <a class="card-title" href="https://github.com/Akramz/Hands-on-Machine-Learning-with-Scikit-Learn-Keras-and-TensorFlow" target="_blank" rel="noopener nofollow">Hands-on ML with Scikit-Learn, Keras &amp; TF by Aurelien Geron</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="natural language processing specialization on coursera natural language processing specialization on coursera github.com">
+        <li class="card" data-search="natural language processing specialization on coursera natural language processing specialization on coursera github.com" data-order="106" data-sort-title="natural language processing specialization on coursera">
           <a class="card-title" href="https://github.com/amanchadha/coursera-natural-language-processing-specialization" target="_blank" rel="noopener nofollow">Natural Language Processing Specialization on Coursera</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="efficient python tricks and tools for data scientists efficient python tricks and tools for data scientists khuyentran1401.github.io">
+        <li class="card" data-search="efficient python tricks and tools for data scientists efficient python tricks and tools for data scientists khuyentran1401.github.io" data-order="107" data-sort-title="efficient python tricks and tools for data scientists">
           <a class="card-title" href="https://khuyentran1401.github.io/Efficient_Python_tricks_and_tools_for_data_scientists/README.html" target="_blank" rel="noopener nofollow">Efficient Python Tricks and Tools for Data Scientists</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> khuyentran1401.github.io</span></div>
         </li>
-        <li class="card" data-search="coursera ai for medicine specialization coursera ai for medicine specialization github.com">
+        <li class="card" data-search="coursera ai for medicine specialization coursera ai for medicine specialization github.com" data-order="108" data-sort-title="coursera ai for medicine specialization">
           <a class="card-title" href="https://github.com/amanchadha/coursera-ai-for-medicine-specialization" target="_blank" rel="noopener nofollow">Coursera AI for Medicine Specialization</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="generative adversarial networks specialization on coursera generative adversarial networks specialization on coursera github.com">
+        <li class="card" data-search="generative adversarial networks specialization on coursera generative adversarial networks specialization on coursera github.com" data-order="109" data-sort-title="generative adversarial networks specialization on coursera">
           <a class="card-title" href="https://github.com/amanchadha/coursera-gan-specialization" target="_blank" rel="noopener nofollow">Generative Adversarial Networks Specialization on Coursera</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="preprocessing for deep learning preprocessing for deep learning github.com">
+        <li class="card" data-search="preprocessing for deep learning preprocessing for deep learning github.com" data-order="110" data-sort-title="preprocessing for deep learning">
           <a class="card-title" href="https://github.com/amanchadha/Preprocessing-for-deep-learning" target="_blank" rel="noopener nofollow">Preprocessing For Deep Learning</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="top deep learning github repositories top deep learning github repositories github.com">
+        <li class="card" data-search="top deep learning github repositories top deep learning github repositories github.com" data-order="111" data-sort-title="top deep learning github repositories">
           <a class="card-title" href="https://github.com/amanchadha/Top-Deep-Learning" target="_blank" rel="noopener nofollow">Top deep learning Github repositories</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="trending deep learning github repositories trending deep learning github repositories github.com">
+        <li class="card" data-search="trending deep learning github repositories trending deep learning github repositories github.com" data-order="112" data-sort-title="trending deep learning github repositories">
           <a class="card-title" href="https://github.com/amanchadha/Trending-Deep-Learning" target="_blank" rel="noopener nofollow">Trending deep learning Github repositories</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card card-multi" data-search="deep learning specialization on coursera deep learning specialization on coursera deep learning specialization on coursera 2 github.com github.com">
+        <li class="card card-multi" data-search="deep learning specialization on coursera deep learning specialization on coursera deep learning specialization on coursera 2 github.com github.com" data-order="113" data-sort-title="deep learning specialization on coursera">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Deep Learning Specialization on Coursera">Deep Learning Specialization on Coursera<span class="visually-hidden">, 2 links</span></button>
           <ul class="card-links">
             <li><a href="https://github.com/amanchadha/coursera-deep-learning-specialization" target="_blank" rel="noopener nofollow">Deep Learning Specialization on Coursera</a><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></li>
@@ -629,11 +646,11 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 2 links</span></div>
         </li>
-        <li class="card" data-search="zero to mastery deep learning with tensorflow zero to mastery deep learning with tensorflow github.com">
+        <li class="card" data-search="zero to mastery deep learning with tensorflow zero to mastery deep learning with tensorflow github.com" data-order="114" data-sort-title="zero to mastery deep learning with tensorflow">
           <a class="card-title" href="https://github.com/mrdbourke/tensorflow-deep-learning" target="_blank" rel="noopener nofollow">Zero to Mastery Deep Learning with TensorFlow</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card card-multi" data-search="the university of amsterdam deep learning course the university of amsterdam deep learning course notebooks uvadlc.github.io uvadlc-notebooks.readthedocs.io">
+        <li class="card card-multi" data-search="the university of amsterdam deep learning course the university of amsterdam deep learning course notebooks uvadlc.github.io uvadlc-notebooks.readthedocs.io" data-order="115" data-sort-title="the university of amsterdam deep learning course">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="The University of Amsterdam Deep Learning Course">The University of Amsterdam Deep Learning Course<span class="visually-hidden">, 2 links</span></button>
           <ul class="card-links">
             <li><a href="https://uvadlc.github.io/" target="_blank" rel="noopener nofollow">The University of Amsterdam Deep Learning Course</a><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> uvadlc.github.io</span></li>
@@ -641,11 +658,11 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 2 links</span></div>
         </li>
-        <li class="card" data-search="math in ml math in ml kiarashs.github.io">
+        <li class="card" data-search="math in ml math in ml kiarashs.github.io" data-order="116" data-sort-title="math in ml">
           <a class="card-title" href="https://kiarashs.github.io/Math/" target="_blank" rel="noopener nofollow">Math in ML</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> kiarashs.github.io</span></div>
         </li>
-        <li class="card card-multi" data-search="jupyter notebook gallery 1 jupyter notebook gallery 1 jupyter notebook gallery 2 notebook.community noteable.io">
+        <li class="card card-multi" data-search="jupyter notebook gallery 1 jupyter notebook gallery 1 jupyter notebook gallery 2 notebook.community noteable.io" data-order="117" data-sort-title="jupyter notebook gallery 1">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Jupyter Notebook Gallery 1">Jupyter Notebook Gallery 1<span class="visually-hidden">, 2 links</span></button>
           <ul class="card-links">
             <li><a href="https://notebook.community/" target="_blank" rel="noopener nofollow">Jupyter Notebook Gallery 1</a><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> notebook.community</span></li>
@@ -653,7 +670,7 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 2 links</span></div>
         </li>
-        <li class="card card-multi" data-search="deep learning notebooks deep learning notebooks data-analysis, preparation, and visualization notebooks machine learning notebooks github.com github.com github.com">
+        <li class="card card-multi" data-search="deep learning notebooks deep learning notebooks data-analysis, preparation, and visualization notebooks machine learning notebooks github.com github.com github.com" data-order="118" data-sort-title="deep learning notebooks">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Deep Learning Notebooks">Deep Learning Notebooks<span class="visually-hidden">, 3 links</span></button>
           <ul class="card-links">
             <li><a href="https://github.com/jeffprosise/Deep-Learning" target="_blank" rel="noopener nofollow">Deep Learning Notebooks</a><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></li>
@@ -662,111 +679,111 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 3 links</span></div>
         </li>
-        <li class="card" data-search="cheatsheet collection for math, ml, dl, ai. update frequently cheatsheet collection for math, ml, dl, ai. update frequently github.com">
+        <li class="card" data-search="cheatsheet collection for math, ml, dl, ai. update frequently cheatsheet collection for math, ml, dl, ai. update frequently github.com" data-order="119" data-sort-title="cheatsheet collection for math, ml, dl, ai. update frequently">
           <a class="card-title" href="https://github.com/quanghuy0497/Cheatsheet-collection" target="_blank" rel="noopener nofollow">Cheatsheet collection for Math, ML, DL, AI. Update frequently</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="social media mining: an introduction (ebook) social media mining: an introduction (ebook) socialmediamining.info">
+        <li class="card" data-search="social media mining: an introduction (ebook) social media mining: an introduction (ebook) socialmediamining.info" data-order="120" data-sort-title="social media mining: an introduction (ebook)">
           <a class="card-title" href="http://socialmediamining.info/" target="_blank" rel="noopener nofollow">Social Media Mining: An Introduction (Ebook)</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> socialmediamining.info</span></div>
         </li>
-        <li class="card" data-search="feature selection feature selection jundongl.github.io">
+        <li class="card" data-search="feature selection feature selection jundongl.github.io" data-order="121" data-sort-title="feature selection">
           <a class="card-title" href="https://jundongl.github.io/scikit-feature/" target="_blank" rel="noopener nofollow">Feature Selection</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> jundongl.github.io</span></div>
         </li>
-        <li class="card" data-search="deep learning at vu university amsterdam deep learning at vu university amsterdam dlvu.github.io">
+        <li class="card" data-search="deep learning at vu university amsterdam deep learning at vu university amsterdam dlvu.github.io" data-order="122" data-sort-title="deep learning at vu university amsterdam">
           <a class="card-title" href="https://dlvu.github.io/" target="_blank" rel="noopener nofollow">Deep Learning at VU University Amsterdam</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> dlvu.github.io</span></div>
         </li>
-        <li class="card" data-search="deep learning for computer vision deep learning for computer vision dl4cv-nptel.github.io">
+        <li class="card" data-search="deep learning for computer vision deep learning for computer vision dl4cv-nptel.github.io" data-order="123" data-sort-title="deep learning for computer vision">
           <a class="card-title" href="https://dl4cv-nptel.github.io/DL4CVBK/intro.html" target="_blank" rel="noopener nofollow">Deep Learning For Computer Vision</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> dl4cv-nptel.github.io</span></div>
         </li>
-        <li class="card" data-search="introduction to deep learning (with flavor of nlp) introduction to deep learning (with flavor of nlp) chokkan.github.io">
+        <li class="card" data-search="introduction to deep learning (with flavor of nlp) introduction to deep learning (with flavor of nlp) chokkan.github.io" data-order="124" data-sort-title="introduction to deep learning (with flavor of nlp)">
           <a class="card-title" href="https://chokkan.github.io/deeplearning/" target="_blank" rel="noopener nofollow">Introduction to Deep Learning (with flavor of NLP)</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> chokkan.github.io</span></div>
         </li>
-        <li class="card" data-search="the illustrated machine learning website the illustrated machine learning website illustrated-machine-learning.github.io">
+        <li class="card" data-search="the illustrated machine learning website the illustrated machine learning website illustrated-machine-learning.github.io" data-order="125" data-sort-title="the illustrated machine learning website">
           <a class="card-title" href="https://illustrated-machine-learning.github.io/" target="_blank" rel="noopener nofollow">The Illustrated Machine Learning website</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> illustrated-machine-learning.github.io</span></div>
         </li>
-        <li class="card" data-search="machine learning engineering machine learning engineering mlebook.com">
+        <li class="card" data-search="machine learning engineering machine learning engineering mlebook.com" data-order="126" data-sort-title="machine learning engineering">
           <a class="card-title" href="https://www.mlebook.com/wiki/doku.php?id=start" target="_blank" rel="noopener nofollow">Machine Learning Engineering</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> mlebook.com</span></div>
         </li>
-        <li class="card" data-search="introduction to data mining introduction to data mining www-users.cse.umn.edu">
+        <li class="card" data-search="introduction to data mining introduction to data mining www-users.cse.umn.edu" data-order="127" data-sort-title="introduction to data mining">
           <a class="card-title" href="https://www-users.cse.umn.edu/~kumar001/dmbook/index.php" target="_blank" rel="noopener nofollow">Introduction to Data Mining</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> www-users.cse.umn.edu</span></div>
         </li>
-        <li class="card" data-search="deep learning deep learning atcold.github.io">
+        <li class="card" data-search="deep learning deep learning atcold.github.io" data-order="128" data-sort-title="deep learning">
           <a class="card-title" href="https://atcold.github.io/NYU-DLSP21/" target="_blank" rel="noopener nofollow">Deep Learning</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> atcold.github.io</span></div>
         </li>
-        <li class="card" data-search="deep learning systems deep learning systems dlsyscourse.org">
+        <li class="card" data-search="deep learning systems deep learning systems dlsyscourse.org" data-order="129" data-sort-title="deep learning systems">
           <a class="card-title" href="https://dlsyscourse.org/" target="_blank" rel="noopener nofollow">Deep Learning Systems</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> dlsyscourse.org</span></div>
         </li>
-        <li class="card" data-search="machine/deep learning resources * machine/deep learning resources * mirerfangheibi.github.io">
+        <li class="card" data-search="machine/deep learning resources * machine/deep learning resources * mirerfangheibi.github.io" data-order="130" data-sort-title="machine/deep learning resources *">
           <a class="card-title" href="https://mirerfangheibi.github.io/ml_resources/" target="_blank" rel="noopener nofollow">Machine/Deep Learning Resources *</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> mirerfangheibi.github.io</span></div>
         </li>
-        <li class="card" data-search="introduction to deep learning introduction to deep learning dl.ee.cuhk.edu.hk">
+        <li class="card" data-search="introduction to deep learning introduction to deep learning dl.ee.cuhk.edu.hk" data-order="131" data-sort-title="introduction to deep learning">
           <a class="card-title" href="https://dl.ee.cuhk.edu.hk/" target="_blank" rel="noopener nofollow">Introduction to Deep Learning</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> dl.ee.cuhk.edu.hk</span></div>
         </li>
-        <li class="card" data-search="introduction to deep learning introduction to deep learning cs.princeton.edu">
+        <li class="card" data-search="introduction to deep learning introduction to deep learning cs.princeton.edu" data-order="132" data-sort-title="introduction to deep learning">
           <a class="card-title" href="https://www.cs.princeton.edu/courses/archive/spring16/cos495/" target="_blank" rel="noopener nofollow">Introduction to Deep Learning</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> cs.princeton.edu</span></div>
         </li>
-        <li class="card" data-search="probabilistic machine learning: an introduction probabilistic machine learning: an introduction probml.github.io">
+        <li class="card" data-search="probabilistic machine learning: an introduction probabilistic machine learning: an introduction probml.github.io" data-order="133" data-sort-title="probabilistic machine learning: an introduction">
           <a class="card-title" href="https://probml.github.io/pml-book/book1.html" target="_blank" rel="noopener nofollow">Probabilistic Machine Learning: An Introduction</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> probml.github.io</span></div>
         </li>
-        <li class="card" data-search="machine learning university (mlu) from amazon machine learning university (mlu) from amazon aws.amazon.com">
+        <li class="card" data-search="machine learning university (mlu) from amazon machine learning university (mlu) from amazon aws.amazon.com" data-order="134" data-sort-title="machine learning university (mlu) from amazon">
           <a class="card-title" href="https://aws.amazon.com/machine-learning/mlu/" target="_blank" rel="noopener nofollow">Machine Learning University (MLU) from Amazon</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> aws.amazon.com</span></div>
         </li>
-        <li class="card" data-search="machine learning university-explain machine learning university-explain mlu-explain.github.io">
+        <li class="card" data-search="machine learning university-explain machine learning university-explain mlu-explain.github.io" data-order="135" data-sort-title="machine learning university-explain">
           <a class="card-title" href="https://mlu-explain.github.io/" target="_blank" rel="noopener nofollow">Machine Learning University-Explain</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> mlu-explain.github.io</span></div>
         </li>
-        <li class="card" data-search="interpretable machine learning interpretable machine learning christophm.github.io">
+        <li class="card" data-search="interpretable machine learning interpretable machine learning christophm.github.io" data-order="136" data-sort-title="interpretable machine learning">
           <a class="card-title" href="https://christophm.github.io/interpretable-ml-book/" target="_blank" rel="noopener nofollow">Interpretable Machine Learning</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> christophm.github.io</span></div>
         </li>
-        <li class="card" data-search="introduction to machine learning (i2ml) introduction to machine learning (i2ml) slds-lmu.github.io">
+        <li class="card" data-search="introduction to machine learning (i2ml) introduction to machine learning (i2ml) slds-lmu.github.io" data-order="137" data-sort-title="introduction to machine learning (i2ml)">
           <a class="card-title" href="https://slds-lmu.github.io/i2ml/" target="_blank" rel="noopener nofollow">Introduction to Machine Learning (I2ML)</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> slds-lmu.github.io</span></div>
         </li>
-        <li class="card" data-search="introduction to deep learning course introduction to deep learning course rses-dl-course.github.io">
+        <li class="card" data-search="introduction to deep learning course introduction to deep learning course rses-dl-course.github.io" data-order="138" data-sort-title="introduction to deep learning course">
           <a class="card-title" href="https://rses-dl-course.github.io/" target="_blank" rel="noopener nofollow">Introduction to Deep Learning Course</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> rses-dl-course.github.io</span></div>
         </li>
-        <li class="card" data-search="introduction: advanced explainable ai for computer vision introduction: advanced explainable ai for computer vision jacobgil.github.io">
+        <li class="card" data-search="introduction: advanced explainable ai for computer vision introduction: advanced explainable ai for computer vision jacobgil.github.io" data-order="139" data-sort-title="introduction: advanced explainable ai for computer vision">
           <a class="card-title" href="https://jacobgil.github.io/pytorch-gradcam-book/introduction.html" target="_blank" rel="noopener nofollow">Introduction: Advanced Explainable AI for computer vision</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> jacobgil.github.io</span></div>
         </li>
-        <li class="card" data-search="deep learning drizzle * deep learning drizzle * deep-learning-drizzle.github.io">
+        <li class="card" data-search="deep learning drizzle * deep learning drizzle * deep-learning-drizzle.github.io" data-order="140" data-sort-title="deep learning drizzle *">
           <a class="card-title" href="https://deep-learning-drizzle.github.io/" target="_blank" rel="noopener nofollow">Deep Learning Drizzle *</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> deep-learning-drizzle.github.io</span></div>
         </li>
-        <li class="card" data-search="introduction to deep learning (i2dl) (in2346) introduction to deep learning (i2dl) (in2346) niessner.github.io">
+        <li class="card" data-search="introduction to deep learning (i2dl) (in2346) introduction to deep learning (i2dl) (in2346) niessner.github.io" data-order="141" data-sort-title="introduction to deep learning (i2dl) (in2346)">
           <a class="card-title" href="https://niessner.github.io/I2DL/" target="_blank" rel="noopener nofollow">Introduction to Deep Learning (I2DL) (IN2346)</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> niessner.github.io</span></div>
         </li>
-        <li class="card" data-search="machine learning and deep learning fundamentals machine learning and deep learning fundamentals kenndanielso.github.io">
+        <li class="card" data-search="machine learning and deep learning fundamentals machine learning and deep learning fundamentals kenndanielso.github.io" data-order="142" data-sort-title="machine learning and deep learning fundamentals">
           <a class="card-title" href="https://kenndanielso.github.io/mlrefined/index.html" target="_blank" rel="noopener nofollow">Machine learning and Deep learning Fundamentals</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> kenndanielso.github.io</span></div>
         </li>
-        <li class="card" data-search="60 implementations/tutorials of deep learning papers with side-by-side notes 60 implementations/tutorials of deep learning papers with side-by-side notes github.com">
+        <li class="card" data-search="60 implementations/tutorials of deep learning papers with side-by-side notes 60 implementations/tutorials of deep learning papers with side-by-side notes github.com" data-order="143" data-sort-title="60 implementations/tutorials of deep learning papers with side-by-side notes">
           <a class="card-title" href="https://github.com/labmlai/annotated_deep_learning_paper_implementations" target="_blank" rel="noopener nofollow">60 Implementations/tutorials of deep learning papers with side-by-side notes</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="introduction to information retrieval (textbook) introduction to information retrieval (textbook) nlp.stanford.edu">
+        <li class="card" data-search="introduction to information retrieval (textbook) introduction to information retrieval (textbook) nlp.stanford.edu" data-order="144" data-sort-title="introduction to information retrieval (textbook)">
           <a class="card-title" href="https://nlp.stanford.edu/IR-book/information-retrieval-book.html" target="_blank" rel="noopener nofollow">Introduction to Information Retrieval (textbook)</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> nlp.stanford.edu</span></div>
         </li>
-        <li class="card card-multi" data-search="introduction to machine learning introduction to machine learning machine learning numerical methods for machine learning and data science statistical methods in ai and ml personal.utdallas.edu personal.utdallas.edu personal.utdallas.edu personal.utdallas.edu">
+        <li class="card card-multi" data-search="introduction to machine learning introduction to machine learning machine learning numerical methods for machine learning and data science statistical methods in ai and ml personal.utdallas.edu personal.utdallas.edu personal.utdallas.edu personal.utdallas.edu" data-order="145" data-sort-title="introduction to machine learning">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Introduction to Machine Learning">Introduction to Machine Learning<span class="visually-hidden">, 4 links</span></button>
           <ul class="card-links">
             <li><a href="https://personal.utdallas.edu/~nicholas.ruozzi/cs4375/2023fa/index.html" target="_blank" rel="noopener nofollow">Introduction to Machine Learning</a><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> personal.utdallas.edu</span></li>
@@ -776,51 +793,51 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 4 links</span></div>
         </li>
-        <li class="card" data-search="google python style guide google python style guide google.github.io">
+        <li class="card" data-search="google python style guide google python style guide google.github.io" data-order="146" data-sort-title="google python style guide">
           <a class="card-title" href="https://google.github.io/styleguide/pyguide.html" target="_blank" rel="noopener nofollow">Google Python Style Guide</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> google.github.io</span></div>
         </li>
-        <li class="card" data-search="learn makefiles learn makefiles makefiletutorial.com">
+        <li class="card" data-search="learn makefiles learn makefiles makefiletutorial.com" data-order="147" data-sort-title="learn makefiles">
           <a class="card-title" href="https://makefiletutorial.com/" target="_blank" rel="noopener nofollow">Learn Makefiles</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> makefiletutorial.com</span></div>
         </li>
-        <li class="card" data-search="machine learning tutorials machine learning tutorials github.com">
+        <li class="card" data-search="machine learning tutorials machine learning tutorials github.com" data-order="148" data-sort-title="machine learning tutorials">
           <a class="card-title" href="https://github.com/ethen8181/machine-learning" target="_blank" rel="noopener nofollow">Machine learning tutorials</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="path to a free self-taught education in computer science! path to a free self-taught education in computer science! github.com">
+        <li class="card" data-search="path to a free self-taught education in computer science! path to a free self-taught education in computer science! github.com" data-order="149" data-sort-title="path to a free self-taught education in computer science!">
           <a class="card-title" href="https://github.com/ossu/computer-science" target="_blank" rel="noopener nofollow">Path to a free self-taught education in Computer Science!</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="path to a free self-taught education in data science! path to a free self-taught education in data science! github.com">
+        <li class="card" data-search="path to a free self-taught education in data science! path to a free self-taught education in data science! github.com" data-order="150" data-sort-title="path to a free self-taught education in data science!">
           <a class="card-title" href="https://github.com/ossu/data-science" target="_blank" rel="noopener nofollow">Path to a free self-taught education in Data Science!</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="path to a free self-taught education in bioinformatics! path to a free self-taught education in bioinformatics! github.com">
+        <li class="card" data-search="path to a free self-taught education in bioinformatics! path to a free self-taught education in bioinformatics! github.com" data-order="151" data-sort-title="path to a free self-taught education in bioinformatics!">
           <a class="card-title" href="https://github.com/ossu/bioinformatics" target="_blank" rel="noopener nofollow">Path to a free self-taught education in Bioinformatics!</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="path to a free self-taught education in mathematics! path to a free self-taught education in mathematics! github.com">
+        <li class="card" data-search="path to a free self-taught education in mathematics! path to a free self-taught education in mathematics! github.com" data-order="152" data-sort-title="path to a free self-taught education in mathematics!">
           <a class="card-title" href="https://github.com/ossu/math" target="_blank" rel="noopener nofollow">Path to a free self-taught education in Mathematics!</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="feature engineering and feature selection feature engineering and feature selection github.com">
+        <li class="card" data-search="feature engineering and feature selection feature engineering and feature selection github.com" data-order="153" data-sort-title="feature engineering and feature selection">
           <a class="card-title" href="https://github.com/Yimeng-Zhang/feature-engineering-and-feature-selection" target="_blank" rel="noopener nofollow">Feature Engineering and Feature Selection</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> github.com</span></div>
         </li>
-        <li class="card" data-search="annotated research paper implementations annotated research paper implementations nn.labml.ai">
+        <li class="card" data-search="annotated research paper implementations annotated research paper implementations nn.labml.ai" data-order="154" data-sort-title="annotated research paper implementations">
           <a class="card-title" href="https://nn.labml.ai/" target="_blank" rel="noopener nofollow">Annotated Research Paper Implementations</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> nn.labml.ai</span></div>
         </li>
-        <li class="card" data-search="latex color definitions latex color definitions latexcolor.com">
+        <li class="card" data-search="latex color definitions latex color definitions latexcolor.com" data-order="155" data-sort-title="latex color definitions">
           <a class="card-title" href="https://latexcolor.com/" target="_blank" rel="noopener nofollow">LaTeX Color Definitions</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> latexcolor.com</span></div>
         </li>
-        <li class="card" data-search="react+typescript cheatsheets react+typescript cheatsheets react-typescript-cheatsheet.netlify.app">
+        <li class="card" data-search="react+typescript cheatsheets react+typescript cheatsheets react-typescript-cheatsheet.netlify.app" data-order="156" data-sort-title="react+typescript cheatsheets">
           <a class="card-title" href="https://react-typescript-cheatsheet.netlify.app/" target="_blank" rel="noopener nofollow">React+TypeScript Cheatsheets</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> react-typescript-cheatsheet.netlify.app</span></div>
         </li>
-        <li class="card card-multi" data-search="tailwind cheat sheet 1 tailwind cheat sheet 1 tailwind cheat sheet 2 tailwind cheat sheet 3 umeshmk.github.io nerdcave.com tailwindcomponents.com">
+        <li class="card card-multi" data-search="tailwind cheat sheet 1 tailwind cheat sheet 1 tailwind cheat sheet 2 tailwind cheat sheet 3 umeshmk.github.io nerdcave.com tailwindcomponents.com" data-order="157" data-sort-title="tailwind cheat sheet 1">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Tailwind cheat sheet 1">Tailwind cheat sheet 1<span class="visually-hidden">, 3 links</span></button>
           <ul class="card-links">
             <li><a href="https://umeshmk.github.io/Tailwindcss-cheatsheet/" target="_blank" rel="noopener nofollow">Tailwind cheat sheet 1</a><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> umeshmk.github.io</span></li>
@@ -829,51 +846,51 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 3 links</span></div>
         </li>
-        <li class="card" data-search="mermaid cheat sheet mermaid cheat sheet jojozhuang.github.io">
+        <li class="card" data-search="mermaid cheat sheet mermaid cheat sheet jojozhuang.github.io" data-order="158" data-sort-title="mermaid cheat sheet">
           <a class="card-title" href="https://jojozhuang.github.io/tutorial/mermaid-cheat-sheet/" target="_blank" rel="noopener nofollow">Mermaid Cheat Sheet</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> jojozhuang.github.io</span></div>
         </li>
-        <li class="card" data-search="introduction to machine learning introduction to machine learning eecs189.org">
+        <li class="card" data-search="introduction to machine learning introduction to machine learning eecs189.org" data-order="159" data-sort-title="introduction to machine learning">
           <a class="card-title" href="https://eecs189.org/" target="_blank" rel="noopener nofollow">Introduction to Machine Learning</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> eecs189.org</span></div>
         </li>
-        <li class="card" data-search="deep learning for coders with fastai and pytorch: ai applications without a phd deep learning for coders with fastai and pytorch: ai applications without a phd course.fast.ai">
+        <li class="card" data-search="deep learning for coders with fastai and pytorch: ai applications without a phd deep learning for coders with fastai and pytorch: ai applications without a phd course.fast.ai" data-order="160" data-sort-title="deep learning for coders with fastai and pytorch: ai applications without a phd">
           <a class="card-title" href="https://course.fast.ai/Resources/book.html" target="_blank" rel="noopener nofollow">Deep Learning for Coders with Fastai and PyTorch: AI Applications Without a PhD</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> course.fast.ai</span></div>
         </li>
-        <li class="card" data-search="deep learning - nyu deep learning - nyu atcold.github.io">
+        <li class="card" data-search="deep learning - nyu deep learning - nyu atcold.github.io" data-order="161" data-sort-title="deep learning - nyu">
           <a class="card-title" href="https://atcold.github.io/NYU-DLSP21/" target="_blank" rel="noopener nofollow">Deep Learning - NYU</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> atcold.github.io</span></div>
         </li>
-        <li class="card" data-search="notes on ai topics notes on ai topics cs.nyu.edu">
+        <li class="card" data-search="notes on ai topics notes on ai topics cs.nyu.edu" data-order="162" data-sort-title="notes on ai topics">
           <a class="card-title" href="https://cs.nyu.edu/~davise/AINotes.html" target="_blank" rel="noopener nofollow">Notes on AI Topics</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> cs.nyu.edu</span></div>
         </li>
-        <li class="card" data-search="free online it courses for beginners free online it courses for beginners eduitfree.com">
+        <li class="card" data-search="free online it courses for beginners free online it courses for beginners eduitfree.com" data-order="163" data-sort-title="free online it courses for beginners">
           <a class="card-title" href="https://eduitfree.com/" target="_blank" rel="noopener nofollow">Free Online IT Courses For Beginners</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> eduitfree.com</span></div>
         </li>
-        <li class="card" data-search="sharif university - open courses sharif university - open courses ocw.sharif.ir">
+        <li class="card" data-search="sharif university - open courses sharif university - open courses ocw.sharif.ir" data-order="164" data-sort-title="sharif university - open courses">
           <a class="card-title" href="https://ocw.sharif.ir/" target="_blank" rel="noopener nofollow">Sharif University - Open Courses</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> ocw.sharif.ir</span></div>
         </li>
-        <li class="card" data-search="sharif university - machine learning sharif university - machine learning sharifml.ir">
+        <li class="card" data-search="sharif university - machine learning sharif university - machine learning sharifml.ir" data-order="165" data-sort-title="sharif university - machine learning">
           <a class="card-title" href="https://sharifml.ir/" target="_blank" rel="noopener nofollow">Sharif University - Machine Learning</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> sharifml.ir</span></div>
         </li>
-        <li class="card" data-search="test smells [persian] test smells [persian] testsmells.ir">
+        <li class="card" data-search="test smells [persian] test smells [persian] testsmells.ir" data-order="166" data-sort-title="test smells [persian]">
           <a class="card-title" href="https://testsmells.ir/" target="_blank" rel="noopener nofollow">Test Smells [Persian]</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> testsmells.ir</span></div>
         </li>
-        <li class="card" data-search="handy online tools for developers handy online tools for developers it-tools.tech">
+        <li class="card" data-search="handy online tools for developers handy online tools for developers it-tools.tech" data-order="167" data-sort-title="handy online tools for developers">
           <a class="card-title" href="https://it-tools.tech/" target="_blank" rel="noopener nofollow">Handy online tools for developers</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> it-tools.tech</span></div>
         </li>
-        <li class="card" data-search="readings that are close to neo&#x27;s readings to improve toefl reading skill readings that are close to neo&#x27;s readings to improve toefl reading skill newsweek.com">
+        <li class="card" data-search="readings that are close to neo&#x27;s readings to improve toefl reading skill readings that are close to neo&#x27;s readings to improve toefl reading skill newsweek.com" data-order="168" data-sort-title="readings that are close to neo&#x27;s readings to improve toefl reading skill">
           <a class="card-title" href="https://www.newsweek.com/" target="_blank" rel="noopener nofollow">Readings that are close to Neo&#x27;s readings to improve TOEFL reading skill</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> newsweek.com</span></div>
         </li>
-        <li class="card card-multi" data-search="data mining data mining this link sites.google.com drive.google.com">
+        <li class="card card-multi" data-search="data mining data mining this link sites.google.com drive.google.com" data-order="169" data-sort-title="data mining">
           <button class="card-title" type="button" data-open-modal aria-haspopup="dialog" data-title="Data Mining">Data Mining<span class="visually-hidden">, 2 links</span></button>
           <ul class="card-links">
             <li><a href="https://sites.google.com/view/fayyaz/courses/data-mining?authuser=0" target="_blank" rel="noopener nofollow">Data Mining</a><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> sites.google.com</span></li>
@@ -881,11 +898,11 @@
           </ul>
           <div class="card-foot"><span class="badge badge-count"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg> 2 links</span></div>
         </li>
-        <li class="card" data-search="deep learning with python - book deep learning with python - book deeplearningwithpython.io">
+        <li class="card" data-search="deep learning with python - book deep learning with python - book deeplearningwithpython.io" data-order="170" data-sort-title="deep learning with python - book">
           <a class="card-title" href="https://deeplearningwithpython.io" target="_blank" rel="noopener nofollow">Deep Learning with Python - Book</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> deeplearningwithpython.io</span></div>
         </li>
-        <li class="card" data-search="linear algebra - gilbert strang linear algebra - gilbert strang youtube.com">
+        <li class="card" data-search="linear algebra - gilbert strang linear algebra - gilbert strang youtube.com" data-order="171" data-sort-title="linear algebra - gilbert strang">
           <a class="card-title" href="https://www.youtube.com/playlist?list=PLUl4u3cNGP63oMNUHXqIUcrkS2PivhN3k" target="_blank" rel="noopener nofollow">Linear Algebra - Gilbert Strang</a>
           <div class="card-foot"><span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg> youtube.com</span></div>
         </li>
@@ -928,8 +945,8 @@
     </div>
   </footer>
 
-  <script type="application/json" id="search-index">[["Action Verbs","pdfs"],["Building Grammar Skills For the TOEFL","pdfs"],["GRE_Equation_Guide_TTP","pdfs"],["Transitions","pdfs"],["Transitions Words and Phrases","pdfs"],["Analysis I Cheat Sheet","pdfs"],["Probability & Statistics Cheat Sheet","pdfs"],["Cheat sheet Python Dict Methods","pdfs"],["Cheat sheet Python List Methods","pdfs"],["Cheat sheet Python Set Methods","pdfs"],["Cheat Sheet Python String Methods","pdfs"],["Transitions 3","pdfs"],["Writing brainstorm","pdfs"],["Toefl Expressions & Brainstorm (Speak & Write)","pdfs"],["Prepositions","pdfs"],["Prepositionary","pdfs"],["Longman Essay Activator","pdfs"],["Longman Topic Activator","pdfs"],["Longman Shit Activator","pdfs"],["Perfect Phrases For The TOEFL - Speaking and Writing","pdfs"],["Longman Dictionary Of Common Errors","pdfs"],["Longman Common Mistakes In English","pdfs"],["Collocations 2","pdfs"],["Python cheat sheet","pdfs"],["Learn Python 3 the Hard Way","pdfs"],["Learn More Python 3 the Hard Way","pdfs"],["Python Crash Course, 2nd Edition","pdfs"],["Idea Bank - Technology","pdfs"],["Idea Bank - Education","pdfs"],["Idea Bank - Government","pdfs"],["Idea Bank - Business","pdfs"],["Idea Bank - Health","pdfs"],["Idea Bank - Examples","pdfs"],["Git cheat sheet 1","pdfs"],["Git cheat sheet 2","pdfs"],["Git cheat sheet 3","pdfs"],["Git cheat sheet 4","pdfs"],["Matplotlib cheat sheet 1","pdfs"],["Matplotlib for beginners - cheat sheet 2","pdfs"],["Matplotlib for intermediate users - cheat sheet 3","pdfs"],["Matplotlib tips & tricks - cheat sheet 4","pdfs"],["Matplotlib cheat sheet 5","pdfs"],["Cheat sheet deep learning tips tricks","pdfs"],["GRE math review - ETS","pdfs"],["GRE math flashcards","pdfs"],["GRE quant review","pdfs"],["GRE Sentence Equivalence","pdfs"],["NLP with python and NLTK - cheat sheet","pdfs"],["Python in a Nutshell: A Desktop Quick Reference 3rd Edition","pdfs"],["Fluent Python 2nd Edition","pdfs"],["SQL cheat sheet V1","pdfs"],["SQL cheat sheet V2","pdfs"],["Paraphrasing Strategies","pdfs"],["Javascript cheat sheet","pdfs"],["TypeScript Control Flow Analysis","pdfs"],["TypeScript Types","pdfs"],["TypeScript Interfaces","pdfs"],["TypeScript Classes","pdfs"],["CSS3 cheat sheet","pdfs"],["Python cheat sheets","pdfs"],["Matplotlib - List of named colors","pdfs"],["RGB hex colors chart","pdfs"],["Simplicity-The Finer Art Of Creating Software Cheat Sheet","pdfs"],["Agile Poster","pdfs"],["Agile and Scrum Cheat Sheet","pdfs"],["The Ultimate Python Cheat Sheet","pdfs"],["Python Cheat Sheet: Classes","pdfs"],["Python Cheat Sheet: Functions and Tricks","pdfs"],["Python Cheat Sheet: 14 Interview Questions","pdfs"],["Python Cheat Sheet: Keywords","pdfs"],["Python Cheat Sheet: NumPy","pdfs"],["Latex Cheat Sheet","pdfs"],["Probability Cheat Sheet","pdfs"],["ASP Net Core Cheat Sheet","pdfs"],["Python Regular Expressions Cheat Sheet","pdfs"],["Python (RegEx(pressions|p)?)","pdfs"],[".Net Regular Expressions Cheat Sheet","pdfs"],["SQL Commands Cheat Sheet","pdfs"],["HTTP Headers Cheat Sheet","pdfs"],["HTTP Status Codes Cheat Sheet","pdfs"],["The Web Developer's SEO Cheat Sheet","pdfs"],["Redux Cheat Sheet","pdfs"],["1300 Math Formulas","pdfs"],["Vajename Riazi","pdfs"],["Common English Mistakes","pdfs"],["HTML 5 Cheat Sheet","pdfs"],["Data Visualization Cheat Sheet","pdfs"],["Phrases + ING","pdfs"],["Redundancies","pdfs"],["Betty Azar Grammar - Red Summary (Basic)","pdfs"],["Betty Azar Grammar - Black Summary (Intermediate)","pdfs"],["Betty Azar Grammar - Blue Summary (Advanced)","pdfs"],["LINQ explained with sketches","pdfs"],["Design patterns cheat sheet 1","pdfs"],["Design patterns cheat sheet 2","pdfs"],["Python Notes","pdfs"],["Pandas Notes","pdfs"],["Matplotlib Notes","pdfs"],["NumPy cheat sheet","pdfs"],["SciPy cheat sheet","pdfs"],["Pandas cheat sheet","pdfs"],["Review Probability Theory","pdfs"],["Python String Format","pdfs"],["Grammar Success in 20 Minutes a Day","pdfs"],["English Verb Tenses","pdfs"],["English Grammar in Use 5th","pdfs"],["Guide to NumPy","pdfs"],["Clean Code in Python (2nd)","pdfs"],["Numerical Recipes","pdfs"],["Microsoft-Machine Learning Cheat Sheet","pdfs"],["Machine Learning Cheat Sheet","pdfs"],["Recurrent Neural Network Cheat Sheet","pdfs"],["Linear Algebra Done Right","pdfs"],["Calculus & Derivatives Cheat Sheet","pdfs"],["Statistic Formula","pdfs"],["Convergence Tests","pdfs"],["A Quick Guide to LaTex","pdfs"],["Machine Learning Cheatsheet","pdfs"],["Docker Cheat sheet 1","pdfs"],["AWK Cheat sheet 1","pdfs"],["Grammar and Punctuation Cheat sheet","pdfs"],["Homophones","pdfs"],["Linking Words","pdfs"],["Prepositions Handbook","pdfs"],["Phrasal Verbs","pdfs"],["Shortcut to Collocations","pdfs"],["List vs Set vs Dictionary vs Tuple (Python)","pdfs"],["Rust Programming Fundamentals","pdfs"],["Causative verbs","pdfs"],["Reading Examples","pdfs"],["Speaking Ideas","pdfs"],["Speaking topics (blue)","pdfs"],["Categorized Phrases","pdfs"],["Summary of collocations","pdfs"],["English collocations in use - Intermediate","pdfs"],["English collocations in use - Advanced","pdfs"],["English phrasal verbs in use - Advanced","pdfs"],["Fantastic Reasons for Speaking and Writing","pdfs"],["AI in Medicine - Presented by Kiarash Soleimanzadeh","pdfs"],["Computer science teaching at Stanford","links"],["List of Data Science Cheat sheets to rule the world","links"],["Scientific Visualization: Python + Matplotlib","links"],["Python & OpenGL for Scientific Visualization","links"],["From Python to Numpy","links"],["Cambridge Dictionary","links"],["Merriam-Webster Dictionary","links"],["NLP Cheat Sheet","links"],["Machine Learning - Persian","links"],["The Python Graph Gallery","links"],["HTTP Status Codes","links"],["HTTP Headers","links"],["HTTP Relations","links"],["Collecting All Cheat Sheets","links"],["Introduction to Probability textbook","links"],["Top DATA SCIENCE Cheat Sheets (ML, DL, Python, R, SQL, Maths & Statistics)","links"],["Rico's cheat Sheets","links"],["Laws of UX","links"],["Manage HTML DOM with vanilla JavaScript","links"],["HTML, CSS, and JS Cheat Sheets","links"],["React Cheat Sheet","links"],["90 Days Of DevOps","links"],["30 Days of PWA","links"],["30 Days of JavaScript","links"],["Useful links, scripts, tools and best practice for Microsoft SQL Server Database","links"],["SQL Server scripts for health checks and performance tuning","links"],["Automate SQL Server tasks and encourage best practices","links"],["SQL Server Toolbox repository for Tiger team","links"],["SQL Server Scripts for DBAs","links"],["Mathematics for Machine Learning","links"],["Learn from ML experts at Google","links"],["Google's Machine Learning Crash Course","links"],["Learn mathematics for machine learning","links"],["Linear Regression","links"],["Linear Regression 2","links"],["All Algorithms/Data-Structures implemented in Python","links"],["A Hands-on Introduction to Natural Language Processing (NLP)","links"],["ML YouTube Courses","links"],["4000 Essential English Words 1","links"],["4000 Essential English Words 2","links"],["4000 Essential English Words 3","links"],["4000 Essential English Words 4","links"],["4000 Essential English Words 5","links"],["4000 Essential English Words 6","links"],["English Grammar in Use with Answers","links"],["English Vocabulary in Use Elementary","links"],["English Vocabulary in Use Pre-intermediate and Intermediate","links"],["English Vocabulary in Use Upper-intermediate","links"],["English Vocabulary in Use Advanced","links"],["illustrated Everyday Expressions with Stories 1","links"],["illustrated Everyday Expressions with Stories 2","links"],["250 Ways to Say It in Business English","links"],["More Speak English Like an American","links"],["Mastering the American Accent","links"],["Everyday Conversations: Learning American English","links"],["Easy American Idioms","links"],["English the American Way: A Fun ESL Guide to Language and Culture in the U.S.","links"],["Speak English Around Town","links"],["Speak Business English Like an American","links"],["Speak English Like an American","links"],["Machine Learning Glossary/Cheat Sheet","links"],["Practical Deep Learning","links"],["GRE - Quantitative Walkthroughs","links"],["Speech and Language Processing - Stanford (textbook)","links"],["free-for.dev","links"],["Track Awesome List","links"],["Tips and Tricks C#/.NET","links"],["Pandas - DataFrame Reference","links"],["Python Reference","links"],["Introduction to Scientific Python","links"],["Quick Cheat Sheet/Reference (Python, RegEx, and etc)","links"],["Python for Data Analysis (Book)","links"],["Probabilistic Programming & Bayesian Methods for Hackers","links"],["Developer Roadmaps","links"],["Human Computer Interaction Course","links"],["NLP Course | For You","links"],["Stanford AI Courses","links"],["SQL Server KIT","links"],["Dive into Deep Learning","links"],["Understanding Deep Learning","links"],["Deep Learning","links"],["Deep Learning Course","links"],["Design Patterns in Python","links"],["AI Notes (Andrew Ng)","links"],["List of LaTeX mathematical symbols","links"],["Machine Learning tips and tricks cheat sheet","links"],["Recurrent Neural Networks cheatsheet","links"],["Cheat Sheet of Machine Learning and Python (and Math) Cheat Sheets","links"],["LaTeX","links"],["Improve how you architect webapps","links"],["C# Coding Guidelines","links"],["The Comprehensive TEX Archive Network","links"],["Exploring the art of artificial intelligence","links"],["Introduction to Machine Learning Course","links"],["Deep Learning Course","links"],["NeuroSymbolic Artificial Intelligence Course","links"],["Introduction to Pattern Recognition Course","links"],["Data Mining Course","links"],["Probabilistic Graphical Models Course","links"],["Deep Learning Course","links"],["Machine Learning Course","links"],["Speech and Language Processing (NLP) Course","links"],["Natural Language Processing (NLP) Courses","links"],["Fundamentals of Computer Vision Course","links"],["Machine Learning Engineering for Production (MLOps) Specialization on Coursera","links"],["Hands-on ML with Scikit-Learn, Keras & TF by Aurelien Geron","links"],["Natural Language Processing Specialization on Coursera","links"],["Efficient Python Tricks and Tools for Data Scientists","links"],["Coursera AI for Medicine Specialization","links"],["Generative Adversarial Networks Specialization on Coursera","links"],["Preprocessing For Deep Learning","links"],["Top deep learning Github repositories","links"],["Trending deep learning Github repositories","links"],["Deep Learning Specialization on Coursera","links"],["Zero to Mastery Deep Learning with TensorFlow","links"],["The University of Amsterdam Deep Learning Course","links"],["Math in ML","links"],["Jupyter Notebook Gallery 1","links"],["Deep Learning Notebooks","links"],["Cheatsheet collection for Math, ML, DL, AI. Update frequently","links"],["Social Media Mining: An Introduction (Ebook)","links"],["Feature Selection","links"],["Deep Learning at VU University Amsterdam","links"],["Deep Learning For Computer Vision","links"],["Introduction to Deep Learning (with flavor of NLP)","links"],["The Illustrated Machine Learning website","links"],["Machine Learning Engineering","links"],["Introduction to Data Mining","links"],["Deep Learning","links"],["Deep Learning Systems","links"],["Machine/Deep Learning Resources *","links"],["Introduction to Deep Learning","links"],["Introduction to Deep Learning","links"],["Probabilistic Machine Learning: An Introduction","links"],["Machine Learning University (MLU) from Amazon","links"],["Machine Learning University-Explain","links"],["Interpretable Machine Learning","links"],["Introduction to Machine Learning (I2ML)","links"],["Introduction to Deep Learning Course","links"],["Introduction: Advanced Explainable AI for computer vision","links"],["Deep Learning Drizzle *","links"],["Introduction to Deep Learning (I2DL) (IN2346)","links"],["Machine learning and Deep learning Fundamentals","links"],["60 Implementations/tutorials of deep learning papers with side-by-side notes","links"],["Introduction to Information Retrieval (textbook)","links"],["Introduction to Machine Learning","links"],["Google Python Style Guide","links"],["Learn Makefiles","links"],["Machine learning tutorials","links"],["Path to a free self-taught education in Computer Science!","links"],["Path to a free self-taught education in Data Science!","links"],["Path to a free self-taught education in Bioinformatics!","links"],["Path to a free self-taught education in Mathematics!","links"],["Feature Engineering and Feature Selection","links"],["Annotated Research Paper Implementations","links"],["LaTeX Color Definitions","links"],["React+TypeScript Cheatsheets","links"],["Tailwind cheat sheet 1","links"],["Mermaid Cheat Sheet","links"],["Introduction to Machine Learning","links"],["Deep Learning for Coders with Fastai and PyTorch: AI Applications Without a PhD","links"],["Deep Learning - NYU","links"],["Notes on AI Topics","links"],["Free Online IT Courses For Beginners","links"],["Sharif University - Open Courses","links"],["Sharif University - Machine Learning","links"],["Test Smells [Persian]","links"],["Handy online tools for developers","links"],["Readings that are close to Neo's readings to improve TOEFL reading skill","links"],["Data Mining","links"],["Deep Learning with Python - Book","links"],["Linear Algebra - Gilbert Strang","links"],["JavaScript Event KeyCodes","tools"],["Web Developer Checklist","tools"],["Grid 1","tools"],["Div Table","tools"],["SVG Waves","tools"],["Tiny Wow","tools"],["Icones","tools"],["Readme creator","tools"],["SVG icons/collections","tools"],["CSS Selectors: A Visual Guide","tools"],["CSS Loaders","tools"],["Feature Sliced Design","tools"],["29 Websites For Free Icon Sets","tools"],["Create and share beautiful images of your source code","tools"],["CSS grid cheat sheet","tools"],["CSS flexbox cheat sheet","tools"],["Math Solver","tools"],["Conventional Commits","tools"],["Glassmorphism CSS Generator 1","tools"],["All Online Tools in “One Box”","tools"],["Access 13.3M+ vector icons & stickers","tools"],["Tools for Academic Research","tools"],["Freedom to choose icons","tools"],["A huge collection of SVG logos","tools"],["IcoMoon (Pixel Perfect Icon Solutions)","tools"],["Simple Icons","tools"],["All-in-one OSINT tool for analysing any website","tools"],["Fontello - icon fonts generator","tools"],["Tiny Helpers","tools"],["Online database diagram editor and SQL generator","tools"],["Create beautiful images of your source code","tools"],["High Quality Science Illustrations","tools"],["2,000+ science and medical art visuals","tools"],["Extensions for modern developer tools","tools"],["ChestX-ray8","datasets"],["OpenML","datasets"],["kaggle","datasets"],["Paper With Code","datasets"],["Registry of Open Data on AWS","datasets"],["UC Irvine Machine Learning Repository","datasets"],["Tensorflow Datasets","datasets"],["Microsoft Open Data","datasets"],["Azure Open Datasets","datasets"],["Google Datasets Search","datasets"],["COCO Dataset","datasets"],["Hugging Face Datasets","datasets"],["OASIS Dataset - The Open Access Series of Imaging Studies (brain)","datasets"],["OpenNeuro: MRI, PET, MEG, EEG, and iEEG data","datasets"],["Alzheimer’s Disease Neuroimaging Initiative","datasets"],["Medical Information Mart for Intensive Care (MIMIC Dataset)","datasets"],["The Research Resource for Complex Physiologic Signals (PhysioNet)","datasets"],["32,000 CT images","datasets"],["ImageNet","datasets"],["NBML","datasets"],["Advanced Open Tools and Datasets for Autonomous Driving","datasets"],["Biostatistics Datasets","datasets"],["Integrated Pattern Recognition and Biometrics Lab Datasets","datasets"],["fastMRI","datasets"],["A Multi-site Dataset for Prostate MRI Segmentation","datasets"],["miRNet","datasets"]]</script>
-  <script src="../static/js/directory.js?v=40feda7b" defer></script>
+  <script type="application/json" id="search-index">[["Action Verbs","pdfs",[]],["Building Grammar Skills For the TOEFL","pdfs",[]],["GRE_Equation_Guide_TTP","pdfs",[]],["Transitions","pdfs",[]],["Transitions Words and Phrases","pdfs",[]],["Analysis I Cheat Sheet","pdfs",[]],["Probability & Statistics Cheat Sheet","pdfs",[]],["Cheat sheet Python Dict Methods","pdfs",[]],["Cheat sheet Python List Methods","pdfs",[]],["Cheat sheet Python Set Methods","pdfs",[]],["Cheat Sheet Python String Methods","pdfs",[]],["Transitions 3","pdfs",[]],["Writing brainstorm","pdfs",[]],["Toefl Expressions & Brainstorm (Speak & Write)","pdfs",[]],["Prepositions","pdfs",[]],["Prepositionary","pdfs",[]],["Longman Essay Activator","pdfs",[]],["Longman Topic Activator","pdfs",[]],["Longman Shit Activator","pdfs",[]],["Perfect Phrases For The TOEFL - Speaking and Writing","pdfs",[]],["Longman Dictionary Of Common Errors","pdfs",[]],["Longman Common Mistakes In English","pdfs",[]],["Collocations 2","pdfs",[]],["Python cheat sheet","pdfs",[]],["Learn Python 3 the Hard Way","pdfs",[]],["Learn More Python 3 the Hard Way","pdfs",[]],["Python Crash Course, 2nd Edition","pdfs",[]],["Idea Bank - Technology","pdfs",[]],["Idea Bank - Education","pdfs",[]],["Idea Bank - Government","pdfs",[]],["Idea Bank - Business","pdfs",[]],["Idea Bank - Health","pdfs",[]],["Idea Bank - Examples","pdfs",[]],["Git cheat sheet 1","pdfs",[]],["Git cheat sheet 2","pdfs",[]],["Git cheat sheet 3","pdfs",[]],["Git cheat sheet 4","pdfs",[]],["Matplotlib cheat sheet 1","pdfs",[]],["Matplotlib for beginners - cheat sheet 2","pdfs",[]],["Matplotlib for intermediate users - cheat sheet 3","pdfs",[]],["Matplotlib tips & tricks - cheat sheet 4","pdfs",[]],["Matplotlib cheat sheet 5","pdfs",[]],["Cheat sheet deep learning tips tricks","pdfs",[]],["GRE math review - ETS","pdfs",[]],["GRE math flashcards","pdfs",[]],["GRE quant review","pdfs",[]],["GRE Sentence Equivalence","pdfs",[]],["NLP with python and NLTK - cheat sheet","pdfs",[]],["Python in a Nutshell: A Desktop Quick Reference 3rd Edition","pdfs",[]],["Fluent Python 2nd Edition","pdfs",[]],["SQL cheat sheet V1","pdfs",[]],["SQL cheat sheet V2","pdfs",[]],["Paraphrasing Strategies","pdfs",[]],["Javascript cheat sheet","pdfs",[]],["TypeScript Control Flow Analysis","pdfs",[]],["TypeScript Types","pdfs",[]],["TypeScript Interfaces","pdfs",[]],["TypeScript Classes","pdfs",[]],["CSS3 cheat sheet","pdfs",[]],["Python cheat sheets","pdfs",[]],["Matplotlib - List of named colors","pdfs",[]],["RGB hex colors chart","pdfs",[]],["Simplicity-The Finer Art Of Creating Software Cheat Sheet","pdfs",[]],["Agile Poster","pdfs",[]],["Agile and Scrum Cheat Sheet","pdfs",[]],["The Ultimate Python Cheat Sheet","pdfs",[]],["Python Cheat Sheet: Classes","pdfs",[]],["Python Cheat Sheet: Functions and Tricks","pdfs",[]],["Python Cheat Sheet: 14 Interview Questions","pdfs",[]],["Python Cheat Sheet: Keywords","pdfs",[]],["Python Cheat Sheet: NumPy","pdfs",[]],["Latex Cheat Sheet","pdfs",[]],["Probability Cheat Sheet","pdfs",[]],["ASP Net Core Cheat Sheet","pdfs",[]],["Python Regular Expressions Cheat Sheet","pdfs",[]],["Python (RegEx(pressions|p)?)","pdfs",[]],[".Net Regular Expressions Cheat Sheet","pdfs",[]],["SQL Commands Cheat Sheet","pdfs",[]],["HTTP Headers Cheat Sheet","pdfs",[]],["HTTP Status Codes Cheat Sheet","pdfs",[]],["The Web Developer's SEO Cheat Sheet","pdfs",[]],["Redux Cheat Sheet","pdfs",[]],["1300 Math Formulas","pdfs",[]],["Vajename Riazi","pdfs",[]],["Common English Mistakes","pdfs",[]],["HTML 5 Cheat Sheet","pdfs",[]],["Data Visualization Cheat Sheet","pdfs",[]],["Phrases + ING","pdfs",[]],["Redundancies","pdfs",[]],["Betty Azar Grammar - Red Summary (Basic)","pdfs",[]],["Betty Azar Grammar - Black Summary (Intermediate)","pdfs",[]],["Betty Azar Grammar - Blue Summary (Advanced)","pdfs",[]],["LINQ explained with sketches","pdfs",[]],["Design patterns cheat sheet 1","pdfs",[]],["Design patterns cheat sheet 2","pdfs",[]],["Python Notes","pdfs",[]],["Pandas Notes","pdfs",[]],["Matplotlib Notes","pdfs",[]],["NumPy cheat sheet","pdfs",[]],["SciPy cheat sheet","pdfs",[]],["Pandas cheat sheet","pdfs",[]],["Review Probability Theory","pdfs",[]],["Python String Format","pdfs",[]],["Grammar Success in 20 Minutes a Day","pdfs",[]],["English Verb Tenses","pdfs",[]],["English Grammar in Use 5th","pdfs",[]],["Guide to NumPy","pdfs",[]],["Clean Code in Python (2nd)","pdfs",[]],["Numerical Recipes","pdfs",[]],["Microsoft-Machine Learning Cheat Sheet","pdfs",[]],["Machine Learning Cheat Sheet","pdfs",[]],["Recurrent Neural Network Cheat Sheet","pdfs",[]],["Linear Algebra Done Right","pdfs",[]],["Calculus & Derivatives Cheat Sheet","pdfs",[]],["Statistic Formula","pdfs",[]],["Convergence Tests","pdfs",[]],["A Quick Guide to LaTex","pdfs",[]],["Machine Learning Cheatsheet","pdfs",[]],["Docker Cheat sheet 1","pdfs",[]],["AWK Cheat sheet 1","pdfs",[]],["Grammar and Punctuation Cheat sheet","pdfs",[]],["Homophones","pdfs",[]],["Linking Words","pdfs",[]],["Prepositions Handbook","pdfs",[]],["Phrasal Verbs","pdfs",[]],["Shortcut to Collocations","pdfs",[]],["List vs Set vs Dictionary vs Tuple (Python)","pdfs",[]],["Rust Programming Fundamentals","pdfs",[]],["Causative verbs","pdfs",[]],["Reading Examples","pdfs",[]],["Speaking Ideas","pdfs",[]],["Speaking topics (blue)","pdfs",[]],["Categorized Phrases","pdfs",[]],["Summary of collocations","pdfs",[]],["English collocations in use - Intermediate","pdfs",[]],["English collocations in use - Advanced","pdfs",[]],["English phrasal verbs in use - Advanced","pdfs",[]],["Fantastic Reasons for Speaking and Writing","pdfs",[]],["AI in Medicine - Presented by Kiarash Soleimanzadeh","pdfs",[]],["Computer science teaching at Stanford","links",[]],["List of Data Science Cheat sheets to rule the world","links",[]],["Scientific Visualization: Python + Matplotlib","links",[]],["Python & OpenGL for Scientific Visualization","links",[]],["From Python to Numpy","links",[]],["Cambridge Dictionary","links",[]],["Merriam-Webster Dictionary","links",[]],["NLP Cheat Sheet","links",[]],["Machine Learning - Persian","links",[]],["The Python Graph Gallery","links",[]],["HTTP Status Codes","links",[]],["HTTP Headers","links",[]],["HTTP Relations","links",[]],["Collecting All Cheat Sheets","links",[]],["Introduction to Probability textbook","links",[]],["Top DATA SCIENCE Cheat Sheets (ML, DL, Python, R, SQL, Maths & Statistics)","links",[]],["Rico's cheat Sheets","links",[]],["Laws of UX","links",[]],["Manage HTML DOM with vanilla JavaScript","links",[]],["HTML, CSS, and JS Cheat Sheets","links",[]],["React Cheat Sheet","links",[]],["90 Days Of DevOps","links",[]],["30 Days of PWA","links",[]],["30 Days of JavaScript","links",[]],["Useful links, scripts, tools and best practice for Microsoft SQL Server Database","links",[]],["SQL Server scripts for health checks and performance tuning","links",[]],["Automate SQL Server tasks and encourage best practices","links",[]],["SQL Server Toolbox repository for Tiger team","links",[]],["SQL Server Scripts for DBAs","links",[]],["Mathematics for Machine Learning","links",[]],["Learn from ML experts at Google","links",[]],["Google's Machine Learning Crash Course","links",[]],["Learn mathematics for machine learning","links",[]],["Linear Regression","links",[]],["Linear Regression 2","links",[]],["All Algorithms/Data-Structures implemented in Python","links",[]],["A Hands-on Introduction to Natural Language Processing (NLP)","links",[]],["ML YouTube Courses","links",[]],["4000 Essential English Words 1","links",[]],["4000 Essential English Words 2","links",[]],["4000 Essential English Words 3","links",[]],["4000 Essential English Words 4","links",[]],["4000 Essential English Words 5","links",[]],["4000 Essential English Words 6","links",[]],["English Grammar in Use with Answers","links",[]],["English Vocabulary in Use Elementary","links",[]],["English Vocabulary in Use Pre-intermediate and Intermediate","links",[]],["English Vocabulary in Use Upper-intermediate","links",[]],["English Vocabulary in Use Advanced","links",[]],["illustrated Everyday Expressions with Stories 1","links",[]],["illustrated Everyday Expressions with Stories 2","links",[]],["250 Ways to Say It in Business English","links",[]],["More Speak English Like an American","links",[]],["Mastering the American Accent","links",[]],["Everyday Conversations: Learning American English","links",[]],["Easy American Idioms","links",[]],["English the American Way: A Fun ESL Guide to Language and Culture in the U.S.","links",[]],["Speak English Around Town","links",[]],["Speak Business English Like an American","links",[]],["Speak English Like an American","links",[]],["Machine Learning Glossary/Cheat Sheet","links",[]],["Practical Deep Learning","links",[]],["GRE - Quantitative Walkthroughs","links",[]],["Speech and Language Processing - Stanford (textbook)","links",[]],["free-for.dev","links",[]],["Track Awesome List","links",[]],["Tips and Tricks C#/.NET","links",[]],["Pandas - DataFrame Reference","links",[]],["Python Reference","links",[]],["Introduction to Scientific Python","links",[]],["Quick Cheat Sheet/Reference (Python, RegEx, and etc)","links",[]],["Python for Data Analysis (Book)","links",[]],["Probabilistic Programming & Bayesian Methods for Hackers","links",[]],["Developer Roadmaps","links",[]],["Human Computer Interaction Course","links",[]],["NLP Course | For You","links",[]],["Stanford AI Courses","links",[]],["SQL Server KIT","links",[]],["Dive into Deep Learning","links",[]],["Understanding Deep Learning","links",[]],["Deep Learning","links",[]],["Deep Learning Course","links",[]],["Design Patterns in Python","links",[]],["AI Notes (Andrew Ng)","links",[]],["List of LaTeX mathematical symbols","links",[]],["Machine Learning tips and tricks cheat sheet","links",[]],["Recurrent Neural Networks cheatsheet","links",[]],["Cheat Sheet of Machine Learning and Python (and Math) Cheat Sheets","links",[]],["LaTeX","links",[]],["Improve how you architect webapps","links",[]],["C# Coding Guidelines","links",[]],["The Comprehensive TEX Archive Network","links",[]],["Exploring the art of artificial intelligence","links",[]],["Introduction to Machine Learning Course","links",[]],["Deep Learning Course","links",[]],["NeuroSymbolic Artificial Intelligence Course","links",[]],["Introduction to Pattern Recognition Course","links",[]],["Data Mining Course","links",[]],["Probabilistic Graphical Models Course","links",[]],["Deep Learning Course","links",[]],["Machine Learning Course","links",[]],["Speech and Language Processing (NLP) Course","links",[]],["Natural Language Processing (NLP) Courses","links",[]],["Fundamentals of Computer Vision Course","links",[]],["Machine Learning Engineering for Production (MLOps) Specialization on Coursera","links",[]],["Hands-on ML with Scikit-Learn, Keras & TF by Aurelien Geron","links",[]],["Natural Language Processing Specialization on Coursera","links",[]],["Efficient Python Tricks and Tools for Data Scientists","links",[]],["Coursera AI for Medicine Specialization","links",[]],["Generative Adversarial Networks Specialization on Coursera","links",[]],["Preprocessing For Deep Learning","links",[]],["Top deep learning Github repositories","links",[]],["Trending deep learning Github repositories","links",[]],["Deep Learning Specialization on Coursera","links",[]],["Zero to Mastery Deep Learning with TensorFlow","links",[]],["The University of Amsterdam Deep Learning Course","links",[]],["Math in ML","links",[]],["Jupyter Notebook Gallery 1","links",[]],["Deep Learning Notebooks","links",[]],["Cheatsheet collection for Math, ML, DL, AI. Update frequently","links",[]],["Social Media Mining: An Introduction (Ebook)","links",[]],["Feature Selection","links",[]],["Deep Learning at VU University Amsterdam","links",[]],["Deep Learning For Computer Vision","links",[]],["Introduction to Deep Learning (with flavor of NLP)","links",[]],["The Illustrated Machine Learning website","links",[]],["Machine Learning Engineering","links",[]],["Introduction to Data Mining","links",[]],["Deep Learning","links",[]],["Deep Learning Systems","links",[]],["Machine/Deep Learning Resources *","links",[]],["Introduction to Deep Learning","links",[]],["Introduction to Deep Learning","links",[]],["Probabilistic Machine Learning: An Introduction","links",[]],["Machine Learning University (MLU) from Amazon","links",[]],["Machine Learning University-Explain","links",[]],["Interpretable Machine Learning","links",[]],["Introduction to Machine Learning (I2ML)","links",[]],["Introduction to Deep Learning Course","links",[]],["Introduction: Advanced Explainable AI for computer vision","links",[]],["Deep Learning Drizzle *","links",[]],["Introduction to Deep Learning (I2DL) (IN2346)","links",[]],["Machine learning and Deep learning Fundamentals","links",[]],["60 Implementations/tutorials of deep learning papers with side-by-side notes","links",[]],["Introduction to Information Retrieval (textbook)","links",[]],["Introduction to Machine Learning","links",[]],["Google Python Style Guide","links",[]],["Learn Makefiles","links",[]],["Machine learning tutorials","links",[]],["Path to a free self-taught education in Computer Science!","links",[]],["Path to a free self-taught education in Data Science!","links",[]],["Path to a free self-taught education in Bioinformatics!","links",[]],["Path to a free self-taught education in Mathematics!","links",[]],["Feature Engineering and Feature Selection","links",[]],["Annotated Research Paper Implementations","links",[]],["LaTeX Color Definitions","links",[]],["React+TypeScript Cheatsheets","links",[]],["Tailwind cheat sheet 1","links",[]],["Mermaid Cheat Sheet","links",[]],["Introduction to Machine Learning","links",[]],["Deep Learning for Coders with Fastai and PyTorch: AI Applications Without a PhD","links",[]],["Deep Learning - NYU","links",[]],["Notes on AI Topics","links",[]],["Free Online IT Courses For Beginners","links",[]],["Sharif University - Open Courses","links",[]],["Sharif University - Machine Learning","links",[]],["Test Smells [Persian]","links",[]],["Handy online tools for developers","links",[]],["Readings that are close to Neo's readings to improve TOEFL reading skill","links",[]],["Data Mining","links",[]],["Deep Learning with Python - Book","links",[]],["Linear Algebra - Gilbert Strang","links",[]],["JavaScript Event KeyCodes","tools",[]],["Web Developer Checklist","tools",[]],["Grid 1","tools",[]],["Div Table","tools",[]],["SVG Waves","tools",[]],["Tiny Wow","tools",[]],["Icones","tools",[]],["Readme creator","tools",[]],["SVG icons/collections","tools",[]],["CSS Selectors: A Visual Guide","tools",[]],["CSS Loaders","tools",[]],["Feature Sliced Design","tools",[]],["29 Websites For Free Icon Sets","tools",[]],["Create and share beautiful images of your source code","tools",[]],["CSS grid cheat sheet","tools",[]],["CSS flexbox cheat sheet","tools",[]],["Math Solver","tools",[]],["Conventional Commits","tools",[]],["Glassmorphism CSS Generator 1","tools",[]],["All Online Tools in “One Box”","tools",[]],["Access 13.3M+ vector icons & stickers","tools",[]],["Tools for Academic Research","tools",[]],["Freedom to choose icons","tools",[]],["A huge collection of SVG logos","tools",[]],["IcoMoon (Pixel Perfect Icon Solutions)","tools",[]],["Simple Icons","tools",[]],["All-in-one OSINT tool for analysing any website","tools",[]],["Fontello - icon fonts generator","tools",[]],["Tiny Helpers","tools",[]],["Online database diagram editor and SQL generator","tools",[]],["Create beautiful images of your source code","tools",[]],["High Quality Science Illustrations","tools",[]],["2,000+ science and medical art visuals","tools",[]],["Extensions for modern developer tools","tools",[]],["ChestX-ray8","datasets",[]],["OpenML","datasets",[]],["kaggle","datasets",[]],["Paper With Code","datasets",[]],["Registry of Open Data on AWS","datasets",[]],["UC Irvine Machine Learning Repository","datasets",[]],["Tensorflow Datasets","datasets",[]],["Microsoft Open Data","datasets",[]],["Azure Open Datasets","datasets",[]],["Google Datasets Search","datasets",[]],["COCO Dataset","datasets",[]],["Hugging Face Datasets","datasets",[]],["OASIS Dataset - The Open Access Series of Imaging Studies (brain)","datasets",[]],["OpenNeuro: MRI, PET, MEG, EEG, and iEEG data","datasets",[]],["Alzheimer’s Disease Neuroimaging Initiative","datasets",[]],["Medical Information Mart for Intensive Care (MIMIC Dataset)","datasets",[]],["The Research Resource for Complex Physiologic Signals (PhysioNet)","datasets",[]],["32,000 CT images","datasets",[]],["ImageNet","datasets",[]],["NBML","datasets",[]],["Advanced Open Tools and Datasets for Autonomous Driving","datasets",[]],["Biostatistics Datasets","datasets",[]],["Integrated Pattern Recognition and Biometrics Lab Datasets","datasets",[]],["fastMRI","datasets",[]],["A Multi-site Dataset for Prostate MRI Segmentation","datasets",[]],["miRNet","datasets",[]]]</script>
+  <script src="../static/js/directory.js?v=dbf8210c" defer></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {

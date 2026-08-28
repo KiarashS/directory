@@ -21,6 +21,7 @@ Nothing here touches the network, so the build is reproducible.
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import hashlib
 import html
 import itertools
@@ -84,6 +85,7 @@ ICONS = {
  'links': '<path d="M9 15l6-6"/><path d="M11 6l.463-.536a5 5 0 0 1 7.071 7.072L18 13"/><path d="M13 18l-.397.534a5.068 5.068 0 0 1-7.127 0 4.972 4.972 0 0 1 0-7.071L6 11"/>',
  'tools': '<path d="M3 21h4L20 8a1.5 1.5 0 0 0-4-4L3 17v4"/><path d="M14.5 5.5l4 4"/><path d="M12 8l-5-5-3 3 5 5"/><path d="M7 8l-1.5 1.5"/><path d="M16 12l5 5-3 3-5-5"/><path d="M16 17l-1.5 1.5"/>',
  'datasets': '<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.657 3.582 3 8 3s8-1.343 8-3V6"/><path d="M4 12v6c0 1.657 3.582 3 8 3s8-1.343 8-3v-6"/>',
+ 'talks': '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8"/><path d="M12 16v4"/><path d="M8.5 10.5 11 13l4.5-4.5"/>',
  'courses': '<path d="M22 9L12 5 2 9l10 4 10-4v6"/><path d="M6 10.6V16c0 1.1 2.7 2 6 2s6-.9 6-2v-5.4"/>',
 }
 
@@ -102,6 +104,7 @@ MATERIAL_TYPES = {
 EXT = '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg>'
 PDF = '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pdf"/></svg>'
 LAYERS = '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-layers"/></svg>'
+PIN = '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pin"/></svg>'
 
 _STROKE = ('fill="none" stroke="currentColor" stroke-width="2" '
            'stroke-linecap="round" stroke-linejoin="round"')
@@ -111,6 +114,7 @@ SPRITE = ('  <svg class="visually-hidden" aria-hidden="true" focusable="false">\
           f'      <g id="i-ext" {_STROKE}><path d="M11 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-5"/><path d="M10 14 20 4"/><path d="M15 4h5v5"/></g>\n'
           f'      <g id="i-pdf" {_STROKE}><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/></g>\n'
           f'      <g id="i-layers" {_STROKE}><path d="M12 3 3 8l9 5 9-5-9-5z"/><path d="m3 13 9 5 9-5"/></g>\n'
+          f'      <g id="i-pin" {_STROKE}><path d="M12 17v5"/><path d="M9 10.8V4h6v6.8l2 3.2H7z"/></g>\n'
           f'      <g id="i-info" {_STROKE}><circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v4h1"/></g>\n'
           + "".join(f'      <g id="i-mat-{k}" {_STROKE}>{v[1]}</g>\n'
                     for k, v in MATERIAL_TYPES.items())
@@ -133,6 +137,50 @@ def all_links(entry: dict) -> list[dict]:
 
 def desc(item: dict) -> str:
     return (item.get("description") or "").strip()
+
+
+def entry_date(entry: dict) -> str:
+    """The date used for sorting, as an ISO string, or "" when undated."""
+    value = entry.get("added") or entry.get("date")
+    return str(value) if value else ""
+
+
+def ordered(entries: list[dict]) -> list[dict]:
+    """Pinned first, then newest first, then undated in the order written.
+
+    Four buckets rather than one clever sort key, because the two halves want
+    different orderings: dated entries go newest first, undated ones keep their
+    position in links.yml. That way dating the archive gradually never
+    scrambles what is already there.
+    """
+    buckets: dict[tuple[int, int], list[tuple[int, dict]]] = {
+        (p, d): [] for p in (0, 1) for d in (0, 1)
+    }
+    for i, entry in enumerate(entries):
+        pinned = 0 if entry.get("pinned") else 1
+        dated = 0 if entry_date(entry) else 1
+        buckets[(pinned, dated)].append((i, entry))
+
+    out: list[tuple[int, dict]] = []
+    for pinned in (0, 1):
+        dated = sorted(buckets[(pinned, 0)],
+                       key=lambda pair: entry_date(pair[1]), reverse=True)
+        out += dated + buckets[(pinned, 1)]     # undated already in file order
+    return [entry for _, entry in out]
+
+
+def tags_of(entry: dict) -> list[str]:
+    raw = entry.get("tags") or []
+    return [str(t).strip() for t in raw if str(t).strip()]
+
+
+def pretty_date(value: str) -> str:
+    """2026-08-28 -> 28 Aug 2026. Anything unparseable is printed as written."""
+    try:
+        d = dt.date.fromisoformat(value)
+    except ValueError:
+        return value
+    return f"{d.day} {d.strftime('%b')} {d.year}"
 
 
 def badge(url: str) -> str:
@@ -159,25 +207,52 @@ def info(text: str, subject: str) -> str:
 
 # --- Entry card ------------------------------------------------------------
 
-def render_entry(entry: dict, depth: int) -> str:
+def render_entry(entry: dict, depth: int, order: int = 0) -> str:
     links = all_links(entry)
     if not links:
         raise SystemExit(f"entry {entry.get('title')!r} has neither url nor links")
 
     note = desc(entry)
-    hay = " ".join(filter(None, [entry["title"], note]
+    tags = tags_of(entry)
+    when = entry_date(entry)
+    event = (entry.get("event") or "").strip()
+
+    # Tags join the haystack twice: bare, so a plain search finds them, and
+    # prefixed, so "tag:python" can be made to match only tags.
+    hay = " ".join(filter(None, [entry["title"], note, event]
+                          + tags + [f"tag:{t}" for t in tags]
                           + [l["text"] for l in links]
                           + [host_label(l["url"]) for l in links]
                           + [desc(l) for l in links]))
 
-    out = [f'        <li class="card{" card-multi" if len(links) > 1 else ""}" '
-           f'data-search="{e(" ".join(hay.split()).lower())}">']
+    classes = "card" + (" card-multi" if len(links) > 1 else "") \
+        + (" is-pinned" if entry.get("pinned") else "")
+
+    attrs = [f'class="{classes}"',
+             f'data-search="{e(" ".join(hay.split()).lower())}"',
+             f'data-order="{order}"',
+             f'data-sort-title="{e(entry["title"].lower())}"']
+    if when:
+        attrs.append(f'data-date="{e(when)}"')
+    if entry.get("pinned"):
+        attrs.append("data-pinned")
+
+    out = [f'        <li {" ".join(attrs)}>']
 
     if len(links) > 1:
         out.append(f'          <button class="card-title" type="button" '
                    f'data-open-modal aria-haspopup="dialog" '
                    f'data-title="{e(entry["title"])}">{e(entry["title"])}'
                    f'<span class="visually-hidden">, {len(links)} links</span></button>')
+    else:
+        link = links[0]
+        out.append(f'          <a class="card-title" href="{e(rel(link["url"], depth))}"'
+                   f'{link_attrs(link["url"])}>{e(entry["title"])}</a>')
+
+    if event:
+        out.append(f'          <p class="card-meta">{e(event)}</p>')
+
+    if len(links) > 1:
         out.append('          <ul class="card-links">')
         for link in links:
             out.append(f'            <li><a href="{e(rel(link["url"], depth))}"'
@@ -185,13 +260,23 @@ def render_entry(entry: dict, depth: int) -> str:
                        + (f'<span class="link-note">{e(desc(link))}</span>' if desc(link) else "")
                        + f'{badge(link["url"])}</li>')
         out.append('          </ul>')
-        out.append(f'          <div class="card-foot">'
-                   f'<span class="badge badge-count">{LAYERS} {len(links)} links</span></div>')
+
+    if tags:
+        chips = "".join(
+            f'<li><a class="tag" href="?q=tag:{urllib.parse.quote(t)}">{e(t)}</a></li>'
+            for t in tags)
+        out.append(f'          <ul class="card-tags">{chips}</ul>')
+
+    foot = []
+    if entry.get("pinned"):
+        foot.append(f'<span class="badge badge-pin">{PIN} Pinned</span>')
+    if len(links) > 1:
+        foot.append(f'<span class="badge badge-count">{LAYERS} {len(links)} links</span>')
     else:
-        link = links[0]
-        out.append(f'          <a class="card-title" href="{e(rel(link["url"], depth))}"'
-                   f'{link_attrs(link["url"])}>{e(entry["title"])}</a>')
-        out.append(f'          <div class="card-foot">{badge(link["url"])}</div>')
+        foot.append(badge(links[0]["url"]))
+    if when:
+        foot.append(f'<span class="badge badge-date">{e(pretty_date(when))}</span>')
+    out.append(f'          <div class="card-foot">{"".join(foot)}</div>')
 
     out.append("          " + info(note, entry["title"]))
     out.append("        </li>")
@@ -348,8 +433,10 @@ def shell(*, site, cats, title, description, path, depth, active, hero, main,
   <link rel="apple-touch-icon" sizes="180x180" href="{rel("apple-touch-icon.png", depth)}">
   <link rel="icon" type="image/png" sizes="32x32" href="{rel("favicon-32x32.png", depth)}">
   <link rel="icon" type="image/png" sizes="16x16" href="{rel("favicon-16x16.png", depth)}">
+  <link rel="icon" type="image/svg+xml" href="{rel("static/icon.svg", depth)}">
   <link rel="mask-icon" href="{rel("safari-pinned-tab.svg", depth)}" color="#4f5bd5">
   <meta name="msapplication-TileColor" content="#4f5bd5">
+  <meta name="msapplication-config" content="{rel("browserconfig.xml", depth)}">
   <link rel="manifest" href="{rel("manifest.webmanifest", depth)}">
 
   <link rel="stylesheet" href="{asset("static/css/directory.css", depth)}">
@@ -413,6 +500,16 @@ def shell(*, site, cats, title, description, path, depth, active, hero, main,
         <button class="search-clear" type="button" data-search-clear aria-label="Clear search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
         </button>
+      </div>
+
+      <div class="sort-control">
+        <label class="visually-hidden" for="sort">Sort entries</label>
+        <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16"/><path d="m3 8 4-4 4 4"/><path d="M17 20V4"/><path d="m13 16 4 4 4-4"/></svg>
+        <select id="sort" data-sort>
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="az">A – Z</option>
+        </select>
       </div>
 
       <div class="view-switch" role="group" aria-label="Layout">
@@ -495,7 +592,7 @@ def shell(*, site, cats, title, description, path, depth, active, hero, main,
 # --- Page assembly ---------------------------------------------------------
 
 def search_index(cats: list[dict]) -> str:
-    """Every entry on the site as [title, category-slug].
+    """Every entry on the site as [title, category-slug, tags].
 
     Small enough to inline on every page (about 30KB), which is what lets a
     search from /pdfs/ still find something filed under /datasets/ without any
@@ -504,9 +601,9 @@ def search_index(cats: list[dict]) -> str:
     rows = []
     for cat in cats:
         for entry in cat.get("entries") or []:
-            rows.append([entry["title"], cat["slug"]])
+            rows.append([entry["title"], cat["slug"], tags_of(entry)])
         for course in cat.get("courses") or []:
-            rows.append([course["title"], cat["slug"]])
+            rows.append([course["title"], cat["slug"], []])
     return json.dumps(rows, ensure_ascii=False, separators=(",", ":"))
 
 
@@ -540,7 +637,7 @@ def build_pages(doc: dict) -> dict[str, str]:
 '''
 
     body = ['    <ul class="cards">']
-    body += [render_entry(x, 0) for x in front_entries]
+    body += [render_entry(x, 0, i) for i, x in enumerate(ordered(front_entries))]
     body.append("    </ul>")
 
     pages["index.html"] = shell(
@@ -566,7 +663,7 @@ def build_pages(doc: dict) -> dict[str, str]:
 
         if entries:
             body = ['    <ul class="cards">']
-            body += [render_entry(x, 1) for x in entries]
+            body += [render_entry(x, 1, i) for i, x in enumerate(ordered(entries))]
             body.append("    </ul>")
         elif courses:
             body = ['    <ul class="course-cards">']

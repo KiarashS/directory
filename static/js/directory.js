@@ -88,6 +88,8 @@
   var elsewhereList = document.querySelector('[data-elsewhere]');
   var resultsBar = document.querySelector('.results-bar');
   var resultsText = document.querySelector('[data-results-text]');
+  var sortSelect = document.querySelector('[data-sort]');
+  var grid = document.querySelector('main .cards');
 
   // Cache the haystack once; reading a data attribute 373 times per keystroke
   // is the only thing here that could ever get slow.
@@ -115,6 +117,13 @@
   var current = document.querySelector('nav.tabs .tab[aria-current="page"]');
   var here = current ? current.getAttribute('data-slug') : '';
 
+  // "tag:python" matches only tags. The build writes each tag into the
+  // haystack twice — bare and prefixed — so this needs no special casing
+  // beyond keeping the prefix attached to its term.
+  function matches(text, terms) {
+    return terms.every(function (t) { return text.indexOf(t) !== -1; });
+  }
+
   function render() {
     var q = query.trim().toLowerCase();
     var terms = q ? q.split(/\s+/) : [];
@@ -123,7 +132,7 @@
 
     entries.forEach(function (el) {
       var text = haystack.get(el) || '';
-      var hit = !searching || terms.every(function (t) { return text.indexOf(t) !== -1; });
+      var hit = !searching || matches(text, terms);
       el.hidden = !hit;
       if (hit) shown++;
     });
@@ -135,8 +144,10 @@
     if (searching) {
       siteIndex.forEach(function (row) {
         if (row[1] === here) return;
-        var text = (row[0] + ' ' + row[1]).toLowerCase();
-        if (terms.every(function (t) { return text.indexOf(t) !== -1; })) away.push(row);
+        var tags = row[2] || [];
+        var text = (row[0] + ' ' + row[1] + ' ' + tags.join(' ') + ' ' +
+                    tags.map(function (t) { return 'tag:' + t; }).join(' ')).toLowerCase();
+        if (matches(text, terms)) away.push(row);
       });
     }
 
@@ -256,6 +267,53 @@
   } else {
     render();
   }
+
+
+  /* --- Sort order --------------------------------------------------------
+     The build already writes the cards newest-first with pinned ones on top,
+     so "newest" is just the order they arrived in. The other two reorder the
+     DOM; pinned entries stay at the top under every option, because a pin
+     that only holds in one sort order is not a pin. */
+
+  var SORT_KEY = 'directory:sort';
+
+  function applySort(mode) {
+    if (['newest', 'oldest', 'az'].indexOf(mode) === -1) mode = 'newest';
+    if (sortSelect) sortSelect.value = mode;
+    store(SORT_KEY, mode);
+    if (!grid) return;
+
+    var items = Array.prototype.slice.call(grid.children);
+    items.sort(function (a, b) {
+      var pa = a.hasAttribute('data-pinned') ? 0 : 1;
+      var pb = b.hasAttribute('data-pinned') ? 0 : 1;
+      if (pa !== pb) return pa - pb;
+
+      if (mode === 'az') {
+        return (a.dataset.sortTitle || '').localeCompare(b.dataset.sortTitle || '');
+      }
+
+      var da = a.dataset.date || '';
+      var db = b.dataset.date || '';
+      // Undated entries hold their position in links.yml, below the dated
+      // ones, whichever direction the dated block is running.
+      if (!da && !db) return (+a.dataset.order) - (+b.dataset.order);
+      if (!da) return 1;
+      if (!db) return -1;
+      if (da === db) return (+a.dataset.order) - (+b.dataset.order);
+      return mode === 'oldest' ? (da < db ? -1 : 1) : (da > db ? -1 : 1);
+    });
+
+    // One reflow rather than 139: the fragment is assembled detached.
+    var frag = document.createDocumentFragment();
+    items.forEach(function (el) { frag.appendChild(el); });
+    grid.appendChild(frag);
+  }
+
+  if (sortSelect) {
+    sortSelect.addEventListener('change', function () { applySort(sortSelect.value); });
+  }
+  applySort(read(SORT_KEY) || 'newest');
 
   /* --- View mode --------------------------------------------------------- */
 
