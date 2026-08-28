@@ -969,6 +969,7 @@ categories:
     url: https://go.kiarashs.ir/ai-med
     event: Talk
     date: 2026-03-14
+    pinned: true
     tags: [artificial intelligence, medicine, computer vision, image analysis]
   - title: Regular Expression (regex or regexp)
     url: https://go.kiarashs.ir/regex
