@@ -1,0 +1,169 @@
+name: Update PDF.js
+
+on:
+  schedule:
+    # Daily at 03:17 UTC.
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/update-pdfjs.yml"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  # Match the existing Pages workflow so two deployments never overlap.
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    outputs:
+      updated: ${{ steps.update.outputs.updated }}
+      version: ${{ steps.update.outputs.version }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for a newer PDF.js release and update viewer
+        id: update
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          release_json="$(curl --fail --silent --show-error --location \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            https://api.github.com/repos/mozilla/pdf.js/releases/latest)"
+
+          tag="$(jq -r '.tag_name // empty' <<<"$release_json")"
+          if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Could not determine a valid latest PDF.js release tag." >&2
+            exit 1
+          fi
+
+          version="${tag#v}"
+          asset_name="pdfjs-${version}-dist.zip"
+          asset_url="$(jq -r --arg name "$asset_name" \
+            '.assets[] | select(.name == $name) | .browser_download_url' \
+            <<<"$release_json" | head -n 1)"
+
+          if [[ -z "$asset_url" || "$asset_url" == "null" ]]; then
+            echo "Release asset $asset_name was not found in $tag." >&2
+            exit 1
+          fi
+
+          current=""
+          if [[ -f viewer/build/pdf.mjs ]]; then
+            current="$(sed -nE 's/.*pdfjsVersion = ([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' \
+              viewer/build/pdf.mjs | head -n 1)"
+          fi
+
+          echo "Current PDF.js: ${current:-unknown}"
+          echo "Latest PDF.js:  $version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+          if [[ "$current" == "$version" ]]; then
+            echo "PDF.js is already current."
+            echo "updated=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          tmp="$(mktemp -d)"
+          trap 'rm -rf "$tmp"' EXIT
+
+          curl --fail --silent --show-error --location \
+            "$asset_url" -o "$tmp/pdfjs.zip"
+          unzip -q "$tmp/pdfjs.zip" -d "$tmp/dist"
+
+          dist_root=""
+          if [[ -d "$tmp/dist/build" && -d "$tmp/dist/web" ]]; then
+            dist_root="$tmp/dist"
+          else
+            while IFS= read -r candidate; do
+              if [[ -d "$candidate/build" && -d "$candidate/web" ]]; then
+                dist_root="$candidate"
+                break
+              fi
+            done < <(find "$tmp/dist" -mindepth 1 -maxdepth 2 -type d -print)
+          fi
+
+          if [[ -z "$dist_root" ]]; then
+            echo "Downloaded archive does not contain both build/ and web/." >&2
+            exit 1
+          fi
+
+          rm -rf viewer/build viewer/web
+          cp -a "$dist_root/build" viewer/build
+          cp -a "$dist_root/web" viewer/web
+
+          detected="$(sed -nE 's/.*pdfjsVersion = ([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' \
+            viewer/build/pdf.mjs | head -n 1)"
+          if [[ "$detected" != "$version" ]]; then
+            echo "Version verification failed: expected $version, found ${detected:-unknown}." >&2
+            exit 1
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A viewer/build viewer/web
+
+          if git diff --cached --quiet; then
+            echo "The release produced no repository changes."
+            echo "updated=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git commit -m "chore(pdf.js): update to v${version}"
+          git push origin HEAD:main
+          echo "updated=true" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: update
+    if: needs.update.outputs.updated == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Check out updated main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Assemble publishable site
+        run: |
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='scripts' \
+            --exclude='_site' \
+            ./ _site/
+          du -sh _site
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
