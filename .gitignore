@@ -351,3 +351,12 @@ MigrationBackup/
 
 # PDF's directory
 #assets/*
+
+# --- This site -------------------------------------------------------------
+# The pages are build output. `python3 scripts/build.py` renders them into
+# _site/ from data/links.yml, the PDFs in assets/ and the templates in
+# scripts/build.py — so none of it belongs in the repository.
+#
+# Source, and deliberately still tracked: assets/, data/, scripts/, static/,
+# viewer/ and the root icons and manifests.
+_site/

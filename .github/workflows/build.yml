@@ -1,20 +1,21 @@
 name: Build and publish
 
-# The site is generated from data/links.yml. Editing that file — in the GitHub
-# web editor, or by pushing a commit — is the whole publishing workflow: this
-# runs, regenerates index.html, commits it and deploys to Pages.
+# The site is generated from data/links.yml and the PDFs in assets/. Editing
+# either — in the GitHub web editor, or by pushing a commit — is the whole
+# publishing workflow: this renders the site into _site/ and deploys it.
+#
+# Nothing is committed back. The generated HTML is build output, so it lives in
+# the Pages artifact and nowhere else.
 on:
   push:
     branches: [main]
-    # Deliberately an include-list of *inputs*. The job commits index.html
-    # itself, and that is not listed here, so its own commit cannot trigger
-    # another run.
     paths:
-      - "data/links.yml"
+      - "data/**"
+      - "assets/**"
       - "scripts/**"
       - "static/**"
-      - ".github/workflows/build.yml"
       - "viewer/**"
+      - ".github/workflows/build.yml"
   workflow_dispatch:
 
 permissions:
@@ -28,7 +29,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write      # commits the regenerated index.html
+      contents: read
       pages: write
       id-token: write
     steps:
@@ -40,86 +41,27 @@ jobs:
 
       - run: pip install --quiet pyyaml
 
-      - name: Render every page
-        run: python3 scripts/build.py
+      # The PDF model — slugs, path containment, signatures, duplicate routes.
+      - name: Test the build
+        run: python3 -m unittest discover -s scripts -p 'test_*.py'
 
-      - name: Check nothing important went missing
+      # Every check lives in build.py, so there is one definition of how a PDF
+      # URL is derived rather than one here and another in the renderer.
+      - name: Validate the data and the rendered pages
+        run: python3 scripts/build.py --validate
+
+      - name: Render the site
+        run: python3 scripts/build.py --output-dir _site
+
+      - name: Check the artifact is complete
         run: |
-          python3 - <<'PY'
-          import pathlib, sys, yaml
-
-          doc = yaml.safe_load(pathlib.Path("data/links.yml").read_text(encoding="utf-8"))
-
-          # Each category is its own page now, so a link has to be checked
-          # against the page it was actually written into, at that page's depth.
-          missing, total = [], 0
-          for cat in doc["categories"]:
-              page = pathlib.Path(cat["slug"], "index.html")
-              html = page.read_text(encoding="utf-8") if page.exists() else ""
-              for entry in cat.get("entries") or []:
-                  urls = ([entry["url"]] if entry.get("url") else [])
-                  urls += [l["url"] for l in entry.get("links") or []]
-                  for url in urls:
-                      total += 1
-                      want = url
-                      if not url.startswith(("http://", "https://")):
-                          want = "../" + (url[2:] if url.startswith("./") else url)
-                      if f'href="{want.replace("&", "&amp;")}"' not in html:
-                          missing.append((cat["slug"], url))
-
-              for course in cat.get("courses") or []:
-                  cpage = pathlib.Path(cat["slug"], course["slug"], "index.html")
-                  chtml = cpage.read_text(encoding="utf-8") if cpage.exists() else ""
-                  for module in course.get("modules") or []:
-                      for mat in module.get("materials") or []:
-                          total += 1
-                          want = mat["url"]
-                          if not want.startswith(("http://", "https://")):
-                              want = "../../" + (want[2:] if want.startswith("./") else want)
-                          if f'href="{want.replace("&", "&amp;")}"' not in chtml:
-                              missing.append((course["slug"], mat["url"]))
-
-          assert total >= 400, f"only {total} links in links.yml — refusing to publish"
-
-          if missing:
-              print("links absent from the page they belong on:", file=sys.stderr)
-              for slug, url in missing[:20]:
-                  print(f"  {slug}: {url}", file=sys.stderr)
-              sys.exit(1)
-
-          # The front page lists the PDF entries, so they have to be there too.
-          front = pathlib.Path("index.html").read_text(encoding="utf-8")
-          pdfs = next((c for c in doc["categories"] if c["slug"] == "pdfs"), None)
-          if pdfs:
-              absent = []
-              for entry in pdfs.get("entries") or []:
-                  urls = ([entry["url"]] if entry.get("url") else [])
-                  urls += [l["url"] for l in entry.get("links") or []]
-                  for url in urls:
-                      want = url if url.startswith(("http://", "https://")) \
-                          else "./" + (url[2:] if url.startswith("./") else url)
-                      if f'href="{want.replace("&", "&amp;")}"' not in front:
-                          absent.append(url)
-              if absent:
-                  print("PDF links missing from the front page:", file=sys.stderr)
-                  for url in absent[:20]:
-                      print(f"  {url}", file=sys.stderr)
-                  sys.exit(1)
-
-          print(f"ok: {total} links, all present on their own page and the front page")
-          PY
-
-      - name: Commit whatever the build changed
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html pdfs links tools datasets courses
-          if git diff --cached --quiet; then
-            echo "every page is already current."
-          else
-            git commit -m "chore: rebuild the site ($(date -u +%Y-%m-%d))"
-            git push origin HEAD:${GITHUB_REF_NAME}
-          fi
+          test -f _site/index.html
+          test -f _site/pdfs/index.html
+          test -d _site/assets
+          test -d _site/viewer
+          test -f _site/sw.js
+          echo "viewer routes: $(find _site/v -name index.html | wc -l)"
+          du -sh _site
 
       # enablement:true switches Pages on if it is off, so the site does not
       # need anyone to flip a switch in Settings before the first deploy.
@@ -134,18 +76,6 @@ jobs:
         run: |
           echo "::warning::Could not enable GitHub Pages automatically."
           echo "::warning::Set Settings -> Pages -> Source to 'GitHub Actions'."
-
-      - name: Assemble the publishable site
-        # Everything except the repository plumbing. The PDFs under assets/ and
-        # the viewer pages under v/ are the bulk of it and have to ship.
-        run: |
-          rsync -a \
-            --exclude='.git' \
-            --exclude='.github' \
-            --exclude='scripts' \
-            --exclude='_site' \
-            ./ _site/
-          du -sh _site
 
       - uses: actions/upload-pages-artifact@v3
         with:

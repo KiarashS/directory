@@ -149,14 +149,19 @@ jobs:
         with:
           enablement: true
 
-      - name: Assemble publishable site
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install --quiet pyyaml
+
+      # The pages are build output, not repository content, so a deploy has to
+      # render them. This job only ever changes viewer/, but it still publishes
+      # a whole site, and that site needs its HTML.
+      - name: Render the site
         run: |
-          rsync -a \
-            --exclude='.git' \
-            --exclude='.github' \
-            --exclude='scripts' \
-            --exclude='_site' \
-            ./ _site/
+          python3 scripts/build.py --validate
+          python3 scripts/build.py --output-dir _site
           du -sh _site
 
       - name: Upload Pages artifact
