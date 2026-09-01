@@ -85,12 +85,17 @@ A talk is an ordinary entry with two extras, shown as a line under the title:
 - title: Making a static site searchable
   url: ./v/slides-deck/
   event: PyCon
+  by: Kiarash Soleimanzadeh
+  location: Tehran, Iran
   date: 2026-05-14
   tags: [search]
   links:
     - text: Recording
       url: https://example.com/video
 ```
+
+`event`, `by` and `location` are all optional and join into one line under the
+title, separated by `·`.
 
 Slides, video, code and paper are just its links, so a talk with several opens
 the same modal everything else does.
@@ -101,6 +106,11 @@ Optional, and always yours to write — nothing is fetched or generated. An entr
 with a `description` gets a small (i) button in the top-right corner of its
 card, and the text appears in a popover on hover or keyboard focus. On a touch
 screen, tapping the button toggles it.
+
+The popover and the tooltips on the toolbar controls share one surface, so they
+read as the same object. Those tooltips replace the browser's built-in `title`
+box, which cannot be styled, waits about a second to appear, and never shows on
+keyboard focus.
 
 ```yaml
 - title: Simple Icons

@@ -617,6 +617,7 @@ main { position: relative; z-index: 1; padding-bottom: 64px; }
 }
 
 .card {
+  --pin: 0 0 0 0 transparent;      /* replaced on .is-pinned; see below */
   position: relative;
   display: flex;
   flex-direction: column;
@@ -625,7 +626,7 @@ main { position: relative; z-index: 1; padding-bottom: 64px; }
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--pin), var(--shadow-sm);
   transition: transform 0.16s var(--ease), box-shadow 0.16s var(--ease),
               border-color 0.16s var(--ease);
 }
@@ -633,7 +634,7 @@ main { position: relative; z-index: 1; padding-bottom: 64px; }
 .card:hover {
   transform: translateY(-2px);
   border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--pin), var(--shadow-md);
 }
 .card:hover, .card:focus-within { z-index: 5; }
 .js .card[hidden] { display: none; }
@@ -689,24 +690,74 @@ a.card-title:hover { color: var(--accent); }
   color: var(--accent);
 }
 
+/* One surface for both the hover tooltip on the controls and the description
+   popover on a card, so the two read as the same object. `.tip` is placed by
+   directory.js against a trigger; `.popover` is placed by CSS inside its card,
+   which is what keeps it working with JavaScript off. */
+
+.tip,
 .popover {
-  position: absolute;
-  top: calc(100% + 7px);
-  right: -4px;
-  z-index: 40;
   width: max-content;
-  max-width: min(288px, 72vw);
-  padding: 10px 12px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
+  max-width: min(280px, calc(100vw - 32px));
+  padding: 9px 12px;
+  border: 1px solid color-mix(in srgb, var(--line-strong) 70%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  backdrop-filter: saturate(180%) blur(10px);
+  -webkit-backdrop-filter: saturate(180%) blur(10px);
   color: var(--text-soft);
   box-shadow: var(--shadow-lg);
-  font-size: 0.83rem;
+  font-size: 0.82rem;
   font-weight: 400;
   line-height: 1.5;
   text-align: start;
   white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .tip, .popover { background: var(--surface); }
+}
+
+/* The caret. Drawn as a rotated square sharing the surface's border, with two
+   of its sides masked by the panel sitting on top of it. */
+.tip::after,
+.popover::after {
+  content: "";
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  rotate: 45deg;
+  background: inherit;
+  border: 1px solid color-mix(in srgb, var(--line-strong) 70%, transparent);
+  border-right: 0;
+  border-bottom: 0;
+  backdrop-filter: inherit;
+}
+
+/* --- the tooltip on a control ------------------------------------------- */
+
+.tip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  pointer-events: none;          /* never eats a click meant for the control */
+  opacity: 0;
+  translate: 0 -3px;
+  transition: opacity 0.13s var(--ease), translate 0.13s var(--ease);
+}
+.tip[data-show] { opacity: 1; translate: 0; }
+.tip::after { top: -5px; left: var(--tip-caret, 50%); margin-left: -5px; }
+.tip[data-above]::after { top: auto; bottom: -5px; rotate: 225deg; }
+
+/* --- the description popover on a card ---------------------------------- */
+
+.popover {
+  position: absolute;
+  top: calc(100% + 9px);
+  right: -4px;
+  z-index: 40;
 
   opacity: 0;
   visibility: hidden;
@@ -714,12 +765,13 @@ a.card-title:hover { color: var(--accent); }
   transition: opacity 0.14s var(--ease), translate 0.14s var(--ease),
               visibility 0.14s var(--ease);
 }
+.popover::after { top: -5px; right: 12px; }
 .popover::before {
   /* Bridges the gap so the pointer can travel button -> popover. */
   content: "";
   position: absolute;
-  inset: -9px 0 auto 0;
-  height: 9px;
+  inset: -11px 0 auto 0;
+  height: 11px;
 }
 
 .card-info:hover .popover,
@@ -850,12 +902,12 @@ button.card-title::after {
    box-shadows rather than a pseudo-element so it costs no layout: the cards
    stay flush with their row, which is the whole point of the grid alignment. */
 .card-multi {
-  box-shadow: var(--shadow-sm),
+  box-shadow: var(--pin), var(--shadow-sm),
               6px -6px 0 -1px var(--surface),
               6px -6px 0 0 var(--line-strong);
 }
 .card-multi:hover {
-  box-shadow: var(--shadow-md),
+  box-shadow: var(--pin), var(--shadow-md),
               6px -6px 0 -1px var(--surface),
               6px -6px 0 0 color-mix(in srgb, var(--accent) 55%, var(--line-strong));
 }
@@ -1000,17 +1052,15 @@ button.card-title::after {
 }
 
 /* A pinned card reads as lifted out of the ordinary run of the list. */
+/* The pin marker is an inset shadow, so it is clipped by the card's own
+   border-radius and curves with the corners. The previous version was an
+   absolutely-positioned bar at top:-1px, which drew a straight line floating
+   above the rounded edge — visible as an overhang at both top corners.
+   --pin is empty on an ordinary card, which lets every box-shadow rule below
+   carry the layer without needing an is-pinned variant of each one. */
 .card.is-pinned {
+  --pin: inset 0 3px 0 var(--accent);
   border-color: color-mix(in srgb, var(--accent) 38%, var(--line));
-}
-.card.is-pinned::before {
-  content: "";
-  position: absolute;
-  inset-inline: 14px;
-  top: -1px;
-  height: 2px;
-  border-radius: 0 0 2px 2px;
-  background: var(--accent);
 }
 
 .card-meta {

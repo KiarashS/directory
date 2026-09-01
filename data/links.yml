@@ -25,6 +25,8 @@
 #   - title: Making a static site searchable
 #     url: ./v/slides-deck/
 #     event: PyCon
+#     by: Kiarash Soleimanzadeh      # optional presenter
+#     location: Tehran, Iran         # optional
 #     date: 2026-05-14
 #     tags: [talk, search]
 #     links:
@@ -54,7 +56,7 @@ site:
   title: My Directory
   heading: Everything I keep
   heading_accent: in one place
-  tagline: A directory of the PDFs, reading links, web tools and open datasets I have collected over the years. Search it, or pick a section above.
+  tagline: A directory of the PDFs, reading links, web tools and open datasets I have collected over the years. Search it, or pick a section below.
   url: https://kiarashs.github.io/directory/
   author: Kiarash Soleimanzadeh
   author_url: https://kiarashs.ir

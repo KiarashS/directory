@@ -43,7 +43,7 @@
     if (themeBtn) {
       var next = THEME_ORDER[(THEME_ORDER.indexOf(theme) + 1) % THEME_ORDER.length];
       themeBtn.setAttribute('aria-label', 'Theme: ' + theme + '. Switch to ' + next + '.');
-      themeBtn.setAttribute('title', 'Theme: ' + theme);
+      themeBtn.setAttribute('data-tip', 'Theme: ' + theme);
     }
 
     // Keep the browser chrome in step with the page.
@@ -334,6 +334,76 @@
   applyView(read(VIEW_KEY) || 'grid');
 
 
+
+
+  /* --- Tooltips ----------------------------------------------------------
+     One element, moved to whichever control is hovered or focused, rather
+     than the browser's built-in title box — which cannot be styled, waits
+     about a second to appear, and never shows on keyboard focus at all.
+
+     Controls carrying data-tip already have an aria-label saying the same
+     thing, so the tooltip is aria-hidden: announcing it again would just
+     repeat the label. */
+
+  var tip = document.querySelector('.tip');
+  var tipFor = null;
+
+  function placeTip(trigger) {
+    var text = trigger.getAttribute('data-tip');
+    if (!tip || !text) return;
+
+    tipFor = trigger;
+    tip.textContent = text;
+    tip.removeAttribute('data-above');
+    tip.setAttribute('data-show', '');
+
+    var t = trigger.getBoundingClientRect();
+    var box = tip.getBoundingClientRect();
+    var gap = 9;
+
+    // Below by default, above when there is not room. Clamped to the viewport
+    // so a control near an edge does not push the panel off screen.
+    var top = t.bottom + gap;
+    if (top + box.height > window.innerHeight - 8) {
+      top = t.top - box.height - gap;
+      tip.setAttribute('data-above', '');
+    }
+
+    var wanted = t.left + t.width / 2 - box.width / 2;
+    var left = Math.min(Math.max(8, wanted), window.innerWidth - box.width - 8);
+
+    tip.style.top = Math.round(top) + 'px';
+    tip.style.left = Math.round(left) + 'px';
+    // Keep the caret pointing at the control even after the clamp moved the
+    // panel sideways.
+    tip.style.setProperty('--tip-caret',
+      Math.round(t.left + t.width / 2 - left) + 'px');
+  }
+
+  function hideTip() {
+    tipFor = null;
+    if (tip) tip.removeAttribute('data-show');
+  }
+
+  ['mouseenter', 'focus'].forEach(function (evt) {
+    document.addEventListener(evt, function (ev) {
+      var trigger = ev.target.closest && ev.target.closest('[data-tip]');
+      if (trigger) placeTip(trigger);
+    }, true);
+  });
+
+  ['mouseleave', 'blur'].forEach(function (evt) {
+    document.addEventListener(evt, function (ev) {
+      var trigger = ev.target.closest && ev.target.closest('[data-tip]');
+      if (trigger && trigger === tipFor) hideTip();
+    }, true);
+  });
+
+  window.addEventListener('scroll', hideTip, { passive: true });
+  window.addEventListener('resize', hideTip);
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape') hideTip();
+  });
 
   /* --- Description popovers ----------------------------------------------
      Hover and keyboard focus are handled in CSS. This adds what CSS cannot:
