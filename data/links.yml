@@ -2,8 +2,8 @@
 #
 # Each category becomes a real page at /<slug>/ — /pdfs/, /links/ and so on.
 #
-# An entry needs a title and a url. Anything with extra `links` renders as a
-# card that opens a modal listing all of them.
+# An entry needs a title and a destination. Anything with extra `links` renders
+# as a card that opens a modal listing all of them.
 #
 #   - title: Fluent Python 2nd Edition
 #     url: https://example.com/book
@@ -15,15 +15,31 @@
 #       - text: Errata
 #         url: https://example.com/errata
 #
+# A destination is either `url:` (external, opens in a new tab) or `pdf:` (one
+# of your own files in assets/). Never both on the same item.
+#
+#   - title: Explainable AI Cheat Sheet
+#     pdf: xai-cheat-sheet.pdf       # -> assets/xai-cheat-sheet.pdf
+#     slug: xai-cheat-sheet          # optional; derived from the filename
+#
+# `pdf:` is all it takes: the build validates the file, generates the reader
+# page at /v/<slug>/ and links the card to it. Nothing under v/ is written by
+# hand, and none of it lives in this repository — it is generated at build time.
+#
+# A slug is a public URL. Changing one on something already published breaks
+# every link to it, so every PDF below states its slug rather than relying on
+# the derived one. `pdf:` works the same way in a nested `links:` list and in a
+# course's `materials:`.
+#
 # Nothing is fetched or generated — a `description` exists only if you write it.
 #
 # Entries with no `added` keep the order they have in this file and sit below
 # the dated ones, so adding dates gradually does not scramble anything.
 #
-# Talks take two more optional fields, shown as a line under the title:
+# Talks take three more optional fields, shown as a line under the title:
 #
 #   - title: Making a static site searchable
-#     url: ./v/slides-deck/
+#     pdf: slides-deck.pdf
 #     event: PyCon
 #     by: Kiarash Soleimanzadeh      # optional presenter
 #     location: Tehran, Iran         # optional
@@ -44,13 +60,13 @@
 #     description: One or two lines about the course.
 #     links:
 #       - text: Syllabus
-#         url: ./assets/syllabus.pdf
+#         pdf: syllabus.pdf
 #     modules:
 #       - title: Week 1 — Linear regression
 #         summary: Optional line under the module heading.
 #         materials:
 #           - title: Lecture slides
-#             url: ./v/wk1-slides/
+#             pdf: wk1-slides.pdf
 #             type: slides         # slides notes assignment reading video code dataset
 site:
   title: My Directory
@@ -67,355 +83,525 @@ categories:
   blurb: Cheat sheets, guides and reference PDFs, opened in the built-in reader.
   entries:
   - title: Action Verbs
-    url: ./v/action-verbs/
+    pdf: action-verbs.pdf
+    slug: action-verbs
   - title: Building Grammar Skills For the TOEFL
-    url: ./v/toefl-grammar/
+    pdf: Building Grammar Skills For the TOEFL.pdf
+    slug: toefl-grammar
   - title: GRE_Equation_Guide_TTP
-    url: ./v/GRE-cheatsheet-ttp/
+    pdf: GRE_Equation_Guide_TTP.pdf
+    slug: GRE-cheatsheet-ttp
     links:
     - text: GRE Glossary 1
-      url: ./v/gre-glossary/
+      pdf: GRE-Glossary.pdf
+      slug: gre-glossary
     - text: GRE Glossary 2
       url: https://focustutoring.com/a-glossary-of-math-terms-the-gre-expects-you-to-know/
   - title: Transitions
-    url: ./v/transitions/
+    pdf: transitions.pdf
+    slug: transitions
   - title: Transitions Words and Phrases
-    url: ./v/transitions2/
+    pdf: Transitions Words and Phrases.pdf
+    slug: transitions2
   - title: Analysis I Cheat Sheet
-    url: ./v/cheatsheet_analysis_I/
+    pdf: cheatsheet_analysis_I.pdf
+    slug: cheatsheet_analysis_I
   - title: Probability & Statistics Cheat Sheet
-    url: ./v/Probability_Statistics/
+    pdf: cheatsheet_probability_and_statistics.pdf
+    slug: Probability_Statistics
   - title: Cheat sheet Python Dict Methods
-    url: ./v/python-dict-methods/
+    pdf: PythonDictMethods.pdf
+    slug: python-dict-methods
   - title: Cheat sheet Python List Methods
-    url: ./v/python-list-methods/
+    pdf: PythonListMethods.pdf
+    slug: python-list-methods
   - title: Cheat sheet Python Set Methods
-    url: ./v/python-set-methods/
+    pdf: PythonSetMethods.pdf
+    slug: python-set-methods
   - title: Cheat Sheet Python String Methods
-    url: ./v/python-string-methods/
+    pdf: PythonStringMethods.pdf
+    slug: python-string-methods
   - title: Transitions 3
-    url: ./v/transitions3/
+    pdf: TOEFL iBT Transitional Words.pdf
+    slug: transitions3
   - title: Writing brainstorm
-    url: ./v/writing-brainstorm/
+    pdf: W2 Brainstorm.pdf
+    slug: writing-brainstorm
     links:
     - text: Golden reasons for speaking
-      url: ./v/speaking-golden-reasons/
+      pdf: Speak1 Golden reasosns.pdf
+      slug: speaking-golden-reasons
     - text: Golden reasons 2
-      url: ./v/golden-reasons2/
+      pdf: GoldenReasons2.pdf
+      slug: golden-reasons2
     - text: Golden reasons 3
-      url: ./v/golden-reasons3/
+      pdf: GoldenReasons3.pdf
+      slug: golden-reasons3
   - title: Toefl Expressions & Brainstorm (Speak & Write)
-    url: ./v/toefl-expressions-brainstorm/
+    pdf: Toefl Expressions&Brainstorm (Speak&Write).pdf
+    slug: toefl-expressions-brainstorm
   - title: Prepositions
-    url: ./v/prepositions/
+    pdf: Prepositions.pdf
+    slug: prepositions
   - title: Prepositionary
-    url: ./v/prepositionary/
+    pdf: Prepositionary.pdf
+    slug: prepositionary
   - title: Longman Essay Activator
-    url: ./v/longman-essay-activator/
+    pdf: LongmanEssayActivator.pdf
+    slug: longman-essay-activator
     links:
     - text: Summary
-      url: ./v/essay-activator/
+      pdf: Essay_activator_summary.pdf
+      slug: essay-activator
   - title: Longman Topic Activator
-    url: ./v/longman-topic-activator/
+    pdf: LongmanTopicActivator.pdf
+    slug: longman-topic-activator
   - title: Longman Shit Activator
-    url: ./v/longman-shit-activator/
+    pdf: LongmanShitActivator.pdf
+    slug: longman-shit-activator
   - title: Perfect Phrases For The TOEFL - Speaking and Writing
-    url: ./v/perfect-phrases-for-the-TOEFL/
+    pdf: PerfectPhrasesForTheTOEFL.pdf
+    slug: perfect-phrases-for-the-TOEFL
+    links:
+    - text: Perfect Phrases - full edition
+      pdf: Perfect Phrases for the TOEFL Speaking and Writing Sections.pdf
+      slug: perfect-phrases
   - title: Longman Dictionary Of Common Errors
-    url: ./v/longman-dictionary-of-common-errors/
+    pdf: LongmanDictionaryOfCommonErrors.pdf
+    slug: longman-dictionary-of-common-errors
   - title: Longman Common Mistakes In English
-    url: ./v/longman-common-mistakes/
+    pdf: LongmanCommonMistakesInEnglish.pdf
+    slug: longman-common-mistakes
   - title: Collocations 2
-    url: ./v/collocations-2/
+    pdf: collocations 2.pdf
+    slug: collocations-2
     links:
+    - text: Collocations 1
+      pdf: collocations 1.pdf
+      slug: collocations-1
     - text: Collocations 3
-      url: ./v/collocations-3/
+      pdf: collocations 3.pdf
+      slug: collocations-3
     - text: Collocations 4
-      url: ./v/collocations-4/
+      pdf: collocations 4.pdf
+      slug: collocations-4
     - text: Collocations 5
-      url: ./v/collocations-5/
+      pdf: PearsonAcademicCollocationList.pdf
+      slug: collocations-5
   - title: Python cheat sheet
-    url: ./v/python-cheatsheet/
+    pdf: python cheat sheet.pdf
+    slug: python-cheatsheet
   - title: Learn Python 3 the Hard Way
-    url: ./v/learn-python3/
+    pdf: learn-python3-the-hard-way-nov-15-2018.pdf
+    slug: learn-python3
   - title: Learn More Python 3 the Hard Way
-    url: ./v/learn-more-python3/
+    pdf: Learn More Python 3 the Hard Way - The Next Step for New Python Programmers.pdf
+    slug: learn-more-python3
   - title: Python Crash Course, 2nd Edition
-    url: ./v/python-crash-course2/
+    pdf: python-crash-course-2nd-edition.pdf
+    slug: python-crash-course2
   - title: Idea Bank - Technology
-    url: ./v/idea-bank-technology/
+    pdf: Idea_Bank_Technology.pdf
+    slug: idea-bank-technology
     links:
     - text: Summary
-      url: ./v/Idea_Bank_Technology/
+      pdf: Technology-IdeaBank.pdf
+      slug: Idea_Bank_Technology
   - title: Idea Bank - Education
-    url: ./v/idea-bank-education/
+    pdf: Idea_Bank_Education.pdf
+    slug: idea-bank-education
     links:
     - text: Summary
-      url: ./v/Idea_Bank_Education/
+      pdf: Education-IdeaBank.pdf
+      slug: Idea_Bank_Education
   - title: Idea Bank - Government
-    url: ./v/idea-bank-government/
+    pdf: Idea_Bank_Government.pdf
+    slug: idea-bank-government
     links:
     - text: Summary
-      url: ./v/Idea_Bank_Government/
+      pdf: Government-IdeaBank.pdf
+      slug: Idea_Bank_Government
   - title: Idea Bank - Business
-    url: ./v/idea-bank-business/
+    pdf: Idea_Bank_Business.pdf
+    slug: idea-bank-business
     links:
     - text: Summary
-      url: ./v/Idea_Bank_Business/
+      pdf: Business-IdeaBank.pdf
+      slug: Idea_Bank_Business
   - title: Idea Bank - Health
-    url: ./v/idea-bank-health/
+    pdf: Idea_Bank_Health.pdf
+    slug: idea-bank-health
     links:
     - text: Summary
-      url: ./v/Idea_Bank_Health/
+      pdf: Health-Environment-IdeaBank.pdf
+      slug: Idea_Bank_Health
   - title: Idea Bank - Examples
-    url: ./v/Idea_Bank_Examples/
+    pdf: Idea_Bank_Examples.pdf
+    slug: Idea_Bank_Examples
   - title: Git cheat sheet 1
-    url: ./v/git-cheatsheet1/
+    pdf: git-cheat-sheet-education.pdf
+    slug: git-cheatsheet1
   - title: Git cheat sheet 2
-    url: ./v/git-cheatsheet2/
+    pdf: atlassian-git-cheatsheet.pdf
+    slug: git-cheatsheet2
   - title: Git cheat sheet 3
-    url: ./v/git-cheatsheet3/
+    pdf: github-git-cheat-sheet.pdf
+    slug: git-cheatsheet3
   - title: Git cheat sheet 4
-    url: ./v/git-cheatsheet4/
+    pdf: Git_Cheatsheet_AmanChadha.pdf
+    slug: git-cheatsheet4
   - title: Matplotlib cheat sheet 1
-    url: ./v/matplotlib-cheatsheet1/
+    pdf: matplotlib-cheatsheets.pdf
+    slug: matplotlib-cheatsheet1
   - title: Matplotlib for beginners - cheat sheet 2
-    url: ./v/matplotlib-cheatsheet2/
+    pdf: handout-beginner.pdf
+    slug: matplotlib-cheatsheet2
   - title: Matplotlib for intermediate users - cheat sheet 3
-    url: ./v/matplotlib-cheatsheet3/
+    pdf: handout-intermediate.pdf
+    slug: matplotlib-cheatsheet3
   - title: Matplotlib tips & tricks - cheat sheet 4
-    url: ./v/matplotlib-cheatsheet4/
+    pdf: handout-tips.pdf
+    slug: matplotlib-cheatsheet4
   - title: Matplotlib cheat sheet 5
-    url: ./v/matplotlib-cheatsheet5/
+    pdf: Python_Matplotlib_Cheat_Sheet.pdf
+    slug: matplotlib-cheatsheet5
   - title: Cheat sheet deep learning tips tricks
-    url: ./v/dl-tips-cheatsheet/
+    pdf: cheatsheet-deep-learning-tips-tricks.pdf
+    slug: dl-tips-cheatsheet
   - title: GRE math review - ETS
-    url: ./v/ets-gre-math-review/
+    pdf: gre_math_review.pdf
+    slug: ets-gre-math-review
   - title: GRE math flashcards
-    url: ./v/gre-math-flashcards/
+    pdf: GRE Math flashcards.pdf
+    slug: gre-math-flashcards
   - title: GRE quant review
-    url: ./v/gre-quant-review/
+    pdf: Quant Review.pdf
+    slug: gre-quant-review
   - title: GRE Sentence Equivalence
-    url: ./v/gre-sentence-equivalence/
+    pdf: GRE Sentence Equivalence.pdf
+    slug: gre-sentence-equivalence
   - title: NLP with python and NLTK - cheat sheet
-    url: ./v/nlp-with-python-nltk/
+    pdf: nlp-with-python-and-nltk.pdf
+    slug: nlp-with-python-nltk
   - title: 'Python in a Nutshell: A Desktop Quick Reference 3rd Edition'
-    url: ./v/python-nutshell3/
+    pdf: Python in a Nutshell-3rd.pdf
+    slug: python-nutshell3
   - title: Fluent Python 2nd Edition
-    url: ./v/fluent-python2/
+    pdf: Fluent Python-2nd-py3.10.pdf
+    slug: fluent-python2
   - title: SQL cheat sheet V1
-    url: ./v/sql-v1/
+    pdf: SQL-V1.pdf
+    slug: sql-v1
   - title: SQL cheat sheet V2
-    url: ./v/sql-v2-dark/
+    pdf: SQL-V2-Dark.pdf
+    slug: sql-v2-dark
   - title: Paraphrasing Strategies
-    url: ./v/paraphrase1/
+    pdf: Paraphrasing Strategies.pdf
+    slug: paraphrase1
   - title: Javascript cheat sheet
-    url: ./v/javascript-cheatsheet/
+    pdf: javascript-cheatsheet.pdf
+    slug: javascript-cheatsheet
   - title: TypeScript Control Flow Analysis
-    url: ./v/typescript-control-flow-analysis/
+    pdf: TypeScript Control Flow Analysis.pdf
+    slug: typescript-control-flow-analysis
   - title: TypeScript Types
-    url: ./v/typescript-types/
+    pdf: TypeScript Types.pdf
+    slug: typescript-types
   - title: TypeScript Interfaces
-    url: ./v/typescript-interfaces/
+    pdf: TypeScript Interfaces.pdf
+    slug: typescript-interfaces
   - title: TypeScript Classes
-    url: ./v/typescript-classes/
+    pdf: TypeScript Classes.pdf
+    slug: typescript-classes
   - title: CSS3 cheat sheet
-    url: ./v/css3-cheatsheet/
+    pdf: css3-cheatsheet.pdf
+    slug: css3-cheatsheet
   - title: Python cheat sheets
-    url: ./v/python-cheatsheets/
+    pdf: python-cheatsheets.pdf
+    slug: python-cheatsheets
   - title: Matplotlib - List of named colors
-    url: ./v/matplotlib-colors/
+    pdf: Matplotlib-named-colors-list.pdf
+    slug: matplotlib-colors
   - title: RGB hex colors chart
-    url: ./v/color-chart/
+    pdf: rgb-hex-color-chart.pdf
+    slug: color-chart
   - title: Simplicity-The Finer Art Of Creating Software Cheat Sheet
-    url: ./v/simplicity-cheatsheet/
+    pdf: Simplicity_CheatSheet.pdf
+    slug: simplicity-cheatsheet
   - title: Agile Poster
-    url: ./v/agile-poster/
+    pdf: agile-poster.pdf
+    slug: agile-poster
   - title: Agile and Scrum Cheat Sheet
-    url: ./v/agile-scrum-cheatsheet/
+    pdf: agile_and_scrum_cheatsheet.pdf
+    slug: agile-scrum-cheatsheet
   - title: The Ultimate Python Cheat Sheet
-    url: ./v/ultimate-python-cheatsheet/
+    pdf: WorldsMostDensePythonCheatSheet.pdf
+    slug: ultimate-python-cheatsheet
   - title: 'Python Cheat Sheet: Classes'
-    url: ./v/python-cheatsheet-classes/
+    pdf: CheatSheet-Python-Classes.pdf
+    slug: python-cheatsheet-classes
   - title: 'Python Cheat Sheet: Functions and Tricks'
-    url: ./v/python-cheatsheet-functricks/
+    pdf: CheatSheet-Python-Functions-and-Tricks.pdf
+    slug: python-cheatsheet-functricks
   - title: 'Python Cheat Sheet: 14 Interview Questions'
-    url: ./v/python-cheatsheet-interviewqs/
+    pdf: CheatSheet-Python-Coding-Interview-Questions.pdf
+    slug: python-cheatsheet-interviewqs
   - title: 'Python Cheat Sheet: Keywords'
-    url: ./v/python-cheatsheet-keywords/
+    pdf: CheatSheet-Python-Keywords.pdf
+    slug: python-cheatsheet-keywords
   - title: 'Python Cheat Sheet: NumPy'
-    url: ./v/python-cheatsheet-numpy/
+    pdf: CheatSheet-Python-NumPy.pdf
+    slug: python-cheatsheet-numpy
   - title: Latex Cheat Sheet
-    url: ./v/latexsheet/
+    pdf: latexsheet.pdf
+    slug: latexsheet
   - title: Probability Cheat Sheet
-    url: ./v/probability-cheatheet/
+    pdf: probability_cheatsheet.pdf
+    slug: probability-cheatheet
   - title: ASP Net Core Cheat Sheet
-    url: ./v/aspnetcore-cheatsheet/
+    pdf: Aspnet_Core_CheatSheet.pdf
+    slug: aspnetcore-cheatsheet
   - title: Python Regular Expressions Cheat Sheet
-    url: ./v/python-regular-exp/
+    pdf: python-reg.pdf
+    slug: python-regular-exp
   - title: Python (RegEx(pressions|p)?)
-    url: ./v/python-regex/
+    pdf: RegEx_Cheatsheet_AmanChadha.pdf
+    slug: python-regex
   - title: .Net Regular Expressions Cheat Sheet
-    url: ./v/net-regular-exp/
+    pdf: net-reg.pdf
+    slug: net-regular-exp
   - title: SQL Commands Cheat Sheet
-    url: ./v/sql-commands/
+    pdf: SQL-Commands-Cheat-Sheet.pdf
+    slug: sql-commands
   - title: HTTP Headers Cheat Sheet
-    url: ./v/http-headers/
+    pdf: headers.pdf
+    slug: http-headers
   - title: HTTP Status Codes Cheat Sheet
-    url: ./v/http-status-codes/
+    pdf: status-codes.pdf
+    slug: http-status-codes
   - title: The Web Developer's SEO Cheat Sheet
-    url: ./v/seo-cheatsheet/
+    pdf: seo-cheat-sheet.pdf
+    slug: seo-cheatsheet
   - title: Redux Cheat Sheet
-    url: ./v/redux-cheatsheet/
+    pdf: Redux-Cheat-Sheet.pdf
+    slug: redux-cheatsheet
   - title: 1300 Math Formulas
-    url: ./v/1300-math-formulas/
+    pdf: 1300-math-formulas.pdf
+    slug: 1300-math-formulas
   - title: Vajename Riazi
-    url: ./v/vajename-riazi/
+    pdf: Vajename Riazi.pdf
+    slug: vajename-riazi
   - title: Common English Mistakes
-    url: ./v/common-english-mistakes/
+    pdf: Common English Mistakes.pdf
+    slug: common-english-mistakes
   - title: HTML 5 Cheat Sheet
-    url: ./v/html5-cheatsheet/
+    pdf: html5-cheatsheet.pdf
+    slug: html5-cheatsheet
   - title: Data Visualization Cheat Sheet
-    url: ./v/data-visualization-cheatsheet/
+    pdf: data-visualization.pdf
+    slug: data-visualization-cheatsheet
   - title: Phrases + ING
-    url: ./v/phrases_ing/
+    pdf: phrases_ing.pdf
+    slug: phrases_ing
   - title: Redundancies
-    url: ./v/redundancies/
+    pdf: Redundancies.pdf
+    slug: redundancies
   - title: Betty Azar Grammar - Red Summary (Basic)
-    url: ./v/betty-red/
+    pdf: Betty-Red.pdf
+    slug: betty-red
   - title: Betty Azar Grammar - Black Summary (Intermediate)
-    url: ./v/betty-black/
+    pdf: Betty-Black.pdf
+    slug: betty-black
   - title: Betty Azar Grammar - Blue Summary (Advanced)
-    url: ./v/betty-blue/
+    pdf: Betty-Blue.pdf
+    slug: betty-blue
   - title: LINQ explained with sketches
-    url: ./v/linq-sketches/
+    pdf: LINQ-sketches.pdf
+    slug: linq-sketches
   - title: Design patterns cheat sheet 1
-    url: ./v/design-patterns1/
+    pdf: DesignPatterns-online.pdf
+    slug: design-patterns1
   - title: Design patterns cheat sheet 2
-    url: ./v/design-patterns2/
+    pdf: designpatternscard.pdf
+    slug: design-patterns2
   - title: Python Notes
-    url: ./v/python-notes/
+    pdf: PythonNotes.pdf
+    slug: python-notes
   - title: Pandas Notes
-    url: ./v/pandas-notes/
+    pdf: PandasDataFrameNotes.pdf
+    slug: pandas-notes
   - title: Matplotlib Notes
-    url: ./v/matplotllib-notes/
+    pdf: MatplotlibNotes.pdf
+    slug: matplotllib-notes
   - title: NumPy cheat sheet
-    url: ./v/numpy-cheatsheet/
+    pdf: NumPy-Cheat-Sheet.pdf
+    slug: numpy-cheatsheet
   - title: SciPy cheat sheet
-    url: ./v/scipy-cheatsheet/
+    pdf: SciPy-Cheat-Sheet.pdf
+    slug: scipy-cheatsheet
   - title: Pandas cheat sheet
-    url: ./v/pandas-cheatsheet/
+    pdf: Pandas-Cheat-Sheet.pdf
+    slug: pandas-cheatsheet
   - title: Review Probability Theory
-    url: ./v/probability-theory/
+    pdf: ReviewProbabilityTheory.pdf
+    slug: probability-theory
   - title: Python String Format
-    url: ./v/python-string-format/
+    pdf: python-string-formatting.pdf
+    slug: python-string-format
   - title: Grammar Success in 20 Minutes a Day
-    url: ./v/grammar-success-in-20-minutes-a-day/
+    pdf: Grammar-Success-in-20-Minutes-a-Day.pdf
+    slug: grammar-success-in-20-minutes-a-day
   - title: English Verb Tenses
-    url: ./v/english-verb-tenses/
+    pdf: English-Verb-Tenses.pdf
+    slug: english-verb-tenses
   - title: English Grammar in Use 5th
-    url: ./v/english-grammar-in-use-5th/
+    pdf: English-Grammar-in-Use-5th.pdf
+    slug: english-grammar-in-use-5th
   - title: Guide to NumPy
-    url: ./v/guide-to-numpy/
+    pdf: guide-to-numpy.pdf
+    slug: guide-to-numpy
   - title: Clean Code in Python (2nd)
-    url: ./v/clean-code-in-python/
+    pdf: clean-code-in-python.pdf
+    slug: clean-code-in-python
   - title: Numerical Recipes
-    url: ./v/numerical-recipes/
+    pdf: Numerical Recipes.pdf
+    slug: numerical-recipes
   - title: Microsoft-Machine Learning Cheat Sheet
-    url: ./v/ms-ml-cheatsheet/
+    pdf: m-ml-cheatheet.pdf
+    slug: ms-ml-cheatsheet
   - title: Machine Learning Cheat Sheet
-    url: ./v/ml-cheatsheet/
+    pdf: ml-cheatsheet.pdf
+    slug: ml-cheatsheet
   - title: Recurrent Neural Network Cheat Sheet
-    url: ./v/recurrent-neural-network-cheatsheet/
+    pdf: recurrent-neural-network-cheatsheet.pdf
+    slug: recurrent-neural-network-cheatsheet
   - title: Linear Algebra Done Right
-    url: ./v/linear-algebra-done-right/
+    pdf: Linear-Algebra-Done-Right.pdf
+    slug: linear-algebra-done-right
   - title: Calculus & Derivatives Cheat Sheet
-    url: ./v/calculus_derivatives/
+    pdf: calculus_cheat_sheet_derivatives.pdf
+    slug: calculus_derivatives
   - title: Statistic Formula
-    url: ./v/Statistic_Formula/
+    pdf: Statistic_Formula.pdf
+    slug: Statistic_Formula
   - title: Convergence Tests
-    url: ./v/convergence-tests/
+    pdf: Convergence_Tests.pdf
+    slug: convergence-tests
   - title: A Quick Guide to LaTex
-    url: ./v/latex-guide/
+    pdf: quick-guide-to-latex.pdf
+    slug: latex-guide
   - title: Machine Learning Cheatsheet
-    url: ./v/machine-learning-cheatsheet/
+    pdf: Machine_Learning_Cheatsheet.pdf
+    slug: machine-learning-cheatsheet
   - title: Docker Cheat sheet 1
-    url: ./v/docker1/
+    pdf: docker1.pdf
+    slug: docker1
     links:
     - text: Docker Cheat sheet 2
-      url: ./v/docker2/
+      pdf: docker2.pdf
+      slug: docker2
     - text: Docker Cheat sheet 3
-      url: ./v/docker3/
+      pdf: docker3.pdf
+      slug: docker3
     - text: Docker Cheat sheet 4
       url: https://dockerlabs.collabnix.com/docker/cheatsheet/
     - text: Docker Cheat sheet 5
       url: https://dockerlabs.collabnix.com/intermediate/docker-compose/compose-cheatsheet.html
   - title: AWK Cheat sheet 1
-    url: ./v/awk1/
+    pdf: awk1.pdf
+    slug: awk1
     links:
     - text: AWK Cheat sheet 2
-      url: ./v/awk2/
+      pdf: awk2.pdf
+      slug: awk2
   - title: Grammar and Punctuation Cheat sheet
-    url: ./v/grammar-punctuation/
+    pdf: Grammar-Punctuation.pdf
+    slug: grammar-punctuation
   - title: Homophones
-    url: ./v/homophones/
+    pdf: Homophones.pdf
+    slug: homophones
   - title: Linking Words
-    url: ./v/linking-words/
+    pdf: linking-words.pdf
+    slug: linking-words
   - title: Prepositions Handbook
-    url: ./v/english-prepositions/
+    pdf: english-preposition.pdf
+    slug: english-prepositions
   - title: Phrasal Verbs
-    url: ./v/easy-phrasal-verbs/
+    pdf: easy-phrasal-verbs.pdf
+    slug: easy-phrasal-verbs
   - title: Shortcut to Collocations
-    url: ./v/shortcut-to-collocations/
+    pdf: ShortcutToEnglishCollocations.pdf
+    slug: shortcut-to-collocations
   - title: List vs Set vs Dictionary vs Tuple (Python)
-    url: ./v/python-collections/
+    pdf: python-collections.pdf
+    slug: python-collections
   - title: Rust Programming Fundamentals
-    url: ./v/rust-programming-fundamentals/
+    pdf: Rust_Programming_Fundamentals.pdf
+    slug: rust-programming-fundamentals
   - title: Causative verbs
-    url: ./v/causative-verbs/
+    pdf: Causatives.pdf
+    slug: causative-verbs
     links:
     - text: Causative verbs 2
       url: ./v/betty-blue/?page=37
   - title: Reading Examples
-    url: ./v/readings1/
+    pdf: readings1.pdf
+    slug: readings1
     links:
     - text: Reading Examples 2
-      url: ./v/readings2/
+      pdf: readings2.pdf
+      slug: readings2
     - text: Reading Examples 3
-      url: ./v/readings3/
+      pdf: readings3.pdf
+      slug: readings3
     - text: Reading Examples 4
-      url: ./v/reading4/
+      pdf: TESTS-60-107-READING-PASSAGES.pdf
+      slug: reading4
     - text: Reading Examples 5
-      url: ./v/reading5/
+      pdf: REAL_TOEFL_PASSAGES.pdf
+      slug: reading5
   - title: Speaking Ideas
-    url: ./v/speaking-ideas/
+    pdf: Speaking-ideas-faranak.pdf
+    slug: speaking-ideas
     links:
     - text: Fantastic Reasons
-      url: ./v/fantastic-reasons/
+      pdf: Fantastic-Reasons.pdf
+      slug: fantastic-reasons
     - text: Brainstorming cheatsheet
-      url: ./v/Brainstorming-cheatsheet/
+      pdf: Brainstorming-cheatsheet.pdf
+      slug: Brainstorming-cheatsheet
   - title: Speaking topics (blue)
-    url: ./v/speaking-topics/
+    pdf: SPEAKING_TOPICS_BLUE.pdf
+    slug: speaking-topics
     links:
     - text: Categorized writing topics
-      url: ./v/categorized-writing-topics/
+      pdf: Categorized-writing-topics.pdf
+      slug: categorized-writing-topics
   - title: Categorized Phrases
-    url: ./v/categorized-phrases/
+    pdf: Categorized-Phrases.pdf
+    slug: categorized-phrases
   - title: Summary of collocations
-    url: ./v/summary-of-collocations/
+    pdf: summary-of-collocations.pdf
+    slug: summary-of-collocations
     links:
     - text: Noteworthy clauses
-      url: ./v/noteworthy-clauses/
+      pdf: NOTEWORTHY-Clauses.pdf
+      slug: noteworthy-clauses
   - title: English collocations in use - Intermediate
-    url: ./v/collocations-in-use-int/
+    pdf: English-Collocations-in-Use-Intermediate.pdf
+    slug: collocations-in-use-int
   - title: English collocations in use - Advanced
-    url: ./v/collocations-in-use-adv/
+    pdf: English-Collocations-in-Use-Advanced.pdf
+    slug: collocations-in-use-adv
   - title: English phrasal verbs in use - Advanced
-    url: ./v/phrasal-verbs-in-use-adv/
+    pdf: English-Phrasal-Verbs-in-Use-Advanced.pdf
+    slug: phrasal-verbs-in-use-adv
   - title: Fantastic Reasons for Speaking and Writing
-    url: ./v/FantasticReasons/
+    pdf: Fantastic Reasons.pdf
+    slug: FantasticReasons
   - title: AI in Medicine - Presented by Kiarash Soleimanzadeh
-    url: ./v/ai-in-medicine-by-kiarash-soleimanzadeh/
+    pdf: AI in Medicine_Kiarash Soleimanzadeh.pdf
+    slug: ai-in-medicine-by-kiarash-soleimanzadeh
 - slug: links
   name: Links
   blurb: Books, courses, notes and long-form reading worth keeping.
@@ -431,9 +617,11 @@ categories:
   - title: From Python to Numpy
     url: https://www.labri.fr/perso/nrougier/from-python-to-numpy/
   - title: Cambridge Dictionary
-    url: ./v/cambridge-dictionary/
+    embed: https://dictionary.cambridge.org/dictionary/english/flower
+    slug: cambridge-dictionary
   - title: Merriam-Webster Dictionary
-    url: ./v/mw-dictionary/
+    embed: https://www.merriam-webster.com/dictionary/flower
+    slug: mw-dictionary
   - title: NLP Cheat Sheet
     url: https://cheatography.com/sree017/cheat-sheets/nlp/
   - title: Machine Learning - Persian
