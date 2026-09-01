@@ -27,6 +27,8 @@ import html
 import itertools
 import json
 import pathlib
+import re
+import shutil
 import sys
 import urllib.parse
 
@@ -34,6 +36,22 @@ import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 LINKS = ROOT / "data" / "links.yml"
+ASSETS = ROOT / "assets"
+OUT_DEFAULT = ROOT / "_site"
+
+# A viewer page lives at v/<slug>/index.html, so it is two directories down.
+VIEWER_DEPTH = 2
+
+# Copied into the output as-is. Everything else in the repository — the YAML,
+# these scripts, .git, .github — is input to the build, not part of the site.
+RUNTIME = [
+    "assets", "static", "viewer",
+    "sw.js", "manifest.webmanifest", "site.webmanifest", "browserconfig.xml",
+    "favicon.ico", "favicon-16x16.png", "favicon-32x32.png",
+    "apple-touch-icon.png", "safari-pinned-tab.svg",
+    "android-chrome-192x192.png", "android-chrome-512x512.png",
+    "mstile-150x150.png",
+]
 
 e = lambda s: html.escape(s or "", quote=True)
 
@@ -76,6 +94,174 @@ def host_label(url: str) -> str:
 
 def link_attrs(url: str) -> str:
     return "" if is_local(url) else ' target="_blank" rel="noopener nofollow"'
+
+
+# --- Local PDFs ------------------------------------------------------------
+#
+# A PDF is declared by its file — `pdf: action-verbs.pdf` — and everything
+# else is derived: where it lives, what its viewer route is called, and the URL
+# a card links to. `viewer_url` is the only place that route is spelled out, so
+# the renderer, the validator and the generated page cannot drift apart.
+
+def viewer_url(slug: str) -> str:
+    return f"./v/{slug}/"
+
+
+def pdf_slug(filename: str) -> str:
+    """A URL-safe directory name derived from a PDF's filename.
+
+    'machine learning cheat sheet.pdf' -> 'machine-learning-cheat-sheet'
+
+    Case is kept: a slug is a public URL, and quietly lowercasing one would
+    change the address of anything migrated with its name already set.
+    """
+    stem = pathlib.PurePosixPath(filename).name
+    if stem.lower().endswith(".pdf"):
+        stem = stem[:-4]
+    slug = re.sub(r"[^A-Za-z0-9._-]+", "-", stem.strip())
+    slug = re.sub(r"-{2,}", "-", slug).strip("-._")
+    if not slug:
+        raise SystemExit(
+            f"cannot derive a slug from {filename!r}; give the entry an explicit slug:")
+    return slug
+
+
+def pdf_path(value: str, subject: str) -> str:
+    """Validate a `pdf:` value and return it as a repo-relative POSIX path.
+
+    Everything that can go wrong with a hand-written filename is caught here
+    rather than at 404 time: a path that climbs out of assets/, the wrong
+    extension, a file that is not there, or a file that is not a PDF.
+    """
+    raw = str(value or "").strip()
+    if not raw:
+        raise SystemExit(f'{subject}: "pdf" is empty')
+    if raw.startswith("/") or "\\" in raw:
+        raise SystemExit(f'{subject}: "pdf" must be a path inside assets/, not {raw!r}')
+
+    resolved = (ASSETS / raw).resolve()
+    if not resolved.is_relative_to(ASSETS.resolve()):
+        raise SystemExit(f'{subject}: "pdf" escapes assets/: {raw!r}')
+    if resolved.suffix.lower() != ".pdf":
+        raise SystemExit(f'{subject}: "pdf" must name a .pdf file, not {raw!r}')
+    if not resolved.is_file():
+        raise SystemExit(f"PDF not found: assets/{raw}\nReferenced by: {subject}")
+    with resolved.open("rb") as fh:
+        if fh.read(5) != b"%PDF-":
+            raise SystemExit(
+                f"not a PDF (no %PDF- signature): assets/{raw}\nReferenced by: {subject}")
+
+    return resolved.relative_to(ROOT).as_posix()
+
+
+def render_viewer(title: str, target: str, *, embed: bool = False) -> str:
+    """The page at v/<slug>/index.html.
+
+    `target` is either a repo-relative PDF path or, for an embed, an external
+    URL. Paths are relative so the page works both under the Pages project
+    subpath and on the custom domain, with no host baked in.
+    """
+    if embed:
+        src = target
+    else:
+        # Encoded whole, slashes included, exactly as the hand-written pages
+        # did — that is the form this viewer has been served with for years.
+        src = "../../viewer/web/viewer.html?file=" + urllib.parse.quote(
+            rel(target, VIEWER_DEPTH), safe="")
+
+    # A query on the wrapper is handed to PDF.js as a fragment, which is how
+    # ./v/betty-blue/?page=37 opens page 37. Re-setting src reloads the frame
+    # and fires load again, so it only ever runs once.
+    script = """
+        <script>
+            function iframeDidLoad() {
+                var q = window.location.search.slice(1);
+                if (!q) return;
+                var frame = document.getElementById('iframe-viewer');
+                if (frame.src.indexOf('#') === -1) frame.src += '#' + q;
+            }
+        </script>""" if not embed else ""
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>{e(title)}</title>
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0">
+        <meta name="robots" content="noindex">
+
+        <style>
+            body, html {{width: 100%; height: 100%; margin: 0; padding: 0}}
+            .viewer-container {{position: absolute; top: 0; left: 0; right: 0; bottom: 0;}}
+            .viewer-container iframe {{display: block; width: 100%; height: 100%; border: none;}}
+        </style>{script}
+    </head>
+    <body>
+        <div class="viewer-container">
+            <iframe
+                id="iframe-viewer"{'' if embed else chr(10) + '                onload="iframeDidLoad();"'}
+                src="{e(src)}"
+                title="{e(title)}"
+            ></iframe>
+        </div>
+    </body>
+</html>
+"""
+
+
+def normalize(doc: dict) -> tuple[dict, dict[str, dict]]:
+    """Turn every `pdf:`/`embed:` declaration into the URL the renderer expects.
+
+    Nothing downstream needs to know a PDF was declared by filename: by the
+    time `build_pages` sees an item it carries an ordinary `url:`, so cards,
+    badges, search, sorting and modals all behave exactly as they did when
+    those URLs were written by hand. The generated URL is never written back
+    to links.yml — it lives only in the parsed document.
+    """
+    routes: dict[str, dict] = {}
+
+    def claim(slug: str, target: str, title: str, kind: str) -> None:
+        prior = routes.get(slug)
+        if prior and (prior["target"], prior["kind"]) != (target, kind):
+            raise SystemExit(
+                f"Duplicate PDF viewer slug: {slug}\n\nUsed by:\n"
+                f'- {prior["title"]} -> {prior["target"]}\n- {title} -> {target}')
+        routes[slug] = {"target": target, "title": title, "kind": kind}
+
+    def visit(item: dict, subject: str) -> None:
+        subject = item.get("title") or item.get("text") or subject
+        declared = [k for k in ("url", "pdf", "embed") if item.get(k)]
+        if len(declared) > 1:
+            raise SystemExit(
+                f'Entry "{subject}" cannot contain both '
+                + " and ".join(f"'{k}'" for k in declared) + ".")
+
+        if item.get("pdf"):
+            target = pdf_path(item["pdf"], f'"{subject}"')
+            slug = str(item.get("slug") or "").strip() or pdf_slug(item["pdf"])
+            claim(slug, target, subject, "pdf")
+            item["url"] = viewer_url(slug)
+        elif item.get("embed"):
+            slug = str(item.get("slug") or "").strip()
+            if not slug:
+                raise SystemExit(f'Entry "{subject}" uses "embed" and needs a "slug".')
+            claim(slug, str(item["embed"]), subject, "embed")
+            item["url"] = viewer_url(slug)
+
+        for link in item.get("links") or []:
+            visit(link, subject)
+
+    for cat in doc.get("categories") or []:
+        for entry in cat.get("entries") or []:
+            visit(entry, "(untitled)")
+        for course in cat.get("courses") or []:
+            for link in course.get("links") or []:
+                visit(link, course.get("title", "(course)"))
+            for module in course.get("modules") or []:
+                for mat in module.get("materials") or []:
+                    visit(mat, course.get("title", "(course)"))
+
+    return doc, routes
 
 
 # --- Icons -----------------------------------------------------------------
@@ -621,7 +807,7 @@ def count_label(n: int, slug: str, courses: list) -> str:
     return f"{n} {noun if n == 1 else plural}"
 
 
-def build_pages(doc: dict) -> dict[str, str]:
+def build_pages(doc: dict, routes: dict[str, dict] | None = None) -> dict[str, str]:
     site, cats = doc["site"], doc["categories"]
     total = sum(len(c.get("entries") or []) or len(c.get("courses") or []) for c in cats)
     index_json = search_index(cats)
@@ -702,68 +888,170 @@ def build_pages(doc: dict) -> dict[str, str]:
                 hero="", main=render_course_page(course, 2),
                 index_json=index_json, total=total)
 
+    # --- one page per declared PDF -----------------------------------------
+    # Same dictionary as everything else, so there is one build and one place
+    # that decides what the site contains.
+    for slug, route in sorted((routes or {}).items()):
+        pages[f"v/{slug}/index.html"] = render_viewer(
+            route["title"], route["target"], embed=route["kind"] == "embed")
+
     return pages
+
+
+def unreferenced_pdfs(routes: dict[str, dict]) -> list[str]:
+    """PDFs sitting in assets/ that nothing in links.yml points at.
+
+    Reported, never fatal: an unused file costs nothing but a little space, and
+    deleting someone's document because it lost its last link would be worse.
+    """
+    used = {r["target"] for r in routes.values() if r["kind"] == "pdf"}
+    return sorted(
+        p.relative_to(ROOT).as_posix()
+        for p in ASSETS.rglob("*")
+        if p.is_file() and p.suffix.lower() == ".pdf"
+        and p.relative_to(ROOT).as_posix() not in used)
+
+
+def validate_generated_routes(pages: dict[str, str], routes: dict[str, dict]) -> list[str]:
+    """Every declared PDF has a page, and every page points at its own PDF."""
+    problems = []
+    for slug, route in routes.items():
+        path = f"v/{slug}/index.html"
+        page = pages.get(path)
+        if page is None:
+            problems.append(f"{path}: declared by {route['title']!r} but not generated")
+            continue
+        if route["kind"] == "embed":
+            want = route["target"]
+        else:
+            want = urllib.parse.quote(rel(route["target"], VIEWER_DEPTH), safe="")
+        if e(want) not in page:
+            problems.append(f"{path}: does not reference {route['target']}")
+    return problems
+
+
+def validate_rendered_links(doc: dict, pages: dict[str, str]) -> list[str]:
+    """Every link in links.yml reached the page it belongs on.
+
+    The expected href comes from `rel()` — the same function the renderer
+    used — so this checks the pages, not a second guess at how a URL is built.
+    """
+    problems = []
+
+    def check(url: str, path: str, depth: int, where: str) -> None:
+        page = pages.get(path, "")
+        if f'href="{e(rel(url, depth))}"' not in page:
+            problems.append(f"{where}: {url} missing from {path}")
+
+    for cat in doc["categories"]:
+        slug = cat["slug"]
+        for entry in cat.get("entries") or []:
+            for link in all_links(entry):
+                check(link["url"], f"{slug}/index.html", 1, slug)
+        for course in cat.get("courses") or []:
+            cpath = f'{slug}/{course["slug"]}/index.html'
+            for link in course.get("links") or []:
+                check(link["url"], cpath, 2, course["slug"])
+            for module in course.get("modules") or []:
+                for mat in module.get("materials") or []:
+                    check(mat["url"], cpath, 2, course["slug"])
+
+    # The front page lists the PDF entries, so they have to be there too.
+    front = next((c for c in doc["categories"] if c["slug"] == "pdfs"), None)
+    for entry in (front or {}).get("entries") or []:
+        for link in all_links(entry):
+            check(link["url"], "index.html", 0, "front page")
+
+    return problems
+
+
+def copy_runtime(out: pathlib.Path) -> None:
+    for name in RUNTIME:
+        src = ROOT / name
+        if not src.exists():
+            print(f"  note: {name} does not exist; not copied")
+            continue
+        dest = out / name
+        if src.is_dir():
+            shutil.copytree(src, dest, dirs_exist_ok=True)
+        else:
+            shutil.copy2(src, dest)
+
+
+def load() -> tuple[dict, dict[str, dict], dict[str, str]]:
+    """links.yml -> validated, normalized document, its routes and its pages."""
+    doc, routes = normalize(yaml.safe_load(LINKS.read_text(encoding="utf-8")))
+    return doc, routes, build_pages(doc, routes)
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
+    ap.add_argument("--output-dir", default=str(OUT_DEFAULT), type=pathlib.Path,
+                    help="where to write the site (default: _site)")
+    ap.add_argument("--validate", action="store_true",
+                    help="check the data and the rendered pages, write nothing")
     ap.add_argument("--check", action="store_true",
-                    help="exit 1 if any page differs from what this would write")
+                    help="exit 1 if the output directory is not what this would write")
     args = ap.parse_args()
 
-    doc = yaml.safe_load(LINKS.read_text(encoding="utf-8"))
-
-    pages = build_pages(doc)
+    doc, routes, pages = load()
 
     entries = sum(len(c.get("entries") or []) for c in doc["categories"])
     links = sum(len(all_links(x)) for c in doc["categories"]
                 for x in (c.get("entries") or []))
     multi = sum(1 for c in doc["categories"] for x in (c.get("entries") or [])
                 if len(all_links(x)) > 1)
+    viewers = len(routes)
 
-    # A category or course that is removed from the YAML leaves its directory
-    # behind, since nothing here deletes. Report those rather than silently
-    # serving a page the data no longer describes.
-    orphans = sorted(
-        str(q.relative_to(ROOT)) for q in ROOT.glob("*/index.html")
-        if str(q.relative_to(ROOT)) not in pages
-        and q.parent.name not in {"v", "viewer", "assets", "static", "scripts", "data"}
-    ) + sorted(
-        str(q.relative_to(ROOT)) for q in ROOT.glob("courses/*/index.html")
-        if str(q.relative_to(ROOT)) not in pages
-    )
+    if args.validate:
+        problems = (validate_generated_routes(pages, routes)
+                    + validate_rendered_links(doc, pages))
+        if links < 400:
+            problems.append(f"only {links} links in links.yml — refusing to publish")
+        for path in unreferenced_pdfs(routes):
+            print(f"warning: unreferenced PDF: {path}")
+        if problems:
+            print("validation failed:", file=sys.stderr)
+            for p in problems[:40]:
+                print(f"  {p}", file=sys.stderr)
+            return 1
+        print(f"ok: {entries} entries, {links} links, {viewers} viewer routes, "
+              f"{len(pages)} pages")
+        return 0
+
+    out = args.output_dir
 
     if args.check:
-        stale = []
-        for path, page in sorted(pages.items()):
-            current = (ROOT / path).read_text(encoding="utf-8") if (ROOT / path).exists() else ""
-            if current != page:
-                stale.append(path)
-        if stale or orphans:
-            if stale:
-                print("out of date — run: python3 scripts/build.py", file=sys.stderr)
-                for path in stale:
-                    print(f"  {path}", file=sys.stderr)
-            for path in orphans:
-                print(f"orphaned page, nothing in links.yml produces it: {path}",
-                      file=sys.stderr)
+        stale = [path for path, page in sorted(pages.items())
+                 if not (out / path).exists()
+                 or (out / path).read_text(encoding="utf-8") != page]
+        if stale:
+            print(f"out of date — run: python3 scripts/build.py", file=sys.stderr)
+            for path in stale[:20]:
+                print(f"  {path}", file=sys.stderr)
             return 1
         print(f"{len(pages)} pages up to date ({entries} entries, {links} links)")
         return 0
 
+    # Built from scratch every time: a route that is no longer declared has to
+    # disappear from the output, not linger because nothing deleted it.
+    if out.exists():
+        shutil.rmtree(out)
+    out.mkdir(parents=True)
+
     for path, page in sorted(pages.items()):
-        target = ROOT / path
+        target = out / path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(page, encoding="utf-8")
 
-    for path in orphans:
-        print(f"  note: {path} is no longer produced by links.yml; delete it by hand")
+    copy_runtime(out)
+
+    for path in unreferenced_pdfs(routes):
+        print(f"  warning: unreferenced PDF: {path}")
 
     size = sum(len(p) for p in pages.values())
-    print(f"{len(pages)} pages — {entries} entries, {links} links, "
-          f"{multi} of them open a modal ({size:,} bytes)")
-    for path in sorted(pages):
-        print(f"  {path}")
+    print(f"{len(pages)} pages into {out.name}/ — {entries} entries, {links} links, "
+          f"{multi} of them open a modal, {viewers} viewer routes ({size:,} bytes)")
     return 0
 
 
