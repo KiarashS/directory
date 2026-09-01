@@ -43,17 +43,73 @@ showing every link instead:
 
 ```yaml
 - title: Docker Cheat sheet 1
-  url: ./v/docker-cheatsheet/
+  pdf: docker-cheatsheet.pdf
   links:
     - text: Docker Cheat sheet 2
-      url: ./v/docker-cheatsheet-2/
+      pdf: docker-cheatsheet-2.pdf
     - text: Docker Cheat sheet 3
       url: https://example.com/docker
 ```
 
-A URL starting with `./` is a file in this repository — a PDF under `assets/`
-shown through the viewer pages in `v/`. Anything else is treated as external and
-opens in a new tab.
+`url:` is an external address and opens in a new tab. `pdf:` is one of your own
+files under `assets/`, and the build gives it a reader page of its own.
+
+## Adding a PDF
+
+Three steps, and none of them is writing HTML.
+
+**1.** Put the file in `assets/`:
+
+```
+assets/xai-cheat-sheet.pdf
+```
+
+**2.** Add an entry to `data/links.yml`:
+
+```yaml
+- title: Explainable AI Cheat Sheet
+  pdf: xai-cheat-sheet.pdf
+  tags: [ai, xai]
+  added: 2026-09-01
+```
+
+**3.** Commit and push.
+
+The site then creates `/v/xai-cheat-sheet/` and opens the PDF there in the
+built-in pdf.js reader. Nothing under `v/` or `viewer/` is ever edited by hand —
+`v/` does not exist in this repository at all; it is generated at build time.
+
+An entry needs `title` and `pdf`. `slug`, `description`, `tags`, `pinned`,
+`added` and `links` are all optional, and `pdf:` works the same way in a nested
+`links:` list and in a course's `materials:`.
+
+The build refuses to publish rather than shipping a broken reader page, so it
+stops if a `pdf:` names a file that is missing, is not a `.pdf`, does not begin
+with a `%PDF-` signature, or points outside `assets/`. Two entries claiming the
+same viewer URL stop it too, naming both.
+
+### Custom slugs
+
+The reader URL comes from the filename: `xai-cheat-sheet.pdf` becomes
+`/v/xai-cheat-sheet/`. Set `slug:` to choose it yourself:
+
+```yaml
+- title: Probability & Statistics
+  pdf: Probability_Statistics.pdf
+  slug: probability-statistics       # -> /v/probability-statistics/
+```
+
+**A slug is a public URL.** Changing one on an entry that is already published
+breaks every existing link and bookmark to it, so leave existing slugs alone.
+Every PDF already on the site carries its slug explicitly for exactly that
+reason, even where the derived one would have matched.
+
+A PDF can also be reached with a page number, which the reader opens directly:
+
+```yaml
+- text: Causative verbs 2
+  url: ./v/betty-blue/?page=37
+```
 
 ### Tags, pinning and dates
 
@@ -83,7 +139,7 @@ A talk is an ordinary entry with two extras, shown as a line under the title:
 
 ```yaml
 - title: Making a static site searchable
-  url: ./v/slides-deck/
+  pdf: slides-deck.pdf
   event: PyCon
   by: Kiarash Soleimanzadeh
   location: Tehran, Iran
@@ -147,16 +203,16 @@ A course gets its own page. Materials go in modules, and each one can name a
       description: One or two lines about the course.
       links:                       # optional, shown at the top of the page
         - text: Syllabus
-          url: ./assets/syllabus.pdf
+          pdf: syllabus.pdf
       modules:
         - title: Week 1 — Linear regression
           summary: Optional line under the module heading.
           materials:
             - title: Lecture slides
-              url: ./v/wk1-slides/
+              pdf: wk1-slides.pdf
               type: slides
             - title: Problem set 1
-              url: ./assets/ps1.pdf
+              pdf: ps1.pdf
               type: assignment
               description: Due at the end of week two.
 ```
@@ -167,33 +223,48 @@ A course gets its own page. Materials go in modules, and each one can name a
 
 ## How the build works
 
-`.github/workflows/build.yml` runs on any push that touches `data/links.yml`,
-`scripts/`, or `static/`:
+The pages are build output, not repository content. Nothing generated is
+committed: `.github/workflows/build.yml` renders the whole site into `_site/`
+and hands that to Pages, so the repository holds only what a person writes.
 
-1. `scripts/build.py` renders every page from the YAML.
-2. A check asserts every URL in the YAML appears on the page it belongs on.
-3. The regenerated pages are committed, and the site deploys to Pages.
+It runs on a push touching `data/`, `assets/`, `scripts/`, `static/` or
+`viewer/` — adding a PDF is a change to `assets/`, so uploading one is enough to
+trigger a deploy:
 
-Because the workflow only triggers on its *inputs*, its own commit does not set
-off another run. The build needs no network access.
+1. `python3 -m unittest discover -s scripts` — the PDF model.
+2. `scripts/build.py --validate` — every PDF resolves, every route is unique,
+   and every URL in the YAML reached the page it belongs on.
+3. `scripts/build.py --output-dir _site` — the pages, plus `assets/`, `static/`,
+   `viewer/`, `sw.js`, the manifests and the icons.
+4. The artifact deploys to Pages.
+
+The build needs no network access and is deterministic: same inputs, byte-identical
+output. `_site/` is deleted and rebuilt every run, so a route that is no longer
+declared disappears instead of lingering.
+
+`viewer/` is the pdf.js distribution and is maintained on its own by
+`.github/workflows/update-pdfjs.yml`. Adding or removing a PDF never touches it.
 
 To run it locally:
 
 ```bash
 pip install pyyaml
-python3 scripts/build.py                # writes every page
-python3 scripts/make_favicon.py         # only after editing the icon
-python3 scripts/build.py --check        # exits 1 if any page is stale
-python3 -m http.server                  # then open http://localhost:8000
+python3 scripts/build.py                          # renders into _site/
+python3 scripts/build.py --validate               # checks, writes nothing
+python3 -m unittest discover -s scripts           # the tests
+python3 scripts/make_favicon.py                   # only after editing the icon
+python3 -m http.server --directory _site          # then open http://localhost:8000
 ```
 
 ## Layout
 
 | Path | What it is |
 | --- | --- |
-| `data/links.yml` | Every entry on the site. The only file you edit. |
-| `scripts/build.py` | Renders every page. |
+| `data/links.yml` | Every entry on the site. The file you edit. |
+| `assets/` | The PDFs. Drop one in and name it from `links.yml`. |
+| `scripts/build.py` | Renders the site, and validates it. |
+| `scripts/test_build.py` | Tests for the PDF model. |
 | `scripts/make_favicon.py` | Regenerates the icon set from `static/icon.svg`. |
 | `static/css/directory.css`, `static/js/directory.js` | The front end. |
-| `index.html`, `<category>/index.html` | Generated output. Do not edit. |
-| `assets/`, `v/`, `viewer/` | The PDFs and the pdf.js viewer that displays them. |
+| `viewer/` | The pdf.js distribution. Updated by its own workflow. |
+| `_site/` | Generated. Git-ignored, rebuilt from scratch every run. |
