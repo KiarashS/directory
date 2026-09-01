@@ -245,6 +245,15 @@ declared disappears instead of lingering.
 `viewer/` is the pdf.js distribution and is maintained on its own by
 `.github/workflows/update-pdfjs.yml`. Adding or removing a PDF never touches it.
 
+That workflow tracks the **legacy** pdf.js build (`pdfjs-<v>-legacy-dist.zip`),
+and it should stay that way. Every release also ships a plain `-dist.zip` that
+is roughly 1MB smaller across the whole viewer, but from v6 on it calls
+`Map.prototype.getOrInsertComputed` — an ES2026 method that needs Chrome 145,
+Firefox 144 or Safari 18.4. Below those the viewer throws before drawing
+anything, so every PDF on the site is a blank page. The legacy build is the
+same version with core-js polyfills. The workflow checks for the polyfill and
+fails rather than publishing a reader without it.
+
 To run it locally:
 
 ```bash

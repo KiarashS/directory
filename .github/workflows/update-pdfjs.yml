@@ -51,7 +51,14 @@ jobs:
           fi
 
           version="${tag#v}"
-          asset_name="pdfjs-${version}-dist.zip"
+          # The *legacy* build, deliberately. Both are published for every
+          # release; the plain -dist.zip is compiled for current browsers only
+          # and calls Map.prototype.getOrInsertComputed, which needs Chrome
+          # 145, Firefox 144 or Safari 18.4. Below those the viewer throws
+          # before it draws anything, so every PDF on the site is a blank page.
+          # The legacy build is the same version with core-js polyfills, about
+          # 1MB more across the whole viewer.
+          asset_name="pdfjs-${version}-legacy-dist.zip"
           asset_url="$(jq -r --arg name "$asset_name" \
             '.assets[] | select(.name == $name) | .browser_download_url' \
             <<<"$release_json" | head -n 1)"
@@ -62,19 +69,34 @@ jobs:
           fi
 
           current=""
+          flavour="none"
           if [[ -f viewer/build/pdf.mjs ]]; then
             current="$(sed -nE 's/.*pdfjsVersion = ([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' \
               viewer/build/pdf.mjs | head -n 1)"
+            # Only the legacy build carries the polyfill, so its presence is
+            # what distinguishes the two flavours of an identical version.
+            if grep -q 'getOrInsertComputed: function' viewer/build/pdf.mjs; then
+              flavour="legacy"
+            else
+              flavour="modern"
+            fi
           fi
 
-          echo "Current PDF.js: ${current:-unknown}"
+          echo "Current PDF.js: ${current:-unknown} ($flavour)"
           echo "Latest PDF.js:  $version"
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
-          if [[ "$current" == "$version" ]]; then
-            echo "PDF.js is already current."
+          # Version alone is not enough: switching flavours leaves the version
+          # unchanged, so comparing only that would skip the very update that
+          # fixes an installed modern build.
+          if [[ "$current" == "$version" && "$flavour" == "legacy" ]]; then
+            echo "PDF.js is already current, and is the legacy build."
             echo "updated=false" >> "$GITHUB_OUTPUT"
             exit 0
+          fi
+
+          if [[ "$current" == "$version" ]]; then
+            echo "Same version, but the installed build is $flavour — refetching as legacy."
           fi
 
           tmp="$(mktemp -d)"
@@ -109,6 +131,14 @@ jobs:
             viewer/build/pdf.mjs | head -n 1)"
           if [[ "$detected" != "$version" ]]; then
             echo "Version verification failed: expected $version, found ${detected:-unknown}." >&2
+            exit 1
+          fi
+
+          # Fail loudly rather than publishing a reader that is blank for
+          # anyone below Chrome 145 — if a future release stops shipping the
+          # polyfill, that is worth a red job, not a silent deploy.
+          if ! grep -q 'getOrInsertComputed: function' viewer/build/pdf.mjs; then
+            echo "Downloaded build has no core-js polyfill: this is not the legacy build." >&2
             exit 1
           fi
 
