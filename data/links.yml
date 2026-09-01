@@ -966,7 +966,23 @@ categories:
 - slug: talks
   name: Talks
   blurb: Talks, presentations and slide decks.
-  entries: []
+  entries:
+  - title: AI in Medicine
+    url: https://go.kiarashs.ir/ai-med
+    event: Talk
+    date: 2026-03-14
+    pinned: true
+    tags: [artificial intelligence, medicine, computer vision, image analysis]
+  - title: Regular Expression (regex or regexp)
+    url: https://go.kiarashs.ir/regex
+    event: Conference
+    date: 2025-10-26
+    tags: [artificial intelligence, software engineering, natural language processing, data mining]
+  - title: Clean Code
+    url: https://go.kiarashs.ir/cc
+    event: Conference
+    date: 2025-07-03
+    tags: [software engineering] 
 - slug: courses
   name: Courses
   blurb: Course material, grouped by module.
