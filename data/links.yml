@@ -1173,5 +1173,24 @@ categories:
     tags: [software engineering] 
 - slug: courses
   name: Courses
-  blurb: Course material, grouped by module.
-  courses: []
+  courses:
+    - slug: intro-ml
+      title: Introduction to Machine Learning
+      institution: Sharif University of Technology
+      instructor: Some Lecturer
+      term: Spring 2026
+      description: One or two lines about the course.
+      links:                       # optional, shown at the top of the page
+        - text: Syllabus
+          pdf: syllabus.pdf
+      modules:
+        - title: Week 1 — Linear regression
+          summary: Optional line under the module heading.
+          materials:
+            - title: Lecture slides
+              pdf: wk1-slides.pdf
+              type: slides
+            - title: Problem set 1
+              pdf: ps1.pdf
+              type: assignment
+              description: Due at the end of week two.
