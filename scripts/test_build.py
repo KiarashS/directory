@@ -100,21 +100,66 @@ class TestNormalization(PdfCase):
         self.assertEqual(link["url"], "./v/bee/")
         self.assertEqual(routes["bee"]["target"], "assets/b.pdf")
 
-    def test_course_material_pdf(self):
-        self.write("lecture-01.pdf")
-        doc, routes = self.normalize([], courses=[{
-            "slug": "c", "title": "C",
-            "modules": [{"title": "M", "materials": [
-                {"title": "Slides", "pdf": "lecture-01.pdf", "type": "slides"}]}]}])
-        mat = doc["categories"][0]["courses"][0]["modules"][0]["materials"][0]
-        self.assertEqual(mat["url"], "./v/lecture-01/")
-        self.assertEqual(routes["lecture-01"]["target"], "assets/lecture-01.pdf")
+    def course(self, slug, materials, links=None):
+        return {"slug": slug, "title": slug.upper(), "links": links or [],
+                "modules": [{"title": "M", "materials": materials}]}
 
-    def test_nested_asset_directory(self):
+    def test_course_material_resolves_under_its_own_folder(self):
+        self.write("courses/intro-ml/lecture-01.pdf")
+        doc, routes = self.normalize([], courses=[
+            self.course("intro-ml",
+                        [{"title": "Slides", "pdf": "lecture-01.pdf",
+                          "type": "slides"}])])
+        mat = doc["categories"][0]["courses"][0]["modules"][0]["materials"][0]
+        self.assertEqual(mat["url"], "./v/courses/intro-ml/lecture-01/")
+        self.assertEqual(routes["courses/intro-ml/lecture-01"]["target"],
+                         "assets/courses/intro-ml/lecture-01.pdf")
+
+    def test_two_courses_may_share_a_filename(self):
+        self.write("courses/intro-ml/lecture-01.pdf")
+        self.write("courses/algorithms/lecture-01.pdf")
+        _, routes = self.normalize([], courses=[
+            self.course("intro-ml", [{"title": "S", "pdf": "lecture-01.pdf"}]),
+            self.course("algorithms", [{"title": "S", "pdf": "lecture-01.pdf"}]),
+        ])
+        self.assertEqual(routes["courses/intro-ml/lecture-01"]["target"],
+                         "assets/courses/intro-ml/lecture-01.pdf")
+        self.assertEqual(routes["courses/algorithms/lecture-01"]["target"],
+                         "assets/courses/algorithms/lecture-01.pdf")
+
+    def test_a_courses_own_links_resolve_there_too(self):
+        self.write("courses/intro-ml/syllabus.pdf")
+        doc, routes = self.normalize([], courses=[
+            self.course("intro-ml", [],
+                        links=[{"text": "Syllabus", "pdf": "syllabus.pdf"}])])
+        link = doc["categories"][0]["courses"][0]["links"][0]
+        self.assertEqual(link["url"], "./v/courses/intro-ml/syllabus/")
+
+    def test_material_outside_its_course_folder_fails(self):
+        self.write("lecture-01.pdf")          # in assets/, not the course folder
+        with self.assertRaises(SystemExit) as cm:
+            self.normalize([], courses=[
+                self.course("intro-ml", [{"title": "S", "pdf": "lecture-01.pdf"}])])
+        self.assertIn("assets/courses/intro-ml/lecture-01.pdf", str(cm.exception))
+
+    def test_material_cannot_climb_out_of_assets(self):
+        (self.assets.parent / "secret.pdf").write_bytes(PDF_BYTES)
+        with self.assertRaises(SystemExit) as cm:
+            self.normalize([], courses=[
+                self.course("intro-ml",
+                            [{"title": "S", "pdf": "../../../secret.pdf"}])])
+        self.assertIn("escapes assets/", str(cm.exception))
+
+    def test_nested_asset_directory_slug_mirrors_the_path(self):
+        # The derived slug follows the file's path under assets/, which is what
+        # keeps two courses' lecture-01.pdf apart without a hand-written slug.
         self.write("books/python/fluent.pdf")
-        _, routes = self.normalize(
+        doc, routes = self.normalize(
             [{"title": "F", "pdf": "books/python/fluent.pdf"}])
-        self.assertEqual(routes["fluent"]["target"], "assets/books/python/fluent.pdf")
+        self.assertEqual(routes["books/python/fluent"]["target"],
+                         "assets/books/python/fluent.pdf")
+        self.assertEqual(doc["categories"][0]["entries"][0]["url"],
+                         "./v/books/python/fluent/")
 
     def test_plain_url_is_left_alone(self):
         doc, routes = self.normalize([{"title": "X", "url": "https://example.com"}])
@@ -182,6 +227,49 @@ class TestValidationFailures(PdfCase):
         self.assertIn("cannot contain both", str(cm.exception))
 
 
+class TestSlugValidation(PdfCase):
+    """An explicit slug becomes a directory path, so it has to be checked."""
+
+    def bad(self, slug):
+        self.write("x.pdf")
+        with self.assertRaises(SystemExit, msg=f"{slug!r} should be refused") as cm:
+            self.normalize([{"title": "X", "pdf": "x.pdf", "slug": slug}])
+        self.assertIn("slug", str(cm.exception))
+
+    def test_parent_segment(self):        self.bad("../escape")
+    def test_dot_segment(self):           self.bad("a/./b")
+    def test_empty_segment(self):         self.bad("a//b")
+    def test_leading_slash(self):         self.bad("/a")
+    def test_trailing_slash(self):        self.bad("a/")
+    def test_space(self):                 self.bad("my slug")
+
+    def test_a_nested_slug_is_allowed(self):
+        self.write("x.pdf")
+        doc, routes = self.normalize(
+            [{"title": "X", "pdf": "x.pdf", "slug": "courses/c/x"}])
+        self.assertEqual(doc["categories"][0]["entries"][0]["url"], "./v/courses/c/x/")
+
+
+class TestViewerDepth(unittest.TestCase):
+    """A deeper page needs more '../' to reach the site root."""
+
+    def test_depth_by_slug(self):
+        self.assertEqual(build.viewer_depth("action-verbs"), 2)
+        self.assertEqual(build.viewer_depth("courses/intro-ml/lecture-01"), 4)
+
+    def test_flat_route_is_byte_for_byte_what_it_was(self):
+        page = build.render_viewer("Action Verbs", "assets/action-verbs.pdf",
+                                   "action-verbs")
+        self.assertIn('src="../../viewer/web/viewer.html?file=', page)
+
+    def test_nested_route_reaches_the_root(self):
+        page = build.render_viewer("Slides", "assets/courses/c/l1.pdf",
+                                   "courses/c/l1")
+        self.assertIn('src="../../../../viewer/web/viewer.html?file=', page)
+        target = urllib.parse.unquote(page.split("file=", 1)[1].split('"')[0])
+        self.assertEqual(target, "../../../../assets/courses/c/l1.pdf")
+
+
 class TestViewerPage(PdfCase):
     def test_end_to_end(self):
         """data -> normalization -> page -> the PDF.js URL -> the file."""
@@ -189,7 +277,8 @@ class TestViewerPage(PdfCase):
         doc, routes = self.normalize([{"title": "AI Cheat Sheet",
                                        "pdf": "ai-cheat-sheet.pdf"}])
         page = build.render_viewer(routes["ai-cheat-sheet"]["title"],
-                                   routes["ai-cheat-sheet"]["target"])
+                                   routes["ai-cheat-sheet"]["target"],
+                                   "ai-cheat-sheet")
         self.assertIn("<title>AI Cheat Sheet</title>", page)
 
         import re
@@ -207,14 +296,15 @@ class TestViewerPage(PdfCase):
             "title": "TOEFL & Brainstorm",
             "pdf": "Toefl Expressions&Brainstorm (Speak&Write).pdf",
             "slug": "toefl"}])
-        page = build.render_viewer("TOEFL & Brainstorm", routes["toefl"]["target"])
+        page = build.render_viewer("TOEFL & Brainstorm", routes["toefl"]["target"],
+                                   "toefl")
         self.assertNotIn(" ", page.split('src="')[1].split('"')[0])
         self.assertIn("&amp;", page)          # the title is HTML-escaped
         self.assertIn("%26", page)            # the filename is URL-encoded
 
     def test_embed_page_points_at_the_external_site(self):
         page = build.render_viewer("Cambridge", "https://dictionary.cambridge.org/x",
-                                   embed=True)
+                                   "cambridge-dictionary", embed=True)
         self.assertIn('src="https://dictionary.cambridge.org/x"', page)
         self.assertNotIn("viewer.html", page)
 

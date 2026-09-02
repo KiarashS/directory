@@ -26,6 +26,12 @@
 # page at /v/<slug>/ and links the card to it. Nothing under v/ is written by
 # hand, and none of it lives in this repository — it is generated at build time.
 #
+# A derived slug mirrors the file's path under assets/, so a PDF in a folder
+# gets a route in the matching folder:
+#
+#   assets/action-verbs.pdf                -> /v/action-verbs/
+#   assets/courses/intro-ml/lecture-01.pdf -> /v/courses/intro-ml/lecture-01/
+#
 # A slug is a public URL. Changing one on something already published breaks
 # every link to it, so every PDF below states its slug rather than relying on
 # the derived one. `pdf:` works the same way in a nested `links:` list and in a
@@ -50,7 +56,13 @@
 #         url: https://example.com/video
 #
 # Courses are different: each one gets its own page at /courses/<slug>/, with
-# its materials grouped into modules. Paste this under `courses:` to start one.
+# its materials grouped into modules. Their files go in a folder of their own,
+# assets/courses/<course-slug>/, so a course's material stays together and can
+# be archived as a unit — and a material names only its file, because the build
+# already knows which course it belongs to. Two courses can each have a
+# lecture-01.pdf without either needing a hand-written slug.
+#
+# Paste this under `courses:` to start one.
 #
 #   - slug: intro-ml
 #     title: Introduction to Machine Learning
@@ -60,13 +72,13 @@
 #     description: One or two lines about the course.
 #     links:
 #       - text: Syllabus
-#         pdf: syllabus.pdf
+#         pdf: syllabus.pdf     # -> assets/courses/intro-ml/syllabus.pdf
 #     modules:
 #       - title: Week 1 — Linear regression
 #         summary: Optional line under the module heading.
 #         materials:
 #           - title: Lecture slides
-#             pdf: wk1-slides.pdf
+#             pdf: wk1-slides.pdf   # -> assets/courses/intro-ml/wk1-slides.pdf
 #             type: slides         # slides notes assignment reading video code dataset
 site:
   title: My Directory

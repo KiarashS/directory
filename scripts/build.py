@@ -39,8 +39,9 @@ LINKS = ROOT / "data" / "links.yml"
 ASSETS = ROOT / "assets"
 OUT_DEFAULT = ROOT / "_site"
 
-# A viewer page lives at v/<slug>/index.html, so it is two directories down.
-VIEWER_DEPTH = 2
+# Course material lives under assets/courses/<course-slug>/, one folder per
+# course, so a course's files stay together and can be archived as a unit.
+COURSE_ASSETS = "courses"
 
 # Copied into the output as-is. Everything else in the repository — the YAML,
 # these scripts, .git, .github — is input to the build, not part of the site.
@@ -107,31 +108,72 @@ def viewer_url(slug: str) -> str:
     return f"./v/{slug}/"
 
 
-def pdf_slug(filename: str) -> str:
-    """A URL-safe directory name derived from a PDF's filename.
+def viewer_depth(slug: str) -> int:
+    """How many directories down v/<slug>/index.html sits.
 
-    'machine learning cheat sheet.pdf' -> 'machine-learning-cheat-sheet'
+    A flat slug gives 2, as it always has. A slug with slashes in it — which
+    is what a course material gets — is deeper, and its page has to reach the
+    site root with the right number of "../" or every asset on it 404s.
+    """
+    return 1 + len(slug.split("/"))
+
+
+def slug_segment(text: str) -> str:
+    """One path segment of a slug, made URL-safe.
 
     Case is kept: a slug is a public URL, and quietly lowercasing one would
     change the address of anything migrated with its name already set.
     """
-    stem = pathlib.PurePosixPath(filename).name
-    if stem.lower().endswith(".pdf"):
-        stem = stem[:-4]
-    slug = re.sub(r"[^A-Za-z0-9._-]+", "-", stem.strip())
-    slug = re.sub(r"-{2,}", "-", slug).strip("-._")
-    if not slug:
+    seg = re.sub(r"[^A-Za-z0-9._-]+", "-", text.strip())
+    return re.sub(r"-{2,}", "-", seg).strip("-._")
+
+
+def pdf_slug(rel_path: str) -> str:
+    """The route derived from a PDF's path under assets/, minus the .pdf.
+
+    'machine learning cheat sheet.pdf'      -> 'machine-learning-cheat-sheet'
+    'courses/intro-ml/lecture-01.pdf'       -> 'courses/intro-ml/lecture-01'
+
+    Mirroring the path is what keeps course material collision-free without
+    anyone writing a slug by hand: two courses can both hold a lecture-01.pdf
+    because their folders differ. A file directly in assets/ derives exactly
+    the slug it always did.
+    """
+    parts = list(pathlib.PurePosixPath(rel_path).parts)
+    if parts and parts[-1].lower().endswith(".pdf"):
+        parts[-1] = parts[-1][:-4]
+    segs = [s for s in (slug_segment(p) for p in parts) if s]
+    if not segs:
         raise SystemExit(
-            f"cannot derive a slug from {filename!r}; give the entry an explicit slug:")
+            f"cannot derive a slug from {rel_path!r}; give the entry an explicit slug:")
+    return "/".join(segs)
+
+
+def check_slug(slug: str, subject: str) -> str:
+    """A hand-written `slug:`, checked before it becomes a directory path.
+
+    Nothing validated these before, so a slug could carry '..' or a space and
+    the build would cheerfully write the page somewhere unintended.
+    """
+    if slug.startswith("/") or slug.endswith("/"):
+        raise SystemExit(f'{subject}: "slug" must not start or end with "/": {slug!r}')
+    for seg in slug.split("/"):
+        if not seg or seg in {".", ".."} or seg != slug_segment(seg):
+            raise SystemExit(
+                f'{subject}: "slug" has an unusable path segment {seg!r} in {slug!r}')
     return slug
 
 
-def pdf_path(value: str, subject: str) -> str:
+def pdf_path(value: str, subject: str, base: str = "") -> str:
     """Validate a `pdf:` value and return it as a repo-relative POSIX path.
 
     Everything that can go wrong with a hand-written filename is caught here
     rather than at 404 time: a path that climbs out of assets/, the wrong
     extension, a file that is not there, or a file that is not a PDF.
+
+    `base` is the directory the value is written relative to — empty for an
+    ordinary entry, "courses/<slug>" for a course's material, which is what
+    lets a material name just its file.
     """
     raw = str(value or "").strip()
     if not raw:
@@ -139,35 +181,38 @@ def pdf_path(value: str, subject: str) -> str:
     if raw.startswith("/") or "\\" in raw:
         raise SystemExit(f'{subject}: "pdf" must be a path inside assets/, not {raw!r}')
 
-    resolved = (ASSETS / raw).resolve()
+    where = f"assets/{base}/{raw}" if base else f"assets/{raw}"
+    resolved = (ASSETS / base / raw).resolve()
     if not resolved.is_relative_to(ASSETS.resolve()):
         raise SystemExit(f'{subject}: "pdf" escapes assets/: {raw!r}')
     if resolved.suffix.lower() != ".pdf":
         raise SystemExit(f'{subject}: "pdf" must name a .pdf file, not {raw!r}')
     if not resolved.is_file():
-        raise SystemExit(f"PDF not found: assets/{raw}\nReferenced by: {subject}")
+        raise SystemExit(f"PDF not found: {where}\nReferenced by: {subject}")
     with resolved.open("rb") as fh:
         if fh.read(5) != b"%PDF-":
             raise SystemExit(
-                f"not a PDF (no %PDF- signature): assets/{raw}\nReferenced by: {subject}")
+                f"not a PDF (no %PDF- signature): {where}\nReferenced by: {subject}")
 
     return resolved.relative_to(ROOT).as_posix()
 
 
-def render_viewer(title: str, target: str, *, embed: bool = False) -> str:
+def render_viewer(title: str, target: str, slug: str, *, embed: bool = False) -> str:
     """The page at v/<slug>/index.html.
 
     `target` is either a repo-relative PDF path or, for an embed, an external
     URL. Paths are relative so the page works both under the Pages project
-    subpath and on the custom domain, with no host baked in.
+    subpath and on the custom domain, with no host baked in — and relative to
+    this page's own depth, which a nested slug changes.
     """
+    depth = viewer_depth(slug)
     if embed:
         src = target
     else:
         # Encoded whole, slashes included, exactly as the hand-written pages
         # did — that is the form this viewer has been served with for years.
-        src = "../../viewer/web/viewer.html?file=" + urllib.parse.quote(
-            rel(target, VIEWER_DEPTH), safe="")
+        src = rel("viewer/web/viewer.html", depth) + "?file=" + urllib.parse.quote(
+            rel(target, depth), safe="")
 
     # A query on the wrapper is handed to PDF.js as a fragment, which is how
     # ./v/betty-blue/?page=37 opens page 37. Re-setting src reloads the frame
@@ -228,7 +273,7 @@ def normalize(doc: dict) -> tuple[dict, dict[str, dict]]:
                 f'- {prior["title"]} -> {prior["target"]}\n- {title} -> {target}')
         routes[slug] = {"target": target, "title": title, "kind": kind}
 
-    def visit(item: dict, subject: str) -> None:
+    def visit(item: dict, subject: str, base: str = "") -> None:
         subject = item.get("title") or item.get("text") or subject
         declared = [k for k in ("url", "pdf", "embed") if item.get(k)]
         if len(declared) > 1:
@@ -237,29 +282,41 @@ def normalize(doc: dict) -> tuple[dict, dict[str, dict]]:
                 + " and ".join(f"'{k}'" for k in declared) + ".")
 
         if item.get("pdf"):
-            target = pdf_path(item["pdf"], f'"{subject}"')
-            slug = str(item.get("slug") or "").strip() or pdf_slug(item["pdf"])
+            target = pdf_path(item["pdf"], f'"{subject}"', base)
+            written = str(item.get("slug") or "").strip()
+            # The derived slug comes from where the file actually landed, not
+            # from what was typed, so a course material picks up its course's
+            # folder without repeating it and `../` cannot smuggle in a slug
+            # that disagrees with the path.
+            slug = (check_slug(written, f'"{subject}"') if written
+                    else pdf_slug(target[len("assets/"):]))
             claim(slug, target, subject, "pdf")
             item["url"] = viewer_url(slug)
         elif item.get("embed"):
-            slug = str(item.get("slug") or "").strip()
-            if not slug:
+            written = str(item.get("slug") or "").strip()
+            if not written:
                 raise SystemExit(f'Entry "{subject}" uses "embed" and needs a "slug".')
+            slug = check_slug(written, f'"{subject}"')
             claim(slug, str(item["embed"]), subject, "embed")
             item["url"] = viewer_url(slug)
 
         for link in item.get("links") or []:
-            visit(link, subject)
+            visit(link, subject, base)
 
     for cat in doc.get("categories") or []:
         for entry in cat.get("entries") or []:
             visit(entry, "(untitled)")
         for course in cat.get("courses") or []:
+            # A course's material lives in its own folder under assets/courses/,
+            # named after the course, so a material names only its file and a
+            # lecture-01.pdf in one course cannot collide with another's.
+            title = course.get("title", "(course)")
+            base = f'{COURSE_ASSETS}/{check_slug(str(course["slug"]), title)}'
             for link in course.get("links") or []:
-                visit(link, course.get("title", "(course)"))
+                visit(link, title, base)
             for module in course.get("modules") or []:
                 for mat in module.get("materials") or []:
-                    visit(mat, course.get("title", "(course)"))
+                    visit(mat, title, base)
 
     return doc, routes
 
@@ -893,7 +950,7 @@ def build_pages(doc: dict, routes: dict[str, dict] | None = None) -> dict[str, s
     # that decides what the site contains.
     for slug, route in sorted((routes or {}).items()):
         pages[f"v/{slug}/index.html"] = render_viewer(
-            route["title"], route["target"], embed=route["kind"] == "embed")
+            route["title"], route["target"], slug, embed=route["kind"] == "embed")
 
     return pages
 
@@ -924,7 +981,8 @@ def validate_generated_routes(pages: dict[str, str], routes: dict[str, dict]) ->
         if route["kind"] == "embed":
             want = route["target"]
         else:
-            want = urllib.parse.quote(rel(route["target"], VIEWER_DEPTH), safe="")
+            want = urllib.parse.quote(
+                rel(route["target"], viewer_depth(slug)), safe="")
         if e(want) not in page:
             problems.append(f"{path}: does not reference {route['target']}")
     return problems

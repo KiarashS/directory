@@ -90,8 +90,10 @@ same viewer URL stop it too, naming both.
 
 ### Custom slugs
 
-The reader URL comes from the filename: `xai-cheat-sheet.pdf` becomes
-`/v/xai-cheat-sheet/`. Set `slug:` to choose it yourself:
+The reader URL mirrors the file's path under `assets/`, so
+`xai-cheat-sheet.pdf` becomes `/v/xai-cheat-sheet/` and
+`courses/intro-ml/lecture-01.pdf` becomes `/v/courses/intro-ml/lecture-01/`.
+Set `slug:` to choose it yourself:
 
 ```yaml
 - title: Probability & Statistics
@@ -188,8 +190,24 @@ either way.
 
 ## Courses
 
-A course gets its own page. Materials go in modules, and each one can name a
-`type` so it renders with the right icon and label:
+A course gets its own page, and its files live in a folder of its own:
+
+```
+assets/courses/intro-ml/syllabus.pdf
+assets/courses/intro-ml/wk1-slides.pdf
+```
+
+A material names only its file — the build already knows which course it
+belongs to, and looks in `assets/courses/<course-slug>/`. Its reader URL
+mirrors that path, so two courses can each have a `lecture-01.pdf` and neither
+needs a hand-written `slug:`:
+
+```
+assets/courses/intro-ml/lecture-01.pdf  ->  /v/courses/intro-ml/lecture-01/
+```
+
+Materials go in modules, and each one can name a `type` so it renders with the
+right icon and label:
 
 ```yaml
 - slug: courses
@@ -271,6 +289,7 @@ python3 -m http.server --directory _site          # then open http://localhost:8
 | --- | --- |
 | `data/links.yml` | Every entry on the site. The file you edit. |
 | `assets/` | The PDFs. Drop one in and name it from `links.yml`. |
+| `assets/courses/<slug>/` | One folder per course, holding that course's material. |
 | `scripts/build.py` | Renders the site, and validates it. |
 | `scripts/test_build.py` | Tests for the PDF model. |
 | `scripts/make_favicon.py` | Regenerates the icon set from `static/icon.svg`. |
