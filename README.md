@@ -286,6 +286,37 @@ python3 scripts/make_favicon.py                   # only after editing the icon
 python3 -m http.server --directory _site          # then open http://localhost:8000
 ```
 
+### Working on it without the PDFs
+
+`assets/` is 387 MB, and a full clone pulls all of it. To work on the build, the
+styles or the front end without that, ask git for a checkout that skips it:
+
+```bash
+git clone --filter=blob:none --sparse https://github.com/KiarashS/directory.git
+cd directory
+git sparse-checkout set --no-cone '/*' '!/assets'
+```
+
+`--filter=blob:none` leaves file contents on the server until something asks for
+them, and the sparse rule keeps `assets/` out of the working tree. The PDFs stay
+in the repository and in its history either way — this changes only what your
+own checkout pulls down, so it is safe and reversible.
+
+Note that adding `assets/` to a `.gitignore` would *not* do this. Those files
+are tracked, and `.gitignore` has no effect on tracked files: they would still
+arrive with every clone. Its one real effect would be to make a newly added PDF
+invisible to `git add`.
+
+The build needs the PDFs, so in this mode it stops with `PDF not found`. Fetch
+them when you need to run it:
+
+```bash
+git sparse-checkout disable      # brings assets/ back
+```
+
+GitHub Actions is unaffected — `actions/checkout` takes everything, so the
+deployed site always has every file.
+
 ## Layout
 
 | Path | What it is |
