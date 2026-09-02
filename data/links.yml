@@ -1182,15 +1182,15 @@ categories:
       description: One or two lines about the course.
       links:                       # optional, shown at the top of the page
         - text: Syllabus
-          pdf: syllabus.pdf
+          pdf: cheatsheet_analysis_I.pdf
       modules:
         - title: Week 1 — Linear regression
           summary: Optional line under the module heading.
           materials:
             - title: Lecture slides
-              pdf: wk1-slides.pdf
+              pdf: cheatsheet_analysis_I.pdf
               type: slides
             - title: Problem set 1
-              pdf: ps1.pdf
+              pdf: cheatsheet_analysis_I.pdf
               type: assignment
               description: Due at the end of week two.
