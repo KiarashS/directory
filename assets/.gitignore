@@ -1,2 +1,13 @@
+# This directory is content, not build output. It used to ignore everything,
+# which quietly broke the one workflow the site is built around: a PDF dropped
+# in here was skipped by `git add` without a word, and only the 174 files that
+# had been force-added once stayed tracked.
+#
+# PDFs and the folders that hold them are tracked. Anything else — a stray
+# download, an editor temp file — still is not.
 *
 !.gitignore
+!.gitkeep
+!*/
+!*.pdf
+!*.PDF
