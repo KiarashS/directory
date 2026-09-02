@@ -207,7 +207,10 @@ assets/courses/intro-ml/lecture-01.pdf  ->  /v/courses/intro-ml/lecture-01/
 ```
 
 Materials go in modules, and each one can name a `type` so it renders with the
-right icon and label:
+right icon and label. **Upload the files first** — the example below is a shape
+to fill in, not something to paste as-is: every `pdf:` must name a file that
+actually exists, or the build stops with `PDF not found` and the site stays on
+its last good version rather than publishing a broken reader page.
 
 ```yaml
 - slug: courses

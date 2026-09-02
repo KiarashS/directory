@@ -62,7 +62,8 @@
 # already knows which course it belongs to. Two courses can each have a
 # lecture-01.pdf without either needing a hand-written slug.
 #
-# Paste this under `courses:` to start one.
+# Paste this under `courses:` to start one — then replace every pdf: with a
+# file you have actually uploaded, or the build stops with "PDF not found".
 #
 #   - slug: intro-ml
 #     title: Introduction to Machine Learning
