@@ -170,7 +170,9 @@ the same modal everything else does.
 Every card for a local PDF carries its length and weight — `12 pages · 2.3 MB` —
 so you can tell a two-page cheat sheet from a 39MB book before opening it. Both
 come from the file at build time: the size from the filesystem, the page count
-from `pypdf`. A PDF that will not parse simply shows its size.
+from `pypdf` — which needs `cryptography` for the seven encrypted PDFs in
+`assets/`, so all three are pinned in `requirements.txt` rather than named
+in each workflow. A PDF that will not parse simply shows its size.
 
 ### Descriptions
 
@@ -302,7 +304,7 @@ fails rather than publishing a reader without it.
 To run it locally:
 
 ```bash
-pip install pyyaml pypdf
+pip install -r requirements.txt
 python3 scripts/build.py                          # renders into _site/
 python3 scripts/build.py --validate               # checks, writes nothing
 python3 -m unittest discover -s scripts           # the tests

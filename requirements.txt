@@ -1,0 +1,11 @@
+# The build's dependencies, in one place so the workflows cannot drift apart.
+#
+# pyyaml         reads data/links.yml
+# pypdf          page counts for the card badges
+# cryptography   pypdf needs it to open the 7 encrypted PDFs in assets/.
+#                Without it those cards silently lose their page count — and
+#                only in CI, since it is commonly installed already elsewhere,
+#                which is exactly how that went unnoticed until it shipped.
+pyyaml
+pypdf
+cryptography

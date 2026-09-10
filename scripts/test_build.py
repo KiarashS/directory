@@ -309,6 +309,24 @@ class TestWeight(PdfCase):
         self.assertIn("25 KB" if size > 1024 else "1 KB",
                       build.weight_badge("assets/broken.pdf"))
 
+    def test_encrypted_pdf_still_reports_its_pages(self):
+        """Seven PDFs in assets/ are encrypted, and pypdf needs `cryptography`
+        to open them. Without it they silently lose their page count — which
+        happened in CI while passing locally, because the package was already
+        installed here. This fails loudly instead."""
+        import io as _io
+        import pypdf
+        w = pypdf.PdfWriter()
+        w.add_blank_page(width=612, height=792)
+        w.encrypt("", algorithm="AES-128")
+        buf = _io.BytesIO()
+        w.write(buf)
+        self.write("locked.pdf", buf.getvalue())
+        build.pdf_meta.cache_clear()
+        _, pages = build.pdf_meta("assets/locked.pdf")
+        self.assertEqual(pages, 1,
+                         "encrypted PDF lost its page count — is cryptography installed?")
+
     def test_badge_wording(self):
         self.write("doc.pdf", MINIMAL_PDF)
         build.pdf_meta.cache_clear()

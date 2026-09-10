@@ -183,9 +183,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      # build.py imports pypdf for the page-count badges, so the deploy
-      # job needs it too — it renders the same site build.yml does.
-      - run: pip install --quiet pyyaml pypdf
+      - run: pip install --quiet -r requirements.txt
 
       # The pages are build output, not repository content, so a deploy has to
       # render them. This job only ever changes viewer/, but it still publishes
