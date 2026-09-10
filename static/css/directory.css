@@ -1051,6 +1051,15 @@ button.card-title::after {
   font-variant-numeric: tabular-nums;
 }
 
+/* How long the document is and what it weighs. Quiet, like the date: it
+   answers "is this a two-page cheat sheet or a 39MB book?" before you open
+   it, without competing with the title. */
+.badge-weight {
+  background: transparent;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
 /* A pinned card reads as lifted out of the ordinary run of the list. */
 /* The pin marker is an inset shadow, so it is clipped by the card's own
    border-radius and curves with the corners. The previous version was an

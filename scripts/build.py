@@ -21,9 +21,12 @@ Nothing here touches the network, so the build is reproducible.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import datetime as dt
+import functools
 import hashlib
 import html
+import io
 import itertools
 import json
 import pathlib
@@ -31,7 +34,9 @@ import re
 import shutil
 import sys
 import urllib.parse
+import warnings
 
+import pypdf
 import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -197,6 +202,42 @@ def pdf_path(value: str, subject: str, base: str = "") -> str:
     return resolved.relative_to(ROOT).as_posix()
 
 
+def human_size(n: int) -> str:
+    """2411724 -> '2.3 MB'. Sizes here run from 39 KB to 39 MB."""
+    if n >= 1048576:
+        mb = n / 1048576
+        return f"{mb:.0f} MB" if mb >= 10 else f"{mb:.1f} MB"
+    return f"{max(1, round(n / 1024))} KB"
+
+
+@functools.lru_cache(maxsize=None)
+def pdf_meta(rel_path: str) -> tuple[int, int | None]:
+    """(bytes, pages) for a PDF under assets/, pages None if unreadable.
+
+    Size is free and always right. The page count needs pypdf, and one
+    malformed file must not take the build down with it — of the 171 PDFs
+    here, 170 parse and the one that does not simply shows its size.
+    """
+    path = ROOT / rel_path
+    size = path.stat().st_size
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            with contextlib.redirect_stderr(io.StringIO()):
+                pages = len(pypdf.PdfReader(str(path), strict=False).pages)
+        return size, pages or None
+    except Exception:
+        return size, None
+
+
+def weight_badge(rel_path: str) -> str:
+    """'12 pages · 2.3 MB' — what a card cannot otherwise tell you."""
+    size, pages = pdf_meta(rel_path)
+    label = f"{pages} page{'' if pages == 1 else 's'} · {human_size(size)}" if pages \
+        else human_size(size)
+    return f'<span class="badge badge-weight">{label}</span>'
+
+
 def render_viewer(title: str, target: str, slug: str, *, embed: bool = False) -> str:
     """The page at v/<slug>/index.html.
 
@@ -292,6 +333,7 @@ def normalize(doc: dict) -> tuple[dict, dict[str, dict]]:
                     else pdf_slug(target[len("assets/"):]))
             claim(slug, target, subject, "pdf")
             item["url"] = viewer_url(slug)
+            item["_pdf"] = target        # internal; never written back to YAML
         elif item.get("embed"):
             written = str(item.get("slug") or "").strip()
             if not written:
@@ -523,6 +565,8 @@ def render_entry(entry: dict, depth: int, order: int = 0) -> str:
         foot.append(f'<span class="badge badge-count">{LAYERS} {len(links)} links</span>')
     else:
         foot.append(badge(links[0]["url"]))
+    if entry.get("_pdf"):
+        foot.append(weight_badge(entry["_pdf"]))
     if when:
         foot.append(f'<span class="badge badge-date">{e(pretty_date(when))}</span>')
     out.append(f'          <div class="card-foot">{"".join(foot)}</div>')
@@ -951,6 +995,23 @@ def build_pages(doc: dict, routes: dict[str, dict] | None = None) -> dict[str, s
     for slug, route in sorted((routes or {}).items()):
         pages[f"v/{slug}/index.html"] = render_viewer(
             route["title"], route["target"], slug, embed=route["kind"] == "embed")
+
+    # --- what a crawler should look at -------------------------------------
+    # Built from the page dictionary itself, so the sitemap cannot drift from
+    # the pages that actually exist. The v/ reader pages are left out: they
+    # carry noindex, and a crawler's time is better spent on the 7 real pages.
+    base = site["url"].rstrip("/") + "/"
+    urls = sorted(p[: -len("index.html")] for p in pages
+                  if p.endswith("index.html") and not p.startswith("v/"))
+    pages["sitemap.xml"] = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "".join(f"  <url><loc>{e(base + u)}</loc></url>\n" for u in urls)
+        + "</urlset>\n")
+    pages["robots.txt"] = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        f"Sitemap: {base}sitemap.xml\n")
 
     return pages
 

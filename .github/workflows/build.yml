@@ -39,7 +39,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      - run: pip install --quiet pyyaml
+      # pypdf reads page counts for the card badges; pyyaml reads the data.
+      - run: pip install --quiet pyyaml pypdf
 
       # The PDF model — slugs, path containment, signatures, duplicate routes.
       - name: Test the build

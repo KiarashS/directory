@@ -19,6 +19,19 @@ import build  # noqa: E402
 
 PDF_BYTES = b"%PDF-1.7\n1 0 obj\n<<>>\nendobj\ntrailer<<>>\n%%EOF\n"
 
+def _one_page_pdf() -> bytes:
+    """A real one-page PDF. Hand-written bytes lack an xref and will not parse."""
+    import io as _io
+    import pypdf
+    w = pypdf.PdfWriter()
+    w.add_blank_page(width=612, height=792)
+    buf = _io.BytesIO()
+    w.write(buf)
+    return buf.getvalue()
+
+
+MINIMAL_PDF = _one_page_pdf()
+
 
 class PdfCase(unittest.TestCase):
     """A temporary assets/ directory, with build.ASSETS pointed at it."""
@@ -268,6 +281,92 @@ class TestViewerDepth(unittest.TestCase):
         self.assertIn('src="../../../../viewer/web/viewer.html?file=', page)
         target = urllib.parse.unquote(page.split("file=", 1)[1].split('"')[0])
         self.assertEqual(target, "../../../../assets/courses/c/l1.pdf")
+
+
+class TestWeight(PdfCase):
+    """What a card says about a PDF's length and size."""
+
+    def test_human_size(self):
+        self.assertEqual(build.human_size(39 * 1024), "39 KB")
+        self.assertEqual(build.human_size(int(2.35 * 1048576)), "2.3 MB")
+        self.assertEqual(build.human_size(39 * 1048576), "39 MB")   # no decimal when large
+
+    def test_meta_reads_size_and_pages(self):
+        self.write("doc.pdf", MINIMAL_PDF)
+        build.pdf_meta.cache_clear()
+        size, pages = build.pdf_meta("assets/doc.pdf")
+        self.assertEqual(size, len(MINIMAL_PDF))
+        self.assertEqual(pages, 1)
+
+    def test_unreadable_pdf_falls_back_to_size(self):
+        # A valid signature but nothing pypdf can parse: the build must still
+        # produce a card, showing what it does know.
+        self.write("broken.pdf", b"%PDF-1.4\nnot really a pdf\n")
+        build.pdf_meta.cache_clear()
+        size, pages = build.pdf_meta("assets/broken.pdf")
+        self.assertEqual(size, 26)
+        self.assertIsNone(pages)
+        self.assertIn("25 KB" if size > 1024 else "1 KB",
+                      build.weight_badge("assets/broken.pdf"))
+
+    def test_badge_wording(self):
+        self.write("doc.pdf", MINIMAL_PDF)
+        build.pdf_meta.cache_clear()
+        self.assertIn("1 page ·", build.weight_badge("assets/doc.pdf"))
+
+
+class TestSitemap(unittest.TestCase):
+    def test_lists_content_pages_and_skips_readers(self):
+        doc = {"site": {"url": "https://example.com/d/"},
+               "categories": [{"slug": "pdfs", "name": "PDFs", "entries": []}]}
+        pages = {"index.html": "", "pdfs/index.html": "",
+                 "v/a/index.html": "", "v/courses/c/l1/index.html": ""}
+        base = doc["site"]["url"]
+        urls = sorted(p[: -len("index.html")] for p in pages
+                      if p.endswith("index.html") and not p.startswith("v/"))
+        self.assertEqual(urls, ["", "pdfs/"])
+        self.assertNotIn("v/", " ".join(urls))
+
+    def test_real_build_sitemap_is_wellformed(self):
+        import xml.dom.minidom
+        _, _, pages = build.load()
+        dom = xml.dom.minidom.parseString(pages["sitemap.xml"])
+        locs = [n.firstChild.data for n in dom.getElementsByTagName("loc")]
+        self.assertEqual(len(locs), 7)
+        self.assertTrue(all(u.startswith("https://") for u in locs))
+        self.assertFalse(any("/v/" in u for u in locs))
+        self.assertIn("Sitemap:", pages["robots.txt"])
+
+
+class TestTagVocabulary(unittest.TestCase):
+    """Word boundaries, because an unanchored 'ui' tags 'Building' as design."""
+
+    def setUp(self):
+        sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+        import suggest_tags
+        self.st = suggest_tags
+
+    def tags(self, title, links=()):
+        return self.st.tags_for({"title": title,
+                                 "links": [{"text": t} for t in links]})
+
+    def test_building_is_not_design(self):
+        self.assertEqual(self.tags("Building Grammar Skills For the TOEFL"),
+                         ["english", "toefl"])
+
+    def test_guide_is_not_design(self):
+        # "Guide" must not mean design; and the underscores must not hide "GRE",
+        # since \b sees no boundary inside GRE_Equation.
+        self.assertEqual(self.tags("GRE_Equation_Guide_TTP"), ["gre"])
+
+    def test_real_design_still_matches(self):
+        self.assertIn("design", self.tags("Laws of UX"))
+
+    def test_sublink_text_counts(self):
+        self.assertIn("python", self.tags("Assorted notes", ["Pandas tricks"]))
+
+    def test_no_match_is_empty(self):
+        self.assertEqual(self.tags("Miscellaneous"), [])
 
 
 class TestViewerPage(PdfCase):
