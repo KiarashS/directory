@@ -130,6 +130,13 @@ matches titles and link text as well. Several `tag:` terms intersect, so
 
 `pinned: true` holds an entry at the top of its page under every sort order.
 
+Most of the archive was tagged in one pass by `scripts/suggest_tags.py`, which
+matches a small vocabulary against each entry's title and sub-link text and
+writes tags only where an entry has none. Run it after adding a batch of
+entries — `--dry-run` prints what it would add — then read the diff. It is a
+starting point, not an authority: fix what it gets wrong by hand, and it will
+leave your edits alone on the next run.
+
 `added` sets the default order, newest first. A sort control next to the view
 switch offers Newest, Oldest and A–Z, and remembers your choice. Entries with no
 `added` keep the order they have in `links.yml` and sit below the dated ones, so
@@ -157,6 +164,13 @@ title, separated by `·`.
 
 Slides, video, code and paper are just its links, so a talk with several opens
 the same modal everything else does.
+
+### What a card shows about a PDF
+
+Every card for a local PDF carries its length and weight — `12 pages · 2.3 MB` —
+so you can tell a two-page cheat sheet from a 39MB book before opening it. Both
+come from the file at build time: the size from the filesystem, the page count
+from `pypdf`. A PDF that will not parse simply shows its size.
 
 ### Descriptions
 
@@ -259,6 +273,16 @@ trigger a deploy:
    `viewer/`, `sw.js`, the manifests and the icons.
 4. The artifact deploys to Pages.
 
+`sitemap.xml` and `robots.txt` are generated from the same page dictionary, so
+they list exactly the pages that exist. The `/v/` reader pages are left out —
+they carry `noindex`, and a crawler's budget is better spent on the real ones.
+
+A separate weekly workflow, `.github/workflows/link-check.yml`, requests every
+external link and opens an issue listing the dead ones. It never fails a build
+and never blocks a deploy: a link that moved needs a new URL, not a red mark on
+an unrelated commit. It also distinguishes *gone* (404/410, or a host that does
+not resolve) from *refused a robot* (403/429), which are not the same thing.
+
 The build needs no network access and is deterministic: same inputs, byte-identical
 output. `_site/` is deleted and rebuilt every run, so a route that is no longer
 declared disappears instead of lingering.
@@ -278,7 +302,7 @@ fails rather than publishing a reader without it.
 To run it locally:
 
 ```bash
-pip install pyyaml
+pip install pyyaml pypdf
 python3 scripts/build.py                          # renders into _site/
 python3 scripts/build.py --validate               # checks, writes nothing
 python3 -m unittest discover -s scripts           # the tests
@@ -326,6 +350,7 @@ deployed site always has every file.
 | `assets/courses/<slug>/` | One folder per course, holding that course's material. |
 | `scripts/build.py` | Renders the site, and validates it. |
 | `scripts/test_build.py` | Tests for the PDF model. |
+| `scripts/suggest_tags.py` | Proposes tags for entries that have none. |
 | `scripts/make_favicon.py` | Regenerates the icon set from `static/icon.svg`. |
 | `static/css/directory.css`, `static/js/directory.js` | The front end. |
 | `viewer/` | The pdf.js distribution. Updated by its own workflow. |
