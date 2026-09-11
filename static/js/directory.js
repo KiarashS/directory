@@ -471,12 +471,18 @@
       a.href = anchor.href;
       if (anchor.target) { a.target = anchor.target; a.rel = anchor.rel; }
 
+      // The weight goes in front of the name; the destination badge after it.
+      // Two badges now live in each row, so neither may be fetched with a bare
+      // '.badge' — that would return whichever came first in the markup.
+      var weight = item.querySelector('.badge-weight');
+      if (weight) a.appendChild(weight.cloneNode(true));
+
       var label = document.createElement('span');
       label.className = 'link-label';
       label.textContent = anchor.textContent;      // textContent, never innerHTML
       a.appendChild(label);
 
-      var badge = item.querySelector('.badge');
+      var badge = item.querySelector('.badge:not(.badge-weight)');
       if (badge) a.appendChild(badge.cloneNode(true));
 
       var desc = item.querySelector('.link-note');

@@ -990,6 +990,9 @@ button.card-title::after {
   line-height: 1.45;
 }
 .link-modal-list .badge { margin-inline-start: auto; }
+/* ...except the weight, which leads the row. Without this it inherits the
+   auto margin above and floats to the right, behind the name it describes. */
+.link-modal-list .badge-weight { margin-inline-start: 0; }
 
 @media (prefers-reduced-motion: no-preference) {
   .link-modal[open] { animation: modal-in 0.16s var(--ease); }

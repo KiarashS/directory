@@ -409,14 +409,20 @@ SPRITE = ('  <svg class="visually-hidden" aria-hidden="true" focusable="false">\
 # --- Entry helpers ---------------------------------------------------------
 
 def all_links(entry: dict) -> list[dict]:
-    """Primary first, then the extras, as one uniform list."""
+    """Primary first, then the extras, as one uniform list.
+
+    `_pdf` rides along so each link can report its own size and page count;
+    it is set by normalize() and is absent on anything external.
+    """
     out = []
     if entry.get("url"):
         out.append({"text": entry["title"], "url": entry["url"],
-                    "description": entry.get("description")})
+                    "description": entry.get("description"),
+                    "_pdf": entry.get("_pdf")})
     for link in entry.get("links") or []:
         out.append({"text": link["text"], "url": link["url"],
-                    "description": link.get("description")})
+                    "description": link.get("description"),
+                    "_pdf": link.get("_pdf")})
     return out
 
 
@@ -546,7 +552,11 @@ def render_entry(entry: dict, depth: int, order: int = 0) -> str:
     if len(links) > 1:
         out.append('          <ul class="card-links">')
         for link in links:
-            out.append(f'            <li><a href="{e(rel(link["url"], depth))}"'
+            # The weight comes first, so it reads ahead of the name both in
+            # the modal and in this list, which is what shows without JS.
+            out.append(f'            <li>'
+                       + (weight_badge(link["_pdf"]) if link.get("_pdf") else "")
+                       + f'<a href="{e(rel(link["url"], depth))}"'
                        f'{link_attrs(link["url"])}>{e(link["text"])}</a>'
                        + (f'<span class="link-note">{e(desc(link))}</span>' if desc(link) else "")
                        + f'{badge(link["url"])}</li>')
@@ -565,7 +575,10 @@ def render_entry(entry: dict, depth: int, order: int = 0) -> str:
         foot.append(f'<span class="badge badge-count">{LAYERS} {len(links)} links</span>')
     else:
         foot.append(badge(links[0]["url"]))
-    if entry.get("_pdf"):
+    # Only when the card points at one file. On a multi-link card the weight
+    # of the primary says nothing about the others, so it moves into the modal
+    # where every link can carry its own.
+    if entry.get("_pdf") and len(links) == 1:
         foot.append(weight_badge(entry["_pdf"]))
     if when:
         foot.append(f'<span class="badge badge-date">{e(pretty_date(when))}</span>')
