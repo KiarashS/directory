@@ -552,12 +552,12 @@ def render_entry(entry: dict, depth: int, order: int = 0) -> str:
     if len(links) > 1:
         out.append('          <ul class="card-links">')
         for link in links:
-            # The weight comes first, so it reads ahead of the name both in
-            # the modal and in this list, which is what shows without JS.
+            # Name, then its weight, then where it goes. Same order here as in
+            # the modal, since this list is what shows without JavaScript.
             out.append(f'            <li>'
-                       + (weight_badge(link["_pdf"]) if link.get("_pdf") else "")
                        + f'<a href="{e(rel(link["url"], depth))}"'
                        f'{link_attrs(link["url"])}>{e(link["text"])}</a>'
+                       + (weight_badge(link["_pdf"]) if link.get("_pdf") else "")
                        + (f'<span class="link-note">{e(desc(link))}</span>' if desc(link) else "")
                        + f'{badge(link["url"])}</li>')
         out.append('          </ul>')
