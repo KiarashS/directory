@@ -11,6 +11,8 @@ Pages produced:
     /courses/              the course list
     /courses/<slug>/       one course, its modules and materials
 
+A category with `enabled: false` in links.yml produces none of the above.
+
 Every URL is relative and depth-aware. The site is served from a subpath
 (kiarashs.github.io/directory/), so a root-absolute "/static/..." would break;
 `rel()` prefixes each URL with the right number of "../" for the page it is
@@ -50,9 +52,11 @@ COURSE_ASSETS = "courses"
 
 # Copied into the output as-is. Everything else in the repository — the YAML,
 # these scripts, .git, .github — is input to the build, not part of the site.
+# sw.js is deliberately absent: it is generated, because its precache list
+# has to follow the sections that are actually enabled.
 RUNTIME = [
     "assets", "static", "viewer",
-    "sw.js", "manifest.webmanifest", "site.webmanifest", "browserconfig.xml",
+    "manifest.webmanifest", "site.webmanifest", "browserconfig.xml",
     "favicon.ico", "favicon-16x16.png", "favicon-32x32.png",
     "apple-touch-icon.png", "safari-pinned-tab.svg",
     "android-chrome-192x192.png", "android-chrome-512x512.png",
@@ -934,6 +938,7 @@ def build_pages(doc: dict, routes: dict[str, dict] | None = None) -> dict[str, s
     # --- the front page ----------------------------------------------------
     # It lists the PDF entries rather than a menu of categories: that is the
     # section that actually gets used, and the nav already names the others.
+    # Normally the PDFs; if that section is switched off, whichever is first.
     front = next((c for c in cats if c["slug"] == "pdfs"), cats[0])
     front_entries = front.get("entries") or []
 
@@ -1026,6 +1031,19 @@ def build_pages(doc: dict, routes: dict[str, dict] | None = None) -> dict[str, s
         "Allow: /\n"
         f"Sitemap: {base}sitemap.xml\n")
 
+    # --- the service worker ------------------------------------------------
+    # Its precache list is the nav's list, so the two cannot disagree about
+    # which sections exist.
+    # Not `shell` — that is the page renderer, and assigning to the name here
+    # would make Python treat it as local for the whole function.
+    shell_pages = [f"./{c['slug']}/" for c in cats]
+    digest = hashlib.sha256("".join(shell_pages).encode()).hexdigest()[:8]
+    pages["sw.js"] = (
+        (ROOT / "sw.js").read_text(encoding="utf-8")
+        .replace("__SHELL_PAGES__",
+                 "\n".join(f"  '{u}'," for u in shell_pages))
+        .replace("__SHELL_HASH__", digest))
+
     return pages
 
 
@@ -1111,8 +1129,22 @@ def copy_runtime(out: pathlib.Path) -> None:
 
 
 def load() -> tuple[dict, dict[str, dict], dict[str, str]]:
-    """links.yml -> validated, normalized document, its routes and its pages."""
-    doc, routes = normalize(yaml.safe_load(LINKS.read_text(encoding="utf-8")))
+    """links.yml -> validated, normalized document, its routes and its pages.
+
+    A category with `enabled: false` is dropped here, before normalize() ever
+    sees it, which is what makes it genuinely absent rather than merely
+    hidden: no page, no nav item, nothing in the search index or the sitemap,
+    and no viewer routes for its PDFs. Its `pdf:` values are not even checked,
+    so a section can be drafted against files that do not exist yet and only
+    has to be correct on the day it is switched on.
+    """
+    doc = yaml.safe_load(LINKS.read_text(encoding="utf-8"))
+    doc["categories"] = [c for c in doc.get("categories") or []
+                         if c.get("enabled", True)]
+    if not doc["categories"]:
+        raise SystemExit("every category is disabled; nothing to build. "
+                         "Set enabled: true on at least one in data/links.yml.")
+    doc, routes = normalize(doc)
     return doc, routes, build_pages(doc, routes)
 
 

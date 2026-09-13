@@ -1,6 +1,10 @@
 # The directory's content. Everything on the site is built from this file.
 #
 # Each category becomes a real page at /<slug>/ — /pdfs/, /links/ and so on.
+# Any of them can be switched off with `enabled: false`, which removes it
+# entirely: no tab, no page, nothing in the search index or the sitemap. A
+# section that is off is not validated either, so it can be drafted against
+# files that do not exist yet.
 #
 # An entry needs a title and a destination. Anything with extra `links` renders
 # as a card that opens a modal listing all of them.
@@ -1459,4 +1463,8 @@ categories:
 - slug: courses
   name: Courses
   blurb: Course material, grouped by module.
+  # Off until there is something in it. `enabled: false` removes the section
+  # completely — no tab, no page, nothing in search or the sitemap — so an
+  # empty shelf is not advertised. Delete this line to bring it back.
+  enabled: false
   courses: []

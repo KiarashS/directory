@@ -20,7 +20,10 @@
 
    Older caches are deleted on activate. */
 
-var CACHE = 'directory-v4';
+// The suffix is filled in by scripts/build.py from the list of sections
+// below, so switching one off rolls the cache instead of leaving its page in
+// a returning visitor's offline copy.
+var CACHE = 'directory-v4-__SHELL_HASH__';
 
 // The stylesheet and script are deliberately absent: pages request them with
 // a ?v=<content hash>, so the bare paths would be entries nothing ever asks
@@ -29,14 +32,12 @@ var CACHE = 'directory-v4';
 //
 // Category pages are real directories now, so each one is its own navigation
 // and needs its own entry.
+// The category pages are filled in by scripts/build.py from the sections that
+// are actually enabled. Hardcoding them meant this list could name a page that
+// no longer exists, and miss one that had just been added.
 var SHELL = [
   './',
-  './pdfs/',
-  './links/',
-  './tools/',
-  './datasets/',
-  './talks/',
-  './courses/',
+__SHELL_PAGES__
   './manifest.webmanifest',
   './favicon-32x32.png',
   './apple-touch-icon.png'

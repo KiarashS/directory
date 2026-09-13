@@ -12,7 +12,7 @@ Each category is a real page, not a fragment:
 | `/` | the PDF entries, with `/pdfs/` as its canonical URL |
 | `/pdfs/`, `/links/`, `/tools/`, `/datasets/` | that category's entries |
 | `/talks/` | talks, presentations and slide decks |
-| `/courses/` | the course list |
+| `/courses/` | the course list (switched off by default) |
 | `/courses/<slug>/` | one course, its modules and materials |
 
 Search still spans everything. Each page carries a small index of every entry on
@@ -23,6 +23,26 @@ A search is in the URL as `?q=`, so it can be shared: `/?q=python` and
 `/datasets/?q=mri` both arrive already filtered. Typing rewrites the address with
 `replaceState`, so the Back button still goes back a page rather than a
 keystroke, and clearing the box drops the parameter.
+
+## Switching a section on or off
+
+Any category takes `enabled: false`, which removes it completely — no tab, no
+page, nothing in the search index, the sitemap or the service worker's
+precache. A section that still answers on a URL nobody links to is not off.
+
+```yaml
+- slug: courses
+  name: Courses
+  enabled: false      # absent means on
+```
+
+Courses ships switched off, since it holds nothing yet. Deleting that line
+brings it back exactly as it was.
+
+A disabled section is not validated either, so it can be drafted against PDFs
+that have not been uploaded yet; it only has to be correct on the day it is
+switched on. Switching one off does remove its URL, so anything already linked
+to that page starts returning 404.
 
 ## Adding or changing a link
 

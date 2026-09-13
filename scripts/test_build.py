@@ -9,10 +9,13 @@ so nothing here reads or writes the real repository content.
 from __future__ import annotations
 
 import pathlib
+import re
 import sys
 import tempfile
 import unittest
 import urllib.parse
+
+import yaml
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import build  # noqa: E402
@@ -347,10 +350,13 @@ class TestSitemap(unittest.TestCase):
 
     def test_real_build_sitemap_is_wellformed(self):
         import xml.dom.minidom
-        _, _, pages = build.load()
+        doc, _, pages = build.load()
         dom = xml.dom.minidom.parseString(pages["sitemap.xml"])
         locs = [n.firstChild.data for n in dom.getElementsByTagName("loc")]
-        self.assertEqual(len(locs), 7)
+        # One per enabled section, plus the front page. Derived rather than
+        # hardcoded, so switching a section off does not fail this test for
+        # doing exactly what it is meant to do.
+        self.assertEqual(len(locs), len(doc["categories"]) + 1)
         self.assertTrue(all(u.startswith("https://") for u in locs))
         self.assertFalse(any("/v/" in u for u in locs))
         self.assertIn("Sitemap:", pages["robots.txt"])
@@ -385,6 +391,68 @@ class TestTagVocabulary(unittest.TestCase):
 
     def test_no_match_is_empty(self):
         self.assertEqual(self.tags("Miscellaneous"), [])
+
+
+class TestCategorySwitch(PdfCase):
+    """`enabled: false` removes a section rather than hiding it."""
+
+    def doc(self, **flags):
+        return {"site": {"url": "https://example.com/d/", "title": "T",
+                         "heading": "H", "heading_accent": "A", "tagline": "t",
+                         "author": "me", "author_url": "https://example.com",
+                         "suggest_form": "https://example.com/f"},
+                "categories": [dict({"slug": s, "name": s.title(), "entries": []},
+                                    **({"enabled": flags[s]} if s in flags else {}))
+                               for s in ("pdfs", "links", "tools", "datasets",
+                                         "talks", "courses")]}
+
+    def enabled(self, doc):
+        return [c["slug"] for c in doc["categories"] if c.get("enabled", True)]
+
+    def test_absent_field_means_on(self):
+        self.assertEqual(len(self.enabled(self.doc())), 6)
+
+    def test_false_removes_the_section(self):
+        self.assertNotIn("courses", self.enabled(self.doc(courses=False)))
+
+    def test_true_is_the_same_as_absent(self):
+        self.assertEqual(self.enabled(self.doc(courses=True)), self.enabled(self.doc()))
+
+    def test_a_disabled_section_is_never_validated(self):
+        """Its PDFs are not checked, so it can be drafted before it is ready."""
+        doc = self.doc(courses=False)
+        doc["categories"][-1]["entries"] = [
+            {"title": "Not uploaded yet", "pdf": "does-not-exist.pdf"}]
+        kept = [c for c in doc["categories"] if c.get("enabled", True)]
+        doc["categories"] = kept
+        build.normalize(doc)          # would raise "PDF not found" if it looked
+
+    def test_a_missing_pdf_in_an_enabled_section_still_fails(self):
+        doc = self.doc()
+        doc["categories"][0]["entries"] = [
+            {"title": "Missing", "pdf": "does-not-exist.pdf"}]
+        with self.assertRaises(SystemExit):
+            build.normalize(doc)
+
+
+class TestServiceWorkerShell(unittest.TestCase):
+    def test_shell_names_the_enabled_sections(self):
+        _, _, pages = build.load()
+        sw = pages["sw.js"]
+        self.assertNotIn("__SHELL_PAGES__", sw)
+        self.assertNotIn("__SHELL_HASH__", sw)
+        shell = re.search(r"var SHELL = \[(.*?)\];", sw, re.S).group(1)
+        listed = set(re.findall(r"'\./([a-z]+)/'", shell))
+        _, _, _ = None, None, None
+        doc = yaml.safe_load(build.LINKS.read_text(encoding="utf-8"))
+        on = {c["slug"] for c in doc["categories"] if c.get("enabled", True)}
+        off = {c["slug"] for c in doc["categories"] if not c.get("enabled", True)}
+        self.assertTrue(on <= listed, f"{on - listed} missing from the shell")
+        self.assertFalse(listed & off, f"{listed & off} still precached")
+
+    def test_cache_name_follows_the_shell(self):
+        _, _, pages = build.load()
+        self.assertRegex(pages["sw.js"], r"var CACHE = 'directory-v4-[0-9a-f]{8}'")
 
 
 class TestViewerPage(PdfCase):
