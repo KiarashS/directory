@@ -38,6 +38,37 @@ SVG = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="51
 </svg>
 '''
 
+# The maskable variant, for Android's adaptive icons. It is a different
+# picture, not the same one relabelled: the launcher crops to its own shape —
+# circle, squircle, teardrop — and only the centre 72 of 108dp is guaranteed to
+# survive. That is 66.7%, not the 80% usually quoted.
+#
+# So the background bleeds to the edges with no rx — the launcher supplies the
+# shape, and baked-in corners either vanish or show as slivers inside it — and
+# the mark is re-centred (its box is centred at x=272, not 256) and scaled to
+# sit inside the safe circle. Anything up to about 0.87 survives that circle
+# uncropped, but at the top of the range the folder's edges kiss it; 0.78
+# leaves a visible margin on every side, which is what a circular launcher
+# actually looks like.
+MASKABLE_SCALE = 0.78
+
+MASKABLE = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f5bd5"/>
+      <stop offset="1" stop-color="#2f8fb8"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#g)"/>
+  <g transform="translate(256 256) scale(%s) translate(-272 -256)">
+    <path fill="#ffffff"
+          d="M112 154a30 30 0 0 1 30-30h74a30 30 0 0 1 21 9l25 25h140a30 30 0 0 1 30 30v170a30 30 0 0 1-30 30H142a30 30 0 0 1-30-30z"/>
+    <path fill="#ffffff" opacity="0.55"
+          d="M112 214h288v-26a30 30 0 0 0-30-30H262l-25-25a30 30 0 0 0-21-9h-74a30 30 0 0 0-30 30z"/>
+  </g>
+</svg>
+''' % MASKABLE_SCALE
+
 # (filename, pixel size)
 PNGS = [
     ("favicon-16x16.png", 16),
@@ -70,6 +101,11 @@ def main() -> int:
     for name, size in PNGS:
         render(SVG, size).save(ROOT / name, "PNG", optimize=True)
         print(f"  {name} ({size}x{size})")
+
+    for size in (192, 512):
+        name = f"maskable-{size}x{size}.png"
+        render(MASKABLE, size).save(ROOT / name, "PNG", optimize=True)
+        print(f"  {name} ({size}x{size}, padded for the adaptive-icon mask)")
 
     # One .ico holding the three sizes Windows and older browsers ask for.
     base = render(SVG, 256)

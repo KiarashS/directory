@@ -321,6 +321,20 @@ anything, so every PDF on the site is a blank page. The legacy build is the
 same version with core-js polyfills. The workflow checks for the polyfill and
 fails rather than publishing a reader without it.
 
+`scripts/make_favicon.py` writes two sets of icons, and they are deliberately
+different pictures. The `android-chrome-*.png` pair is the mark in its rounded
+square, for anywhere that shows an icon as-is. The `maskable-*.png` pair is for
+Android's adaptive icons: the launcher crops those to its own shape — circle,
+squircle, teardrop — and guarantees only the centre 72 of 108dp, which is
+66.7%, not the 80% usually quoted. So that variant bleeds its background to the
+edge with no baked rounding, and the folder is re-centred and scaled to fit
+inside that circle. Declaring the ordinary icon `purpose: "maskable"` is what
+cut its edges off on a phone.
+
+`--validate` checks every `icons[].src` in `manifest.webmanifest` against the
+files the build actually ships, so an icon that would 404 fails the build
+instead of becoming a generated letter tile on someone's home screen.
+
 To run it locally:
 
 ```bash

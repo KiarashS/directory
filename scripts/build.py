@@ -56,10 +56,11 @@ COURSE_ASSETS = "courses"
 # has to follow the sections that are actually enabled.
 RUNTIME = [
     "assets", "static", "viewer",
-    "manifest.webmanifest", "site.webmanifest", "browserconfig.xml",
+    "manifest.webmanifest", "browserconfig.xml",
     "favicon.ico", "favicon-16x16.png", "favicon-32x32.png",
     "apple-touch-icon.png", "safari-pinned-tab.svg",
     "android-chrome-192x192.png", "android-chrome-512x512.png",
+    "maskable-192x192.png", "maskable-512x512.png",
     "mstile-150x150.png",
 ]
 
@@ -1115,6 +1116,44 @@ def validate_rendered_links(doc: dict, pages: dict[str, str]) -> list[str]:
     return problems
 
 
+def validate_manifest_icons() -> list[str]:
+    """Every icon the manifest names is a file the build actually ships.
+
+    RUNTIME lists each icon by name, so a PNG nobody adds there never reaches
+    the output: the manifest would point at a 404, and Android, finding no
+    usable icon, falls back to a generated letter tile. That is invisible
+    until it is on someone's home screen, so it fails the build instead.
+    """
+    path = ROOT / "manifest.webmanifest"
+    try:
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        return [f"manifest.webmanifest: {exc}"]
+
+    problems = []
+    icons = manifest.get("icons") or []
+    if not icons:
+        problems.append("manifest.webmanifest: declares no icons")
+
+    for icon in icons:
+        src = icon.get("src") or ""
+        if not src or src.startswith(("/", "http://", "https://")):
+            problems.append(f"manifest.webmanifest: {src!r} is not a relative "
+                            "path, and the site is served from a subpath")
+            continue
+        if not (ROOT / src).is_file():
+            problems.append(f"manifest.webmanifest: {src} does not exist")
+            continue
+        if src not in RUNTIME and src.split("/", 1)[0] not in RUNTIME:
+            problems.append(f"manifest.webmanifest: {src} exists but is not in "
+                            "RUNTIME, so it never reaches the output")
+
+    if not any("maskable" in (i.get("purpose") or "") for i in icons):
+        problems.append("manifest.webmanifest: no maskable icon, so Android "
+                        "crops the ordinary one to its launcher shape")
+    return problems
+
+
 def copy_runtime(out: pathlib.Path) -> None:
     for name in RUNTIME:
         src = ROOT / name
@@ -1169,7 +1208,8 @@ def main() -> int:
 
     if args.validate:
         problems = (validate_generated_routes(pages, routes)
-                    + validate_rendered_links(doc, pages))
+                    + validate_rendered_links(doc, pages)
+                    + validate_manifest_icons())
         if links < 400:
             problems.append(f"only {links} links in links.yml — refusing to publish")
         for path in unreferenced_pdfs(routes):

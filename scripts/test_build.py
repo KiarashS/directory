@@ -8,8 +8,12 @@ so nothing here reads or writes the real repository content.
 """
 from __future__ import annotations
 
+import contextlib
+import json
+import math
 import pathlib
 import re
+import struct
 import sys
 import tempfile
 import unittest
@@ -492,6 +496,119 @@ class TestViewerPage(PdfCase):
                                    "cambridge-dictionary", embed=True)
         self.assertIn('src="https://dictionary.cambridge.org/x"', page)
         self.assertNotIn("viewer.html", page)
+
+
+class TestManifestIcons(unittest.TestCase):
+    """--validate refuses a manifest that names an icon the build won't ship."""
+
+    @contextlib.contextmanager
+    def manifest(self, icons):
+        """Point build.ROOT at a throwaway tree holding just this manifest."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / "static").mkdir()
+            (root / "static" / "icon.svg").write_text("<svg/>")
+            (root / "android-chrome-512x512.png").write_bytes(b"\x89PNG")
+            (root / "stray.png").write_bytes(b"\x89PNG")
+            (root / "manifest.webmanifest").write_text(json.dumps({"icons": icons}))
+            real, build.ROOT = build.ROOT, root
+            try:
+                yield
+            finally:
+                build.ROOT = real
+
+    ANY = {"src": "android-chrome-512x512.png", "purpose": "any"}
+    MASK = {"src": "android-chrome-512x512.png", "purpose": "maskable"}
+
+    def test_the_real_manifest_passes(self):
+        self.assertEqual(build.validate_manifest_icons(), [])
+
+    def test_a_missing_file_fails(self):
+        with self.manifest([self.MASK, {"src": "not-there.png"}]):
+            self.assertIn("does not exist",
+                          " ".join(build.validate_manifest_icons()))
+
+    def test_a_file_outside_runtime_fails(self):
+        """The file is there, but nothing copies it into _site."""
+        with self.manifest([self.MASK, {"src": "stray.png"}]):
+            self.assertIn("not in RUNTIME",
+                          " ".join(build.validate_manifest_icons()))
+
+    def test_a_root_absolute_src_fails(self):
+        """The site lives on a subpath, so /icon.png is a 404."""
+        with self.manifest([self.MASK, {"src": "/android-chrome-512x512.png"}]):
+            self.assertIn("not a relative", " ".join(build.validate_manifest_icons()))
+
+    def test_a_file_inside_a_runtime_directory_passes(self):
+        with self.manifest([self.MASK, {"src": "static/icon.svg"}]):
+            self.assertEqual(build.validate_manifest_icons(), [])
+
+    def test_no_maskable_icon_fails(self):
+        with self.manifest([self.ANY]):
+            self.assertIn("no maskable icon",
+                          " ".join(build.validate_manifest_icons()))
+
+
+class TestMaskableArtwork(unittest.TestCase):
+    """The maskable icon has to survive the launcher's crop.
+
+    Android masks an adaptive icon to its own shape and guarantees only the
+    centre 72 of 108dp -- 66.7%, not the 80% usually quoted. These read the
+    generator's source rather than importing it, so they run without cairosvg.
+    """
+
+    SOURCE = (pathlib.Path(__file__).resolve().parent / "make_favicon.py"
+              ).read_text(encoding="utf-8")
+
+    # The mark, traced from its path data: the outer folder spans x 112..432
+    # and y 124..388, and every corner is rounded with r=30, so no ink reaches
+    # a bare corner of that box.
+    BOX = (112, 124, 432, 388)
+    CORNER_R = 30
+    SAFE_FRACTION = 72 / 108
+
+    def scale(self):
+        return float(re.search(r"^MASKABLE_SCALE = ([\d.]+)$",
+                               self.SOURCE, re.M).group(1))
+
+    def test_the_mark_fits_the_safe_circle(self):
+        x0, y0, x1, y1 = self.BOX
+        # Furthest painted point: the centre of a corner's arc, plus its radius.
+        dx = (x1 - x0) / 2 - self.CORNER_R
+        dy = (y1 - y0) / 2 - self.CORNER_R
+        reach = math.hypot(dx, dy) + self.CORNER_R
+        safe = 512 * self.SAFE_FRACTION / 2
+        self.assertLessEqual(reach * self.scale(), safe,
+                             "the mark would be cropped by a circular mask")
+
+    def test_the_ordinary_icon_would_not_have_fitted(self):
+        """Which is why this is a second image and not a relabelling."""
+        x0, y0, x1, y1 = self.BOX
+        # Unscaled and drawn where it is, the mark's box is centred at x=272.
+        reach = math.hypot(max(abs(x0 - 256), abs(x1 - 256)) - self.CORNER_R,
+                           max(abs(y0 - 256), abs(y1 - 256)) - self.CORNER_R)
+        self.assertGreater(reach + self.CORNER_R, 512 * self.SAFE_FRACTION / 2)
+
+    def test_the_mark_is_recentred(self):
+        """Its box is centred at x=272, so it is moved before it is scaled."""
+        x0, _, x1, _ = self.BOX
+        self.assertIn(f"translate(-{(x0 + x1) // 2} -256)", self.SOURCE,
+                      "the maskable mark is not re-centred")
+
+    def test_the_background_bleeds_to_the_edge(self):
+        """No baked rx: the launcher supplies the shape."""
+        rect = re.search(r'<rect width="512" height="512"[^>]*>',
+                         self.SOURCE.split("MASKABLE = ")[1]).group(0)
+        self.assertNotIn("rx", rect)
+
+    def test_both_sizes_are_generated_at_the_size_they_claim(self):
+        for size in (192, 512):
+            png = build.ROOT / f"maskable-{size}x{size}.png"
+            self.assertTrue(png.is_file(), f"{png.name} is missing")
+            head = png.read_bytes()[:24]
+            self.assertEqual(head[:8], b"\x89PNG\r\n\x1a\n")
+            width, height = struct.unpack(">II", head[16:24])
+            self.assertEqual((width, height), (size, size))
 
 
 if __name__ == "__main__":
