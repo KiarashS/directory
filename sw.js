@@ -35,10 +35,14 @@ var CACHE = 'directory-v4-__SHELL_HASH__';
 // The category pages are filled in by scripts/build.py from the sections that
 // are actually enabled. Hardcoding them meant this list could name a page that
 // no longer exists, and miss one that had just been added.
+// The manifest's line is filled in with its hashed URL, for the same reason
+// the stylesheet and script are absent: pages ask for it by that URL, so a
+// bare './manifest.webmanifest' here would be an entry nothing requests --
+// and the stale copy it shadowed is what an installed app's icon comes from.
 var SHELL = [
   './',
 __SHELL_PAGES__
-  './manifest.webmanifest',
+__MANIFEST__
   './favicon-32x32.png',
   './apple-touch-icon.png'
 ];

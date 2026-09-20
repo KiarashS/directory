@@ -324,16 +324,31 @@ fails rather than publishing a reader without it.
 `scripts/make_favicon.py` writes two sets of icons, and they are deliberately
 different pictures. The `android-chrome-*.png` pair is the mark in its rounded
 square, for anywhere that shows an icon as-is. The `maskable-*.png` pair is for
-Android's adaptive icons: the launcher crops those to its own shape — circle,
-squircle, teardrop — and guarantees only the centre 72 of 108dp, which is
-66.7%, not the 80% usually quoted. So that variant bleeds its background to the
-edge with no baked rounding, and the folder is re-centred and scaled to fit
-inside that circle. Declaring the ordinary icon `purpose: "maskable"` is what
-cut its edges off on a phone.
+Android's adaptive icons, where the launcher crops to its own shape — circle,
+squircle, teardrop — and shows only the centre 72 of 108dp. So that variant
+bleeds its background to the edge with no baked rounding, since the launcher
+supplies the shape, and the folder is re-centred (the mark's box sits at x=272
+of 512, not 256). Declaring the ordinary icon `purpose: "maskable"` is what cut
+its edges off on a phone.
 
-`--validate` checks every `icons[].src` in `manifest.webmanifest` against the
-files the build actually ships, so an icon that would 404 fails the build
-instead of becoming a generated letter tile on someone's home screen.
+`MASKABLE_SCALE` is `72/108`, and that is the same fraction for a reason worth
+stating, because getting it wrong looks like a different bug. The launcher does
+not merely crop to the safe zone; it **magnifies that square to fill the tile**.
+Anything drawn in the maskable icon therefore appears 1.5x larger on the phone
+than the same drawing in an ordinary icon, and scaling by `72/108` cancels it
+exactly. Fitting inside the safe circle is the floor — up to about `0.87`
+clears it — but a mark that merely fits is a mark that looks swollen. Preview
+the icon the way a launcher draws it: crop to the centre 72/108, scale up, then
+mask. Masking the full 512 canvas flatters it and hides this entirely.
+
+`manifest.webmanifest` is generated, not copied, so every `icons[].src` carries
+a `?v=<content hash>` and so does the manifest's own URL. Android takes an
+installed app's icon from the manifest it was installed with and refreshes both
+lazily, so a manifest answered from a cache names the icons cached beside it —
+which is how a corrected icon can fail to reach a phone for days. `--validate`
+checks every `icons[].src` against the files the build actually ships, so an
+icon that would 404 fails the build instead of becoming a generated letter tile
+on someone's home screen.
 
 To run it locally:
 

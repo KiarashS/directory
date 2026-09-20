@@ -568,7 +568,7 @@ class TestMaskableArtwork(unittest.TestCase):
     SAFE_FRACTION = 72 / 108
 
     def scale(self):
-        return float(re.search(r"^MASKABLE_SCALE = ([\d.]+)$",
+        return float(re.search(r"^MASKABLE_SCALE = ([\d.]+)",
                                self.SOURCE, re.M).group(1))
 
     def test_the_mark_fits_the_safe_circle(self):
@@ -580,6 +580,21 @@ class TestMaskableArtwork(unittest.TestCase):
         safe = 512 * self.SAFE_FRACTION / 2
         self.assertLessEqual(reach * self.scale(), safe,
                              "the mark would be cropped by a circular mask")
+
+    def test_it_reads_at_the_same_size_as_the_ordinary_icon(self):
+        """Fitting is the floor; looking right is the point.
+
+        The launcher does not just crop to the safe zone, it magnifies it to
+        fill the tile, so artwork drawn here appears 108/72 larger than the
+        same artwork in an ordinary icon. The scale has to cancel that.
+        """
+        x0, _, x1, _ = self.BOX
+        plain = (x1 - x0) / 512                     # of the whole canvas
+        viewport = 512 * self.SAFE_FRACTION
+        masked = (x1 - x0) * self.scale() / viewport   # of what the phone shows
+        self.assertAlmostEqual(masked, plain, delta=0.005,
+                               msg="the maskable mark is a different apparent "
+                                   "size from the mark everywhere else")
 
     def test_the_ordinary_icon_would_not_have_fitted(self):
         """Which is why this is a second image and not a relabelling."""
@@ -609,6 +624,69 @@ class TestMaskableArtwork(unittest.TestCase):
             self.assertEqual(head[:8], b"\x89PNG\r\n\x1a\n")
             width, height = struct.unpack(">II", head[16:24])
             self.assertEqual((width, height), (size, size))
+
+
+class TestGeneratedManifest(unittest.TestCase):
+    """The manifest ships with hashed icon URLs, and one hash everywhere.
+
+    An installed Android app takes its icon from the manifest it was installed
+    with, and refreshes both lazily. A manifest answered from a cache names the
+    icons that were cached alongside it, so a corrected icon never lands.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        _, _, cls.pages = build.load()
+        cls.manifest = json.loads(cls.pages["manifest.webmanifest"])
+
+    def test_every_icon_url_carries_a_content_hash(self):
+        for icon in self.manifest["icons"]:
+            self.assertRegex(icon["src"], r"\?v=[0-9a-f]{8}$")
+
+    def test_every_icon_still_resolves_once_the_query_is_stripped(self):
+        for icon in self.manifest["icons"]:
+            name = icon["src"].split("?")[0]
+            self.assertTrue((build.ROOT / name).is_file(), f"{name} is missing")
+
+    def test_a_changed_icon_changes_its_url(self):
+        one = build.render_manifest()
+        self.assertEqual(one, build.render_manifest())      # same bytes, same URL
+        icon = build.ROOT / "maskable-512x512.png"
+        keep = icon.read_bytes()
+        try:
+            icon.write_bytes(keep + b"\0")
+            self.assertNotEqual(build.render_manifest(), one)
+        finally:
+            icon.write_bytes(keep)
+
+    def test_the_page_and_the_service_worker_agree_on_the_url(self):
+        url = build.manifest_url(0)
+        self.assertIn(f'<link rel="manifest" href="{url}">', self.pages["index.html"])
+        self.assertIn(f"'{url}'", self.pages["sw.js"])
+
+    def test_the_service_worker_does_not_precache_the_bare_path(self):
+        """An entry nothing requests only shadows the one that is asked for."""
+        shell = re.search(r"var SHELL = \[(.*?)\];", self.pages["sw.js"],
+                          re.S).group(1)
+        self.assertNotIn("'./manifest.webmanifest'", shell)
+        self.assertIn("manifest.webmanifest?v=", shell)
+
+    def test_the_cache_name_follows_the_manifest(self):
+        before = re.search(r"var CACHE = '([^']+)'", self.pages["sw.js"]).group(1)
+        icon = build.ROOT / "maskable-512x512.png"
+        keep = icon.read_bytes()
+        try:
+            icon.write_bytes(keep + b"\0")
+            _, _, pages = build.load()
+            after = re.search(r"var CACHE = '([^']+)'", pages["sw.js"]).group(1)
+        finally:
+            icon.write_bytes(keep)
+        self.assertNotEqual(before, after,
+                            "a new icon has to roll the cache, or the old "
+                            "manifest survives in it")
+
+    def test_the_manifest_is_not_also_copied_over_the_generated_one(self):
+        self.assertNotIn("manifest.webmanifest", build.RUNTIME)
 
 
 if __name__ == "__main__":

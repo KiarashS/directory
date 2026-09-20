@@ -45,12 +45,17 @@ SVG = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="51
 #
 # So the background bleeds to the edges with no rx — the launcher supplies the
 # shape, and baked-in corners either vanish or show as slivers inside it — and
-# the mark is re-centred (its box is centred at x=272, not 256) and scaled to
-# sit inside the safe circle. Anything up to about 0.87 survives that circle
-# uncropped, but at the top of the range the folder's edges kiss it; 0.78
-# leaves a visible margin on every side, which is what a circular launcher
-# actually looks like.
-MASKABLE_SCALE = 0.78
+# the mark is re-centred (its box is centred at x=272, not 256) and scaled.
+#
+# The scale is the safe-zone fraction itself, and that is not a coincidence.
+# The launcher does not merely crop to the centre 72 of 108dp; it magnifies
+# that square to fill the tile. So whatever is drawn here appears 108/72 =
+# 1.5x larger on the phone than the same drawing in an ordinary icon. Scaling
+# by 72/108 cancels that exactly, and the folder reads at the size it has in a
+# browser tab. Fitting inside the safe circle is the floor — anything up to
+# about 0.87 clears it — but a mark that merely fits is a mark that looks
+# swollen.
+MASKABLE_SCALE = 0.6667          # 72/108, the safe-zone fraction
 
 MASKABLE = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>

@@ -52,11 +52,12 @@ COURSE_ASSETS = "courses"
 
 # Copied into the output as-is. Everything else in the repository — the YAML,
 # these scripts, .git, .github — is input to the build, not part of the site.
-# sw.js is deliberately absent: it is generated, because its precache list
-# has to follow the sections that are actually enabled.
+# sw.js and manifest.webmanifest are deliberately absent: both are generated,
+# the first because its precache list has to follow the sections that are
+# actually enabled, the second because its icon URLs carry a content hash.
 RUNTIME = [
     "assets", "static", "viewer",
-    "manifest.webmanifest", "browserconfig.xml",
+    "browserconfig.xml",
     "favicon.ico", "favicon-16x16.png", "favicon-32x32.png",
     "apple-touch-icon.png", "safari-pinned-tab.svg",
     "android-chrome-192x192.png", "android-chrome-512x512.png",
@@ -89,6 +90,32 @@ def asset(path: str, depth: int) -> str:
     """
     digest = hashlib.sha256((ROOT / path).read_bytes()).hexdigest()[:8]
     return f"{rel(path, depth)}?v={digest}"
+
+
+def render_manifest() -> str:
+    """manifest.webmanifest, with a content hash on every icon URL.
+
+    Hand-written and copied, the file named its icons by bare path, so a
+    changed icon arrived at a URL that caches were free to answer from an old
+    copy — and Android, which caches an installed app's icon hard and refreshes
+    it lazily, would keep drawing the picture it first saw. Stamping the URLs
+    is the same trick the stylesheet and the script already use.
+    """
+    manifest = json.loads((ROOT / "manifest.webmanifest").read_text(encoding="utf-8"))
+    for icon in manifest.get("icons") or []:
+        icon["src"] = asset(icon["src"], 0).removeprefix("./")
+    return json.dumps(manifest, indent=2, ensure_ascii=False) + "\n"
+
+
+def manifest_url(depth: int) -> str:
+    """The manifest's own URL, hashed from what the build will actually write.
+
+    Not from the source file: the generated copy is what ships, and its icon
+    URLs move whenever an icon does, so hashing the source would leave the
+    manifest pinned in a cache while its contents changed underneath.
+    """
+    digest = hashlib.sha256(render_manifest().encode("utf-8")).hexdigest()[:8]
+    return f"{rel('manifest.webmanifest', depth)}?v={digest}"
 
 
 def is_local(url: str) -> bool:
@@ -748,7 +775,7 @@ def shell(*, site, cats, title, description, path, depth, active, hero, main,
   <link rel="mask-icon" href="{rel("safari-pinned-tab.svg", depth)}" color="#4f5bd5">
   <meta name="msapplication-TileColor" content="#4f5bd5">
   <meta name="msapplication-config" content="{rel("browserconfig.xml", depth)}">
-  <link rel="manifest" href="{rel("manifest.webmanifest", depth)}">
+  <link rel="manifest" href="{manifest_url(depth)}">
 
   <link rel="stylesheet" href="{asset("static/css/directory.css", depth)}">
 
@@ -1032,17 +1059,30 @@ def build_pages(doc: dict, routes: dict[str, dict] | None = None) -> dict[str, s
         "Allow: /\n"
         f"Sitemap: {base}sitemap.xml\n")
 
+    # --- the manifest ------------------------------------------------------
+    # Generated rather than copied, so each icon is requested at a URL that
+    # changes when the icon does. Android caches an installed app's icon hard,
+    # and a manifest served from cache names the icons that were cached with
+    # it — which is how a fixed icon can stay broken on a phone.
+    pages["manifest.webmanifest"] = render_manifest()
+
     # --- the service worker ------------------------------------------------
     # Its precache list is the nav's list, so the two cannot disagree about
     # which sections exist.
     # Not `shell` — that is the page renderer, and assigning to the name here
     # would make Python treat it as local for the whole function.
     shell_pages = [f"./{c['slug']}/" for c in cats]
-    digest = hashlib.sha256("".join(shell_pages).encode()).hexdigest()[:8]
+    # The manifest's hashed URL goes into the digest as well as into the list:
+    # a changed manifest has to roll the cache, or the old one survives in it
+    # under the old URL and an installed app keeps being handed it.
+    manifest = manifest_url(0)
+    digest = hashlib.sha256(
+        ("".join(shell_pages) + manifest).encode()).hexdigest()[:8]
     pages["sw.js"] = (
         (ROOT / "sw.js").read_text(encoding="utf-8")
         .replace("__SHELL_PAGES__",
                  "\n".join(f"  '{u}'," for u in shell_pages))
+        .replace("__MANIFEST__", f"  '{manifest}',")
         .replace("__SHELL_HASH__", digest))
 
     return pages
