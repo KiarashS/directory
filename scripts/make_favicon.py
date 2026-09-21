@@ -81,8 +81,24 @@ PNGS = [
     ("apple-touch-icon.png", 180),
     ("android-chrome-192x192.png", 192),
     ("android-chrome-512x512.png", 512),
+    ("android-chrome-1024x1024.png", 1024),
     ("mstile-150x150.png", 150),
 ]
+
+# One maskable size, and it is large on purpose.
+#
+# A maskable icon spends a third of each axis outside the visible area, so its
+# nominal size is not the size anyone sees: only the centre 72 of 108dp
+# survives the launcher's crop. Android then draws the result at up to 432px
+# (xxxhdpi). So 192 supplies 128 visible pixels and is stretched 3.4x — which
+# is exactly what a blurry home-screen icon looks like — and even 512 supplies
+# only 341 and is stretched 1.27x. 1024 gives 683 and clears it outright.
+#
+# Only one size is offered because a smaller maskable has no upside: a
+# launcher picking it gets a worse picture, and that is the entire effect.
+# The ordinary android-chrome-*.png still cover 192 and 512 for everything
+# that shows an icon without masking it.
+MASKABLE_SIZES = (1024,)
 
 # A Safari pinned tab is a single-colour silhouette, so it gets the folder
 # alone with no background or gradient.
@@ -107,10 +123,11 @@ def main() -> int:
         render(SVG, size).save(ROOT / name, "PNG", optimize=True)
         print(f"  {name} ({size}x{size})")
 
-    for size in (192, 512):
+    for size in MASKABLE_SIZES:
         name = f"maskable-{size}x{size}.png"
         render(MASKABLE, size).save(ROOT / name, "PNG", optimize=True)
-        print(f"  {name} ({size}x{size}, padded for the adaptive-icon mask)")
+        print(f"  {name} ({size}x{size}, {round(size * 72 / 108)} of it visible "
+              "once the launcher crops)")
 
     # One .ico holding the three sizes Windows and older browsers ask for.
     base = render(SVG, 256)

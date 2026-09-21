@@ -61,7 +61,8 @@ RUNTIME = [
     "favicon.ico", "favicon-16x16.png", "favicon-32x32.png",
     "apple-touch-icon.png", "safari-pinned-tab.svg",
     "android-chrome-192x192.png", "android-chrome-512x512.png",
-    "maskable-192x192.png", "maskable-512x512.png",
+    "android-chrome-1024x1024.png",
+    "maskable-1024x1024.png",
     "mstile-150x150.png",
 ]
 

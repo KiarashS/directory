@@ -616,14 +616,41 @@ class TestMaskableArtwork(unittest.TestCase):
                          self.SOURCE.split("MASKABLE = ")[1]).group(0)
         self.assertNotIn("rx", rect)
 
-    def test_both_sizes_are_generated_at_the_size_they_claim(self):
-        for size in (192, 512):
+    def sizes(self):
+        return [int(n) for n in
+                re.search(r"^MASKABLE_SIZES = \(([\d, ]+)\)", self.SOURCE, re.M)
+                .group(1).replace(" ", "").strip(",").split(",")]
+
+    def test_every_size_is_generated_at_the_size_it_claims(self):
+        for size in self.sizes():
             png = build.ROOT / f"maskable-{size}x{size}.png"
             self.assertTrue(png.is_file(), f"{png.name} is missing")
             head = png.read_bytes()[:24]
             self.assertEqual(head[:8], b"\x89PNG\r\n\x1a\n")
             width, height = struct.unpack(">II", head[16:24])
             self.assertEqual((width, height), (size, size))
+
+    def test_no_maskable_icon_is_too_small_to_stay_sharp(self):
+        """A maskable icon's nominal size is not the size anyone sees.
+
+        Two thirds of each axis survives the crop, and Android then draws the
+        result at up to 432px, so a 192 maskable is a 128px picture stretched
+        3.4x. Offering one only gives a launcher something bad to pick.
+        """
+        for size in self.sizes():
+            visible = size * self.SAFE_FRACTION
+            self.assertGreaterEqual(
+                visible, 432,
+                f"maskable-{size}x{size}.png shows only {visible:.0f}px, which "
+                "Android upscales to 432")
+
+    def test_the_declared_icons_are_the_generated_ones(self):
+        """The manifest cannot name a maskable size the generator stopped writing."""
+        declared = {int(i["sizes"].split("x")[0])
+                    for i in json.loads(
+                        (build.ROOT / "manifest.webmanifest").read_text())["icons"]
+                    if "maskable" in (i.get("purpose") or "")}
+        self.assertEqual(declared, set(self.sizes()))
 
 
 class TestGeneratedManifest(unittest.TestCase):
@@ -648,10 +675,14 @@ class TestGeneratedManifest(unittest.TestCase):
             name = icon["src"].split("?")[0]
             self.assertTrue((build.ROOT / name).is_file(), f"{name} is missing")
 
+    def an_icon(self):
+        """Whichever icon the manifest names first, so renaming one is fine."""
+        return build.ROOT / self.manifest["icons"][0]["src"].split("?")[0]
+
     def test_a_changed_icon_changes_its_url(self):
         one = build.render_manifest()
         self.assertEqual(one, build.render_manifest())      # same bytes, same URL
-        icon = build.ROOT / "maskable-512x512.png"
+        icon = self.an_icon()
         keep = icon.read_bytes()
         try:
             icon.write_bytes(keep + b"\0")
@@ -673,7 +704,7 @@ class TestGeneratedManifest(unittest.TestCase):
 
     def test_the_cache_name_follows_the_manifest(self):
         before = re.search(r"var CACHE = '([^']+)'", self.pages["sw.js"]).group(1)
-        icon = build.ROOT / "maskable-512x512.png"
+        icon = self.an_icon()
         keep = icon.read_bytes()
         try:
             icon.write_bytes(keep + b"\0")

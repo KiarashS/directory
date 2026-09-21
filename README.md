@@ -322,14 +322,23 @@ same version with core-js polyfills. The workflow checks for the polyfill and
 fails rather than publishing a reader without it.
 
 `scripts/make_favicon.py` writes two sets of icons, and they are deliberately
-different pictures. The `android-chrome-*.png` pair is the mark in its rounded
-square, for anywhere that shows an icon as-is. The `maskable-*.png` pair is for
+different pictures. The `android-chrome-*.png` set is the mark in its rounded
+square, for anywhere that shows an icon as-is. `maskable-1024x1024.png` is for
 Android's adaptive icons, where the launcher crops to its own shape — circle,
 squircle, teardrop — and shows only the centre 72 of 108dp. So that variant
 bleeds its background to the edge with no baked rounding, since the launcher
 supplies the shape, and the folder is re-centred (the mark's box sits at x=272
 of 512, not 256). Declaring the ordinary icon `purpose: "maskable"` is what cut
 its edges off on a phone.
+
+There is exactly one maskable size, and it is deliberately large. Two thirds of
+each axis survives the crop, so a maskable icon's nominal size is not the size
+anyone sees, and Android draws the result at up to 432px: a 192 maskable is a
+128px picture stretched 3.4x, and a 512 one is 341px stretched 1.27x. Both look
+soft on a home screen. 1024 gives 683 visible pixels and clears it. Nothing
+smaller is offered, because a smaller maskable has no upside — it only gives a
+launcher a worse picture to choose. `MASKABLE_SIZES` in the generator and the
+`maskable` entries in the manifest are checked against each other by a test.
 
 `MASKABLE_SCALE` is `72/108`, and that is the same fraction for a reason worth
 stating, because getting it wrong looks like a different bug. The launcher does
