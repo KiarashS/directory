@@ -74,12 +74,50 @@ _ids = itertools.count(1)
 
 # --- URLs ------------------------------------------------------------------
 
+# Set only while rendering 404.html. Everything else on the site is written
+# relative, because the site lives on a subpath and a root-absolute "/static/"
+# would point outside it. The 404 page is the one exception, and not by
+# preference: GitHub serves it *at whatever path was missing*, so a request for
+# /directory/v/gone/ gets this page with the browser's base URL still set to
+# /directory/v/gone/. "./static/..." would then resolve to
+# /directory/v/gone/static/... and 404 in turn, leaving an unstyled page with
+# no search. A <base> element would fix the assets and break the skip link,
+# whose "#main" would start pointing at the home page.
+ABS_PREFIX = None
+
+
+@contextlib.contextmanager
+def absolute_urls(prefix: str | None):
+    """Render with root-absolute URLs for the length of the block."""
+    global ABS_PREFIX
+    ABS_PREFIX, keep = prefix, ABS_PREFIX
+    try:
+        yield
+    finally:
+        ABS_PREFIX = keep
+
+
+def relative_urls():
+    """Undo absolute_urls() for a block.
+
+    Not everything written during a page belongs to that page. A manifest's
+    icon srcs resolve against the manifest's own URL, so they stay relative
+    even while the page carrying the link is being written with absolute ones
+    -- and because the manifest's ?v= is a hash of its own text, letting the
+    page's URL style leak in here would hash a document that never gets
+    written, and the link would point at a version that does not exist.
+    """
+    return absolute_urls(None)
+
+
 def rel(url: str, depth: int) -> str:
     """A URL written for a page `depth` directories below the site root."""
     if url.startswith(("http://", "https://", "mailto:", "#", "data:")):
         return url
     if url.startswith("./"):
         url = url[2:]
+    if ABS_PREFIX is not None:
+        return ABS_PREFIX + url
     return ("../" * depth) + url if depth else "./" + url
 
 
@@ -103,8 +141,9 @@ def render_manifest() -> str:
     is the same trick the stylesheet and the script already use.
     """
     manifest = json.loads((ROOT / "manifest.webmanifest").read_text(encoding="utf-8"))
-    for icon in manifest.get("icons") or []:
-        icon["src"] = asset(icon["src"], 0).removeprefix("./")
+    with relative_urls():
+        for icon in manifest.get("icons") or []:
+            icon["src"] = asset(icon["src"], 0).removeprefix("./")
     return json.dumps(manifest, indent=2, ensure_ascii=False) + "\n"
 
 
@@ -734,7 +773,8 @@ def nav(cats: list[dict], active: str | None, depth: int) -> str:
 
 
 def shell(*, site, cats, title, description, path, depth, active, hero, main,
-          index_json, total, hash_redirect=False, canonical_path=None) -> str:
+          index_json, total, hash_redirect=False, canonical_path=None,
+          noindex=False) -> str:
     base = site["url"].rstrip("/") + "/"
     # The front page shows the PDF entries, so it names /pdfs/ as canonical
     # rather than advertising two URLs for one listing.
@@ -760,7 +800,8 @@ def shell(*, site, cats, title, description, path, depth, active, hero, main,
   <meta name="description" content="{e(description)}">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f4f5f8">
-  <link rel="canonical" href="{e(canonical)}">
+  {'<meta name="robots" content="noindex">' if noindex
+    else f'<link rel="canonical" href="{e(canonical)}">'}
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="{e(canonical)}">
@@ -1042,6 +1083,30 @@ def build_pages(doc: dict, routes: dict[str, dict] | None = None) -> dict[str, s
     for slug, route in sorted((routes or {}).items()):
         pages[f"v/{slug}/index.html"] = render_viewer(
             route["title"], route["target"], slug, embed=route["kind"] == "embed")
+
+    # --- the page nobody asks for ------------------------------------------
+    # GitHub serves this for any path that does not exist under the site, and
+    # serves it *at that path*, which is why it is the one page rendered with
+    # absolute URLs. A dead link is usually a renamed slug -- /v/<slug>/ moves
+    # whenever an entry is re-slugged -- so the useful thing to hand someone is
+    # not an apology but the search box, with the whole site's index behind it.
+    # With no section marked current, every match comes back as a cross-section
+    # result, which is exactly the recovery wanted here.
+    missing = (
+        '    <section class="not-found">\n'
+        '      <h1>That page isn\u2019t here</h1>\n'
+        '      <p>The link may be old: an entry\u2019s address changes if it is\n'
+        '         renamed. Search for it instead \u2014 everything on the site is\n'
+        f'         findable from here, all {total} entries.</p>\n'
+        '    </section>')
+    with absolute_urls(urllib.parse.urlsplit(site["url"]).path or "/"):
+        pages["404.html"] = shell(
+            site=site, cats=cats,
+            title=f'Page not found \u2014 {site["title"]}',
+            description="That page is not here. Search the directory instead.",
+            path="404.html", depth=0, active=None,
+            hero="", main=missing,
+            index_json=index_json, total=total, noindex=True)
 
     # --- what a crawler should look at -------------------------------------
     # Built from the page dictionary itself, so the sitemap cannot drift from

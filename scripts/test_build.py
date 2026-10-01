@@ -720,5 +720,81 @@ class TestGeneratedManifest(unittest.TestCase):
         self.assertNotIn("manifest.webmanifest", build.RUNTIME)
 
 
+class TestNotFoundPage(unittest.TestCase):
+    """404.html is served at the missing path, so it cannot use relative URLs."""
+
+    @classmethod
+    def setUpClass(cls):
+        _, _, cls.pages = build.load()
+        cls.page = cls.pages["404.html"]
+
+    def test_it_exists_and_is_not_indexed(self):
+        self.assertIn('<meta name="robots" content="noindex">', self.page)
+        self.assertNotIn('rel="canonical"', self.page)
+
+    def test_every_url_is_absolute(self):
+        """A relative href here resolves against whatever path 404'd."""
+        bad = re.findall(r'(?:href|src)="(\.{1,2}/[^"]*)"', self.page)
+        self.assertEqual(bad, [], f"relative URLs on 404.html: {bad[:5]}")
+
+    def test_urls_are_prefixed_with_the_site_path(self):
+        doc, _, _ = build.load()
+        prefix = urllib.parse.urlsplit(doc["site"]["url"]).path
+        for url in re.findall(r'(?:href|src)="(/[^"]*)"', self.page):
+            self.assertTrue(url.startswith(prefix), f"{url} escapes {prefix}")
+
+    def test_the_skip_link_still_points_at_this_page(self):
+        """Why there is no <base>: it would send #main to the home page."""
+        self.assertIn('href="#main"', self.page)
+        self.assertNotIn("<base ", self.page)
+
+    def test_it_carries_the_whole_search_index(self):
+        """The search box is the entire point, so it needs every entry."""
+        raw = re.search(r'id="search-index"[^>]*>(.*?)</script>',
+                        self.page, re.S).group(1)
+        self.assertEqual(len(json.loads(raw)),
+                         sum(len(c.get("entries") or [])
+                             for c in build.load()[0]["categories"]))
+
+    def test_no_section_is_marked_current(self):
+        """With no current section every hit becomes a cross-section result."""
+        self.assertNotIn('aria-current="page"', self.page)
+
+    def test_it_is_not_in_the_sitemap(self):
+        self.assertNotIn("404", self.pages["sitemap.xml"])
+
+
+class TestAbsoluteUrlMode(unittest.TestCase):
+    def test_it_only_applies_inside_the_block(self):
+        self.assertEqual(build.rel("static/x.css", 0), "./static/x.css")
+        with build.absolute_urls("/directory/"):
+            self.assertEqual(build.rel("static/x.css", 0), "/directory/static/x.css")
+            self.assertEqual(build.rel("static/x.css", 2), "/directory/static/x.css")
+        self.assertEqual(build.rel("static/x.css", 0), "./static/x.css")
+
+    def test_absolute_external_urls_are_left_alone(self):
+        with build.absolute_urls("/directory/"):
+            self.assertEqual(build.rel("https://example.com/x", 0),
+                             "https://example.com/x")
+            self.assertEqual(build.rel("#main", 0), "#main")
+
+    def test_the_manifest_does_not_inherit_the_page_url_style(self):
+        """Its icon srcs resolve against the manifest, not against the page.
+
+        Letting the style leak in also hashed a manifest that was never
+        written, so the link carried a ?v= for a nonexistent version.
+        """
+        plain = build.render_manifest()
+        with build.absolute_urls("/directory/"):
+            self.assertEqual(build.render_manifest(), plain)
+
+    def test_every_page_agrees_on_the_manifest_url(self):
+        _, _, pages = build.load()
+        urls = set(re.findall(r'manifest\.webmanifest\?v=[0-9a-f]{8}',
+                              pages["404.html"] + pages["index.html"]
+                              + pages["sw.js"]))
+        self.assertEqual(len(urls), 1, f"disagreement: {urls}")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
