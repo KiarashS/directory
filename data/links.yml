@@ -1365,6 +1365,8 @@ categories:
     url: https://open-vsx.org/
   - title: Diagram Editor
     url: https://app.diagrams.net/
+    date: 2026-10-02
+    tags: ['diagram', 'icon', 'editor']
 - slug: datasets
   name: Datasets
   blurb: Open datasets, mostly medical imaging and machine learning.
