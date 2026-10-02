@@ -1357,12 +1357,14 @@ categories:
     tags: [sql]
   - title: Create beautiful images of your source code
     url: https://chalk.ist/
-  - title: High Quality Science Illustrations
+  - title: High Quality Science Illustrations (Bio Icons)
     url: https://bioicons.com
   - title: 2,000+ science and medical art visuals
     url: https://bioart.niaid.nih.gov
   - title: Extensions for modern developer tools
     url: https://open-vsx.org/
+  - title: Diagram Editor
+    url: https://app.diagrams.net/
 - slug: datasets
   name: Datasets
   blurb: Open datasets, mostly medical imaging and machine learning.
