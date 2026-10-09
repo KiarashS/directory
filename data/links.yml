@@ -1444,6 +1444,18 @@ categories:
     tags: [data-science]
   - title: miRNet
     url: https://www.mirnet.ca/miRNet/home.xhtml
+  - title: Google Dataset Search
+    url: https://datasetsearch.research.google.com/
+    date: 2026-10-09
+    tags: ['dataset']
+  - title: Data.gov
+    url: https://data.gov/
+    date: 2026-10-09
+    tags: ['dataset']
+  - title: Zenodo
+    url: https://zenodo.org/
+    date: 2026-10-09
+    tags: ['dataset']
 - slug: talks
   name: Talks
   blurb: Talks, presentations and slide decks.
@@ -1463,7 +1475,7 @@ categories:
     url: https://go.kiarashs.ir/cc
     event: Conference
     date: 2025-07-03
-    tags: [software engineering] 
+    tags: [software engineering]
 - slug: courses
   name: Courses
   blurb: Course material, grouped by module.
