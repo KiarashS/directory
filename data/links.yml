@@ -1367,6 +1367,10 @@ categories:
     url: https://app.diagrams.net/
     date: 2026-10-02
     tags: ['diagram', 'icon', 'editor']
+  - title: Harvard Dataverse
+    url: https://dataverse.harvard.edu
+    date: 2026-11-15
+    tags: ['dataset']
 - slug: datasets
   name: Datasets
   blurb: Open datasets, mostly medical imaging and machine learning.
